@@ -1,2 +1,2 @@
 # MusicReleases
-SaaS to help indie records to promote their releases and facilitate trades
+SaaS to help indie record labels to promote their releases and facilitate trades
