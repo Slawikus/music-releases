@@ -10,3 +10,5 @@ class SignUpView(CreateView):
     template_name = 'signup.html'
     success_url = '/'
 
+
+
