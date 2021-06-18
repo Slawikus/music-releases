@@ -1,11 +1,17 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import User
+from .models import User, Profile
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 
 
-# Register your models here.
+class ProfileInline(admin.StackedInline):
+    model = Profile
+    can_delete = False
+    verbose_name_plural = 'Profile'
+    fk_name = 'user'
+
+
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
@@ -27,6 +33,13 @@ class CustomUserAdmin(UserAdmin):
     list_display = ('email', 'is_staff')
     search_fields = ('email',)
     ordering = ('email',)
+
+    inlines = (ProfileInline,)
+
+    def get_inline_instances(self, request, obj=None):
+        if not obj:
+            return list()
+        return super(CustomUserAdmin, self).get_inline_instances(request, obj)
 
 
 admin.site.register(User, CustomUserAdmin)
