@@ -1,0 +1,45 @@
+{% extends '_base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Labels{% endblock title %}
+
+{% block content %}
+  <ul class="nav nav-tabs mt-3 mb-4">
+    <li class="nav-item">
+      <a class="nav-link" aria-current="page" href="{% url 'edit_profile' %}">Profile</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'edit_currencies' %}">Currencies</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" href="{% url 'labels_list' %}">Labels</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Notifications</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Invitations</a>
+    </li>
+  </ul>
+  {% for label in object_list %}
+    <div class="card mt-2 mb-2">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-1 my-auto">
+            <img class="img-fluid" src="{{ MEDIA_URL }}{{ label.logo }}" alt="logo">
+          </div>
+          <div class="col-9 my-auto">
+            <h5 class="card-title">{{ label.name }}</h5>
+            <p class="card-text">{{ label.description }}</p>
+          </div>
+          <div class="col-2 my-auto">
+            <a href="#" class="card-link">edit</a>
+            <a href="#" class="card-link">remove</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+  <a href="{% url 'label_add' %}" class="btn btn-primary mt-2">Add label</a>
+{% endblock content %}

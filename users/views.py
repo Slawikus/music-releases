@@ -1,4 +1,4 @@
-from django.views.generic import CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.urls import reverse_lazy
 from django.db import IntegrityError
 
@@ -62,3 +62,10 @@ class AddLabelView(CreateView):
         form.instance.profile = self.request.user.profile
         return super().form_valid(form)
 
+
+class ListLabelsView(ListView):
+    model = Label
+    template_name = 'labels_list.html'
+
+    def get_queryset(self):
+        return super().get_queryset().filter(profile=self.request.user.profile)
