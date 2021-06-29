@@ -1,0 +1,53 @@
+{% extends '_base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Currencies{% endblock title %}
+
+{% block content %}
+  <ul class="nav nav-tabs mt-3 mb-4">
+    <li class="nav-item">
+      <a class="nav-link" aria-current="page" href="{% url 'edit_profile' %}">Profile</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" href="{% url 'edit_currencies' %}">Currencies</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Labels</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Notifications</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Invitations</a>
+    </li>
+  </ul>
+  <h5 class="mb-4">Set here currencies you wish to provide wholesale prices in</h5>
+  {% for currency in currencies_list %}
+    <div class="row mt-1 mb-1">
+      <div class="col-lg-2 col-sm-4 col-6">
+        <p>{{ currency }}</p>
+      </div>
+      <div class="col-1">
+        <form method="POST" action="{% url "delete_currencies" currency.pk %}">
+          {% csrf_token %}
+          <input type="submit" class="btn btn-secondary btn-sm" value="remove">
+        </form>
+      </div>
+    </div>
+  {% endfor %}
+  <div class="row">
+    <div class="col-lg-4 col-md-6">
+      {% if currencies_list %}
+        <div class="dropdown-divider mb-3"></div>
+      {% endif %}
+      <form method="post" autocomplete="off">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-primary">Add currency</button>
+      </form>
+    </div>
+  </div>
+{% endblock content %}
+
+
