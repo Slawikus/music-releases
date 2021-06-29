@@ -88,6 +88,13 @@ class ProfileCurrency(models.Model):
         ]
 
 
+class Label(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, blank=True, null=True)
+    name = models.CharField(max_length=250, null=True, unique=True)
+    logo = models.ImageField(upload_to='media/images/labels', blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+
+
 @receiver(post_save, sender=User)
 def create_or_update_user_profile(sender, instance, created, **kwargs):
     if created:

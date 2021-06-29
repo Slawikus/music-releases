@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.db import IntegrityError
 
 from .forms import CustomUserCreationForm, EditProfileForm
-from .models import Profile, ProfileCurrency
+from .models import Profile, ProfileCurrency, Label
 
 
 # Create your views here.
@@ -50,3 +50,15 @@ class DeleteCurrenciesView(DeleteView):
     model = ProfileCurrency
     template_name = 'delete_currencies.html'
     success_url = reverse_lazy('edit_currencies')
+
+
+class AddLabelView(CreateView):
+    model = Label
+    fields = ['name', 'logo', 'description']
+    template_name = 'label_add.html'
+    success_url = reverse_lazy('label_add')
+
+    def form_valid(self, form):
+        form.instance.profile = self.request.user.profile
+        return super().form_valid(form)
+
