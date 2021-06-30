@@ -23,7 +23,7 @@ class EditProfileView(UpdateView):
         return self.request.user.profile
 
 
-class AddCurrencyView(CreateView):
+class CreateCurrencyView(CreateView):
     model = ProfileCurrency
     fields = ['currency']
     template_name = 'currencies_list.html'
@@ -41,12 +41,11 @@ class AddCurrencyView(CreateView):
             return self.form_invalid(form)
 
     def get_context_data(self, *args, **kwargs):
-        context = super(AddCurrencyView, self).get_context_data(**kwargs)
+        context = super(CreateCurrencyView, self).get_context_data(**kwargs)
         context['currencies_list'] = ProfileCurrency.objects.filter(profile=self.request.user.profile)
         return context
 
 
 class DeleteCurrencyView(DeleteView):
     model = ProfileCurrency
-    template_name = 'currency_delete.html'
     success_url = reverse_lazy('currencies_list')
