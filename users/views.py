@@ -27,7 +27,7 @@ class CreateCurrencyView(CreateView):
     model = ProfileCurrency
     fields = ['currency']
     template_name = 'currencies_list.html'
-    success_url = reverse_lazy('currencies_list')
+    success_url = reverse_lazy('currencies_create')
 
     def get_object(self, queryset=None):
         return self.request.user.profile
@@ -48,4 +48,4 @@ class CreateCurrencyView(CreateView):
 
 class DeleteCurrencyView(DeleteView):
     model = ProfileCurrency
-    success_url = reverse_lazy('currencies_list')
+    success_url = reverse_lazy('currencies_create')
