@@ -1,6 +1,15 @@
 from django.urls import path
 
-from .views import SignUpView, EditProfileView, AddCurrenciesView, DeleteCurrenciesView, AddLabelView, ListLabelsView
+from .views import (
+    SignUpView,
+    EditProfileView,
+    AddCurrenciesView,
+    DeleteCurrenciesView,
+    AddLabelView,
+    ListLabelsView,
+    UpdateLabelView,
+    DeleteLabelView,
+)
 
 urlpatterns = [
     path('signup/', SignUpView.as_view(), name='signup'),
@@ -9,4 +18,6 @@ urlpatterns = [
     path('currencies/edit/<int:pk>', DeleteCurrenciesView.as_view(), name='delete_currencies'),
     path('labels/', ListLabelsView.as_view(), name='labels_list'),
     path('labels/add/', AddLabelView.as_view(), name='label_add'),
+    path('labels/edit/', UpdateLabelView.as_view(), name='label_update'),
+    path('labels/delete/', DeleteLabelView.as_view(), name='label_delete'),
 ]

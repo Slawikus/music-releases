@@ -22,20 +22,29 @@
       <a class="nav-link" href="#">Invitations</a>
     </li>
   </ul>
+  <h5 class="mt-4 mb-4">Set here all the labels you publish releases under</h5>
   {% for label in object_list %}
-    <div class="card mt-2 mb-2">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-1 my-auto">
-            <img class="img-fluid" src="{{ MEDIA_URL }}{{ label.logo }}" alt="logo">
-          </div>
-          <div class="col-9 my-auto">
-            <h5 class="card-title">{{ label.name }}</h5>
-            <p class="card-text">{{ label.description }}</p>
-          </div>
-          <div class="col-2 my-auto">
-            <a href="#" class="card-link">edit</a>
-            <a href="#" class="card-link">remove</a>
+    <div class="row">
+      <div class="col-lg-8 col-12">
+        <div class="card mt-2 mb-2">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-1">
+                {% if label.logo %}
+                  <img class="img-fluid" src="{{ MEDIA_URL }}{{ label.logo }}" alt="logo">
+                {% else %}
+                  <img class="img-fluid" src="https://static.thenounproject.com/png/835836-200.png">
+                {% endif %}
+              </div>
+              <div class="col-9 my-auto">
+                <h5 class="card-title">{{ label.name }}</h5>
+                <p class="card-text">{{ label.description }}</p>
+              </div>
+              <div class="col-2 my-auto">
+                <a href="{% url 'label_update' %}" class="card-link m-0">edit</a>
+                <a href="{% url 'label_delete' %}" class="card-link m-0">remove</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>

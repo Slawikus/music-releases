@@ -90,9 +90,25 @@ class ProfileCurrency(models.Model):
 
 class Label(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, blank=True, null=True)
-    name = models.CharField(max_length=250, null=True, unique=True)
-    logo = models.ImageField(upload_to='images/labels/', blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
+    name = models.CharField(
+        max_length=250,
+        null=True,
+        unique=True,
+        verbose_name='Label name',
+        help_text='Label name as you write on your releases',
+    )
+    logo = models.ImageField(
+        upload_to='images/labels/',
+        blank=True,
+        null=True,
+        verbose_name='Label logo',
+        help_text='For best result - black logo on white or transparent background',
+    )
+    description = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name='Short label description',
+    )
 
 
 @receiver(post_save, sender=User)

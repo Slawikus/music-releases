@@ -29,8 +29,8 @@ class AddCurrenciesView(CreateView):
     template_name = 'edit_currencies.html'
     success_url = reverse_lazy('edit_currencies')
 
-    def get_object(self, queryset=None):
-        return self.request.user.profile
+    # def get_object(self, queryset=None):
+    #     return self.request.user.profile
 
     def form_valid(self, form):
         form.instance.profile = self.request.user.profile
@@ -56,7 +56,7 @@ class AddLabelView(CreateView):
     model = Label
     fields = ['name', 'logo', 'description']
     template_name = 'label_add.html'
-    success_url = reverse_lazy('label_add')
+    success_url = reverse_lazy('labels_list')
 
     def form_valid(self, form):
         form.instance.profile = self.request.user.profile
@@ -69,3 +69,26 @@ class ListLabelsView(ListView):
 
     def get_queryset(self):
         return super().get_queryset().filter(profile=self.request.user.profile)
+
+
+class UpdateLabelView(UpdateView):
+    model = Label
+    template_name = 'label_update.html'
+    fields = ['name', 'logo', 'description']
+    success_url = reverse_lazy('labels_list')
+
+    def get_object(self, queryset=None):
+        if 'pk' not in self.kwargs:
+            return Label.objects.last()
+        return super(UpdateLabelView, self).get_object()
+
+
+class DeleteLabelView(DeleteView):
+    model = Label
+    template_name = 'label_delete.html'
+    success_url = reverse_lazy('labels_list')
+
+    def get_object(self, queryset=None):
+        if 'pk' not in self.kwargs:
+            return Label.objects.last()
+        return super(DeleteLabelView, self).get_object()
