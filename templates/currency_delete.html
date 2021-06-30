@@ -1,0 +1,10 @@
+{% extends '_base.html' %}
+
+{% block content %}
+    <h1 class="mt-4">Delete currency</h1>
+    <form action="" method="post">
+      {% csrf_token %}
+      <p>Are you sure you want to delete?</p>
+      <input type="submit" class="btn btn-danger" value="Confirm" />
+    </form>
+{% endblock content %}

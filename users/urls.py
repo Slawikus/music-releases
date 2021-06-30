@@ -1,10 +1,10 @@
 from django.urls import path
 
-from .views import SignUpView, EditProfileView, AddCurrenciesView, DeleteCurrenciesView
+from .views import SignUpView, EditProfileView, AddCurrencyView, DeleteCurrencyView
 
 urlpatterns = [
     path('signup/', SignUpView.as_view(), name='signup'),
-    path('profile/edit/', EditProfileView.as_view(), name='edit_profile'),
-    path('currencies/edit/', AddCurrenciesView.as_view(), name='edit_currencies'),
-    path('currencies/edit/<int:pk>', DeleteCurrenciesView.as_view(), name='delete_currencies'),
+    path('profile/edit/', EditProfileView.as_view(), name='profile_edit'),
+    path('currencies/edit/', AddCurrencyView.as_view(), name='currencies_list'),
+    path('currencies/edit/<int:pk>', DeleteCurrencyView.as_view(), name='currency_delete'),
 ]

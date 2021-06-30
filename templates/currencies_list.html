@@ -7,10 +7,10 @@
 {% block content %}
   <ul class="nav nav-tabs mt-3 mb-4">
     <li class="nav-item">
-      <a class="nav-link" aria-current="page" href="{% url 'edit_profile' %}">Profile</a>
+      <a class="nav-link" aria-current="page" href="{% url 'profile_edit' %}">Profile</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link active" href="{% url 'edit_currencies' %}">Currencies</a>
+      <a class="nav-link active" href="{% url 'currencies_list' %}">Currencies</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="#">Labels</a>
@@ -29,7 +29,7 @@
         <p>{{ currency }}</p>
       </div>
       <div class="col-1">
-        <form method="POST" action="{% url "delete_currencies" currency.pk %}">
+        <form method="POST" action="{% url "currency_delete" currency.pk %}">
           {% csrf_token %}
           <input type="submit" class="btn btn-secondary btn-sm" value="remove">
         </form>
@@ -49,5 +49,3 @@
     </div>
   </div>
 {% endblock content %}
-
-

@@ -67,16 +67,12 @@ class ProfileCurrency(models.Model):
     currency = models.CharField(
         max_length=3,
         choices=CURRENCY_CHOICES,
-        null=True,
-        blank=True,
     )
 
     profile = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE,
         related_name='currencies',
-        blank=True,
-        null=True
     )
 
     def __str__(self):
@@ -84,7 +80,10 @@ class ProfileCurrency(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['currency', 'profile'], name='profile_currency'),
+            models.UniqueConstraint(
+                fields=['currency', 'profile'],
+                name='unique_currency_per_profile'
+            ),
         ]
 
 

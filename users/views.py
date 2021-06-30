@@ -16,18 +16,18 @@ class SignUpView(CreateView):
 class EditProfileView(UpdateView):
     model = Profile
     form_class = EditProfileForm
-    template_name = 'edit_profile.html'
-    success_url = reverse_lazy('edit_profile')
+    template_name = 'profile_edit.html'
+    success_url = reverse_lazy('profile_edit')
 
     def get_object(self, queryset=None):
         return self.request.user.profile
 
 
-class AddCurrenciesView(CreateView):
+class AddCurrencyView(CreateView):
     model = ProfileCurrency
     fields = ['currency']
-    template_name = 'edit_currencies.html'
-    success_url = reverse_lazy('edit_currencies')
+    template_name = 'currencies_list.html'
+    success_url = reverse_lazy('currencies_list')
 
     def get_object(self, queryset=None):
         return self.request.user.profile
@@ -41,12 +41,12 @@ class AddCurrenciesView(CreateView):
             return self.form_invalid(form)
 
     def get_context_data(self, *args, **kwargs):
-        context = super(AddCurrenciesView, self).get_context_data(**kwargs)
+        context = super(AddCurrencyView, self).get_context_data(**kwargs)
         context['currencies_list'] = ProfileCurrency.objects.filter(profile=self.request.user.profile)
         return context
 
 
-class DeleteCurrenciesView(DeleteView):
+class DeleteCurrencyView(DeleteView):
     model = ProfileCurrency
-    template_name = 'delete_currencies.html'
-    success_url = reverse_lazy('edit_currencies')
+    template_name = 'currency_delete.html'
+    success_url = reverse_lazy('currencies_list')
