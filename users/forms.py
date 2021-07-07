@@ -41,7 +41,7 @@ class CreateCurrencyForm(ModelForm):
 
     @staticmethod
     def get_currency_choices(profile):
-        profile_currencies = list(ProfileCurrency.objects.filter(profile=profile).values_list('currency', flat=True))
+        profile_currencies = ProfileCurrency.objects.filter(profile=profile).values_list('currency', flat=True)
         currency_choices = [choice for choice in CURRENCY_CHOICES
                             if choice[0] not in profile_currencies]
 
