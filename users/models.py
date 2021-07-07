@@ -3,7 +3,8 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django_countries.fields import CountryField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-import pycountry
+
+from configuration.settings import CURRENCY_CHOICES
 
 
 # Create your models here.
@@ -58,11 +59,6 @@ class Profile(models.Model):
 
 
 class ProfileCurrency(models.Model):
-    CURRENCY_CHOICES = [
-        (currency.alpha_3, f'{currency.alpha_3} - {currency.name}')
-        for currency in pycountry.currencies
-        if currency.alpha_3 not in ['XXX', 'XTS', 'XAG', 'XAU', 'XBA', 'XBB', 'XBC', 'XBD', 'XDR', 'XPD', 'XPT', 'XSU', 'XUA']
-    ]
 
     currency = models.CharField(
         max_length=3,

@@ -1,8 +1,10 @@
-from django.views.generic import CreateView, UpdateView, DeleteView
+from django.contrib import messages
+from django.views.generic import CreateView, UpdateView, DeleteView, ListView
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.db import IntegrityError
 
-from .forms import CustomUserCreationForm, EditProfileForm
+from .forms import CustomUserCreationForm, EditProfileForm, CreateCurrencyForm
 from .models import Profile, ProfileCurrency
 
 
@@ -26,26 +28,30 @@ class EditProfileView(UpdateView):
 class CreateCurrencyView(CreateView):
     model = ProfileCurrency
     fields = ['currency']
-    template_name = 'currencies_list.html'
-    success_url = reverse_lazy('currencies_create')
-
-    def get_object(self, queryset=None):
-        return self.request.user.profile
+    success_url = reverse_lazy('currencies_list')
 
     def form_valid(self, form):
         form.instance.profile = self.request.user.profile
         try:
             return super().form_valid(form)
         except IntegrityError:
-            form.add_error('currency', 'You have already chosen that currency')
-            return self.form_invalid(form)
+            messages.error(self.request, 'You have already chosen that currency')
+            return redirect('currencies_list')
 
-    def get_context_data(self, *args, **kwargs):
-        context = super(CreateCurrencyView, self).get_context_data(**kwargs)
-        context['currencies_list'] = ProfileCurrency.objects.filter(profile=self.request.user.profile)
+
+class ListCurrenciesView(ListView):
+    model = ProfileCurrency
+    template_name = 'currencies_list.html'
+
+    def get_queryset(self):
+        return super().get_queryset().filter(profile=self.request.user.profile)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = CreateCurrencyForm(self.request.user.profile)
         return context
 
 
 class DeleteCurrencyView(DeleteView):
     model = ProfileCurrency
-    success_url = reverse_lazy('currencies_create')
+    success_url = reverse_lazy('currencies_list')
