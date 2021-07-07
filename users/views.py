@@ -30,6 +30,9 @@ class CreateCurrencyView(CreateView):
     fields = ['currency']
     success_url = reverse_lazy('currencies_list')
 
+    def get_object(self, queryset=None):
+        return self.request.user.profile
+
     def form_valid(self, form):
         form.instance.profile = self.request.user.profile
         try:
