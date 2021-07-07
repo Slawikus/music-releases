@@ -46,6 +46,13 @@
   </div>
 </nav>
 <div class="container">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-danger mt-2" role="alert">
+        {{ message|safe }}
+      </div>
+    {% endfor %}
+  {% endif %}
   {% block content %}
   {% endblock content %}
 </div>

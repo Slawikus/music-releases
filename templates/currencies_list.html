@@ -43,13 +43,6 @@
       {% endif %}
       <form method="post" action="{% url "currency_create" %}" autocomplete="off">
         {% csrf_token %}
-        {% if messages %}
-          {% for message in messages %}
-            <div class="alert alert-danger" role="alert">
-              {{ message|safe }}
-            </div>
-          {% endfor %}
-        {% endif %}
         {{ form|crispy }}
         <button type="submit" class="btn btn-primary">Add currency</button>
       </form>

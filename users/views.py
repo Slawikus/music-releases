@@ -25,7 +25,7 @@ class EditProfileView(UpdateView):
         return self.request.user.profile
 
 
-class CreateCurrencyView(CreateView):
+class CreateProfileCurrencyView(CreateView):
     model = ProfileCurrency
     fields = ['currency']
     success_url = reverse_lazy('currencies_list')
@@ -42,7 +42,7 @@ class CreateCurrencyView(CreateView):
             return redirect('currencies_list')
 
 
-class ListCurrenciesView(ListView):
+class ListProfileCurrencyView(ListView):
     model = ProfileCurrency
     template_name = 'currencies_list.html'
 
@@ -55,6 +55,6 @@ class ListCurrenciesView(ListView):
         return context
 
 
-class DeleteCurrencyView(DeleteView):
+class DeleteProfileCurrencyView(DeleteView):
     model = ProfileCurrency
     success_url = reverse_lazy('currencies_list')
