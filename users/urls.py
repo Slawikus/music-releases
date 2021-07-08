@@ -3,21 +3,24 @@ from django.urls import path
 from .views import (
     SignUpView,
     EditProfileView,
-    AddCurrenciesView,
-    DeleteCurrenciesView,
-    AddLabelView,
-    ListLabelsView,
+    CreateProfileCurrencyView,
+    DeleteProfileCurrencyView,
+    ListProfileCurrencyView,
+    CreateLabelView,
+    ListLabelView,
     UpdateLabelView,
     DeleteLabelView,
 )
 
+
 urlpatterns = [
     path('signup/', SignUpView.as_view(), name='signup'),
-    path('profile/edit/', EditProfileView.as_view(), name='edit_profile'),
-    path('currencies/edit/', AddCurrenciesView.as_view(), name='edit_currencies'),
-    path('currencies/edit/<int:pk>', DeleteCurrenciesView.as_view(), name='delete_currencies'),
-    path('labels/', ListLabelsView.as_view(), name='labels_list'),
-    path('labels/add/', AddLabelView.as_view(), name='label_add'),
-    path('labels/edit/', UpdateLabelView.as_view(), name='label_update'),
-    path('labels/delete/', DeleteLabelView.as_view(), name='label_delete'),
+    path('profile/edit/', EditProfileView.as_view(), name='profile_edit'),
+    path('currencies/', ListProfileCurrencyView.as_view(), name='currencies_list'),
+    path('currencies/new/', CreateProfileCurrencyView.as_view(), name='currency_create'),
+    path('currencies/<int:pk>/delete/', DeleteProfileCurrencyView.as_view(), name='currency_delete'),
+    path('labels/', ListLabelView.as_view(), name='labels_list'),
+    path('labels/add/', CreateLabelView.as_view(), name='label_add'),
+    path('labels/<int:pk>/edit/', UpdateLabelView.as_view(), name='label_update'),
+    path('labels/<int:pk>/delete/', DeleteLabelView.as_view(), name='label_delete'),
 ]

@@ -5,6 +5,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 import pycountry
 
+from configuration.settings import CURRENCY_CHOICES
+
 
 # Create your models here.
 class UserManager(BaseUserManager):
@@ -58,25 +60,16 @@ class Profile(models.Model):
 
 
 class ProfileCurrency(models.Model):
-    CURRENCY_CHOICES = [
-        (currency.alpha_3, f'{currency.alpha_3} - {currency.name}')
-        for currency in pycountry.currencies
-        if currency.alpha_3 not in ['XXX', 'XTS', 'XAG', 'XAU', 'XBA', 'XBB', 'XBC', 'XBD', 'XDR', 'XPD', 'XPT', 'XSU', 'XUA']
-    ]
 
     currency = models.CharField(
         max_length=3,
         choices=CURRENCY_CHOICES,
-        null=True,
-        blank=True,
     )
 
     profile = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE,
         related_name='currencies',
-        blank=True,
-        null=True
     )
 
     def __str__(self):
@@ -84,16 +77,17 @@ class ProfileCurrency(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['currency', 'profile'], name='profile_currency'),
+            models.UniqueConstraint(
+                fields=['currency', 'profile'],
+                name='unique_currency_per_profile'
+            ),
         ]
 
 
 class Label(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, blank=True, null=True)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     name = models.CharField(
         max_length=250,
-        null=True,
-        unique=True,
         verbose_name='Label name',
         help_text='Label name as you write on your releases',
     )
@@ -109,6 +103,14 @@ class Label(models.Model):
         null=True,
         verbose_name='Short label description',
     )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['name', 'profile'],
+                name='unique_label_per_profile'
+            ),
+        ]
 
 
 @receiver(post_save, sender=User)

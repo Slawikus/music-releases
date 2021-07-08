@@ -7,10 +7,10 @@
 {% block content %}
   <ul class="nav nav-tabs mt-3 mb-4">
     <li class="nav-item">
-      <a class="nav-link" aria-current="page" href="{% url 'edit_profile' %}">Profile</a>
+      <a class="nav-link" aria-current="page" href="{% url 'profile_edit' %}">Profile</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="{% url 'edit_currencies' %}">Currencies</a>
+      <a class="nav-link" href="{% url 'currencies_list' %}">Currencies</a>
     </li>
     <li class="nav-item">
       <a class="nav-link active" href="{% url 'labels_list' %}">Labels</a>
@@ -41,8 +41,8 @@
                 <p class="card-text">{{ label.description }}</p>
               </div>
               <div class="col-2 my-auto">
-                <a href="{% url 'label_update' %}" class="card-link m-0">edit</a>
-                <a href="{% url 'label_delete' %}" class="card-link m-0">remove</a>
+                <a href="{% url 'label_update' label.pk %}" class="card-link m-0">edit</a>
+                <a href="{% url 'label_delete' label.pk %}" class="card-link m-0">remove</a>
               </div>
             </div>
           </div>

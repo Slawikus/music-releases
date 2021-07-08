@@ -1,8 +1,10 @@
+from django.contrib import messages
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.db import IntegrityError
 
-from .forms import CustomUserCreationForm, EditProfileForm
+from .forms import CustomUserCreationForm, EditProfileForm, CreateCurrencyForm, LabelForm
 from .models import Profile, ProfileCurrency, Label
 
 
@@ -16,54 +18,64 @@ class SignUpView(CreateView):
 class EditProfileView(UpdateView):
     model = Profile
     form_class = EditProfileForm
-    template_name = 'edit_profile.html'
-    success_url = reverse_lazy('edit_profile')
+    template_name = 'profile_edit.html'
+    success_url = reverse_lazy('profile_edit')
 
     def get_object(self, queryset=None):
         return self.request.user.profile
 
 
-class AddCurrenciesView(CreateView):
+class CreateProfileCurrencyView(CreateView):
     model = ProfileCurrency
     fields = ['currency']
-    template_name = 'edit_currencies.html'
-    success_url = reverse_lazy('edit_currencies')
+    success_url = reverse_lazy('currencies_list')
 
-    # def get_object(self, queryset=None):
-    #     return self.request.user.profile
+    def get_object(self, queryset=None):
+        return self.request.user.profile
 
     def form_valid(self, form):
         form.instance.profile = self.request.user.profile
         try:
             return super().form_valid(form)
         except IntegrityError:
-            form.add_error('currency', 'You have already chosen that currency')
-            return self.form_invalid(form)
+            messages.error(self.request, 'You have already chosen that currency')
+            return redirect('currencies_list')
 
-    def get_context_data(self, *args, **kwargs):
-        context = super(AddCurrenciesView, self).get_context_data(**kwargs)
-        context['currencies_list'] = ProfileCurrency.objects.filter(profile=self.request.user.profile)
+
+class ListProfileCurrencyView(ListView):
+    model = ProfileCurrency
+    template_name = 'currencies_list.html'
+
+    def get_queryset(self):
+        return super().get_queryset().filter(profile=self.request.user.profile)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = CreateCurrencyForm(self.request.user.profile)
         return context
 
 
-class DeleteCurrenciesView(DeleteView):
+class DeleteProfileCurrencyView(DeleteView):
     model = ProfileCurrency
-    template_name = 'delete_currencies.html'
-    success_url = reverse_lazy('edit_currencies')
+    success_url = reverse_lazy('currencies_list')
 
 
-class AddLabelView(CreateView):
+class CreateLabelView(CreateView):
     model = Label
-    fields = ['name', 'logo', 'description']
+    form_class = LabelForm
     template_name = 'label_add.html'
     success_url = reverse_lazy('labels_list')
 
     def form_valid(self, form):
         form.instance.profile = self.request.user.profile
-        return super().form_valid(form)
+        try:
+            return super().form_valid(form)
+        except IntegrityError:
+            form.add_error('name', "You already have this label")
+            return super().form_invalid(form)
 
 
-class ListLabelsView(ListView):
+class ListLabelView(ListView):
     model = Label
     template_name = 'labels_list.html'
 
@@ -74,21 +86,19 @@ class ListLabelsView(ListView):
 class UpdateLabelView(UpdateView):
     model = Label
     template_name = 'label_update.html'
-    fields = ['name', 'logo', 'description']
+    form_class = LabelForm
     success_url = reverse_lazy('labels_list')
 
-    def get_object(self, queryset=None):
-        if 'pk' not in self.kwargs:
-            return Label.objects.last()
-        return super(UpdateLabelView, self).get_object()
+    def form_valid(self, form):
+        form.instance.profile = self.request.user.profile
+        try:
+            return super().form_valid(form)
+        except IntegrityError:
+            form.add_error('name', "You already have this label")
+            return super().form_invalid(form)
 
 
 class DeleteLabelView(DeleteView):
     model = Label
     template_name = 'label_delete.html'
     success_url = reverse_lazy('labels_list')
-
-    def get_object(self, queryset=None):
-        if 'pk' not in self.kwargs:
-            return Label.objects.last()
-        return super(DeleteLabelView, self).get_object()
