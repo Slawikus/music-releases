@@ -1,29 +1,14 @@
 {% extends '_base.html' %}
 
+{% load static %}
 {% load crispy_forms_tags %}
 
 {% block title %}Labels{% endblock title %}
 
 {% block content %}
-  <ul class="nav nav-tabs mt-3 mb-4">
-    <li class="nav-item">
-      <a class="nav-link" aria-current="page" href="{% url 'profile_edit' %}">Profile</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="{% url 'currencies_list' %}">Currencies</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link active" href="{% url 'labels_list' %}">Labels</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Notifications</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Invitations</a>
-    </li>
-  </ul>
+  {% include 'profile_navbar.html' %}
   <h5 class="mt-4 mb-4">Set here all the labels you publish releases under</h5>
-  {% for label in object_list %}
+  {% for label in labels %}
     <div class="row">
       <div class="col-lg-8 col-12">
         <div class="card mt-2 mb-2">
@@ -31,9 +16,9 @@
             <div class="row">
               <div class="col-1">
                 {% if label.logo %}
-                  <img class="img-fluid" src="{{ MEDIA_URL }}{{ label.logo }}" alt="logo">
+                  <img class="img-fluid" src="{{ label.logo.url }}" alt="logo">
                 {% else %}
-                  <img class="img-fluid" src="https://static.thenounproject.com/png/835836-200.png">
+                  <img class="img-fluid" src="{% static 'images/missing_logo.png' %}">
                 {% endif %}
               </div>
               <div class="col-9 my-auto">

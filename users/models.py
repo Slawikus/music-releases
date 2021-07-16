@@ -3,7 +3,6 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django_countries.fields import CountryField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-import pycountry
 
 from configuration.settings import CURRENCY_CHOICES
 
@@ -60,7 +59,6 @@ class Profile(models.Model):
 
 
 class ProfileCurrency(models.Model):
-
     currency = models.CharField(
         max_length=3,
         choices=CURRENCY_CHOICES,
@@ -85,7 +83,11 @@ class ProfileCurrency(models.Model):
 
 
 class Label(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    profile = models.ForeignKey(
+        Profile,
+        on_delete=models.CASCADE,
+        related_name='label'
+    )
     name = models.CharField(
         max_length=250,
         verbose_name='Label name',

@@ -77,6 +77,7 @@ class CreateLabelView(CreateView):
 
 class ListLabelView(ListView):
     model = Label
+    context_object_name = 'labels'
     template_name = 'labels_list.html'
 
     def get_queryset(self):
@@ -85,12 +86,12 @@ class ListLabelView(ListView):
 
 class UpdateLabelView(UpdateView):
     model = Label
+    context_object_name = 'labels'
     template_name = 'label_update.html'
     form_class = LabelForm
     success_url = reverse_lazy('labels_list')
 
     def form_valid(self, form):
-        form.instance.profile = self.request.user.profile
         try:
             return super().form_valid(form)
         except IntegrityError:
@@ -100,5 +101,6 @@ class UpdateLabelView(UpdateView):
 
 class DeleteLabelView(DeleteView):
     model = Label
+    context_object_name = 'labels'
     template_name = 'label_delete.html'
     success_url = reverse_lazy('labels_list')

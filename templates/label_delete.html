@@ -3,10 +3,11 @@
 {% block title %}Delete Label{% endblock title %}
 
 {% block content %}
+  {% include 'profile_navbar.html' %}
   <h1 class="mt-3">Delete label</h1>
   <form action="" method="post">
     {% csrf_token %}
-    <p>Are you sure you want to delete the label <b>{{ object.name }}</b>?</p>
+    <p>Are you sure you want to delete the label <b>{{ labels.name }}</b>?</p>
     <input type="submit" class="btn btn-danger" value="Confirm"/>
   </form>
 {% endblock content %}

@@ -5,30 +5,14 @@
 {% block title %}Edit Label{% endblock title %}
 
 {% block content %}
-  <ul class="nav nav-tabs mt-3 mb-4">
-    <li class="nav-item">
-      <a class="nav-link" aria-current="page" href="{% url 'profile_edit' %}">Profile</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="{% url 'currencies_list' %}">Currencies</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link active" href="{% url 'labels_list' %}">Labels</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Notifications</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Invitations</a>
-    </li>
-  </ul>
+  {% include 'profile_navbar.html' %}
   <div class="row mt-2 mb-2">
     <div class="col-4">
-      <h5 class="mb-4">{{ object.name }}</h5>
+      <h5 class="mb-4">{{ labels.name }}</h5>
       <form method="post" autocomplete="off" enctype='multipart/form-data'>
         {% csrf_token %}
         {{ form|crispy }}
-        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="submit" class="btn btn-primary">Update</button>
         <a class="btn btn-outline-secondary" href="{% url 'labels_list' %}" role="button">Cancel</a>
       </form>
     </div>
