@@ -1,0 +1,39 @@
+{% extends '_base.html' %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Labels{% endblock title %}
+
+{% block content %}
+  {% include 'profile_navbar.html' %}
+  <h5 class="mt-4 mb-4">Set here all the labels you publish releases under</h5>
+  {% for label in labels %}
+    <div class="row">
+      <div class="col-lg-8 col-12">
+        <div class="card mt-2 mb-2">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-1">
+                {% if label.logo %}
+                  <img class="img-fluid" src="{{ label.logo.url }}" alt="logo">
+                {% else %}
+                  <img class="img-fluid" src="{% static 'images/missing_logo.png' %}">
+                {% endif %}
+              </div>
+              <div class="col-9 my-auto">
+                <h5 class="card-title">{{ label.name }}</h5>
+                <p class="card-text">{{ label.description }}</p>
+              </div>
+              <div class="col-2 my-auto">
+                <a href="{% url 'label_update' label.pk %}" class="card-link m-0">edit</a>
+                <a href="{% url 'label_delete' label.pk %}" class="card-link m-0">remove</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+  <a href="{% url 'label_add' %}" class="btn btn-primary mt-2">Add label</a>
+{% endblock content %}

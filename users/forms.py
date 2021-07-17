@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.forms import ModelForm
 
 from configuration.settings import CURRENCY_CHOICES
-from .models import User, Profile, ProfileCurrency
+from .models import User, Profile, ProfileCurrency, Label
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -15,14 +15,12 @@ class CustomUserCreationForm(UserCreationForm):
 
 
 class CustomUserChangeForm(UserChangeForm):
-
     class Meta(UserChangeForm):
         model = User
         fields = ['email', 'password']
 
 
 class EditProfileForm(ModelForm):
-
     class Meta:
         model = Profile
         fields = ['label_name', 'country', 'address']
@@ -46,3 +44,14 @@ class CreateCurrencyForm(ModelForm):
                             if choice[0] not in profile_currencies]
 
         return currency_choices
+
+
+class LabelForm(ModelForm):
+    class Meta:
+        model = Label
+        fields = ['name', 'logo', 'description']
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        super(LabelForm, self).__init__(*args, **kwargs)
+        self.fields['logo'].widget.attrs.update({'class': 'form-control'})

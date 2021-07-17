@@ -5,23 +5,7 @@
 {% block title %}Profile{% endblock title %}
 
 {% block content %}
-  <ul class="nav nav-tabs mt-3 mb-4">
-    <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href="{% url 'profile_edit' %}">Profile</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="{% url 'currencies_list' %}">Currencies</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Labels</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Notifications</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Invitations</a>
-    </li>
-  </ul>
+  {% include 'profile_navbar.html' %}
   <div class="row mt-2 mb-2">
     <div class="col-4">
       <form method="post" autocomplete="off">

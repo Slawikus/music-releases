@@ -59,7 +59,6 @@ class Profile(models.Model):
 
 
 class ProfileCurrency(models.Model):
-
     currency = models.CharField(
         max_length=3,
         choices=CURRENCY_CHOICES,
@@ -79,6 +78,39 @@ class ProfileCurrency(models.Model):
             models.UniqueConstraint(
                 fields=['currency', 'profile'],
                 name='unique_currency_per_profile'
+            ),
+        ]
+
+
+class Label(models.Model):
+    profile = models.ForeignKey(
+        Profile,
+        on_delete=models.CASCADE,
+        related_name='label'
+    )
+    name = models.CharField(
+        max_length=250,
+        verbose_name='Label name',
+        help_text='Label name as you write on your releases',
+    )
+    logo = models.ImageField(
+        upload_to='images/labels/',
+        blank=True,
+        null=True,
+        verbose_name='Label logo',
+        help_text='For best result - black logo on white or transparent background',
+    )
+    description = models.TextField(
+        blank=True,
+        null=True,
+        verbose_name='Short label description',
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['name', 'profile'],
+                name='unique_label_per_profile'
             ),
         ]
 

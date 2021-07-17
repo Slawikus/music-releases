@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import User, Profile, ProfileCurrency
+from .models import User, Profile, ProfileCurrency, Label
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 
 
@@ -44,3 +44,4 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(ProfileCurrency)
+admin.site.register(Label)

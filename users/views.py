@@ -4,8 +4,8 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.db import IntegrityError
 
-from .forms import CustomUserCreationForm, EditProfileForm, CreateCurrencyForm
-from .models import Profile, ProfileCurrency
+from .forms import CustomUserCreationForm, EditProfileForm, CreateCurrencyForm, LabelForm
+from .models import Profile, ProfileCurrency, Label
 
 
 # Create your views here.
@@ -58,3 +58,49 @@ class ListProfileCurrencyView(ListView):
 class DeleteProfileCurrencyView(DeleteView):
     model = ProfileCurrency
     success_url = reverse_lazy('currencies_list')
+
+
+class CreateLabelView(CreateView):
+    model = Label
+    form_class = LabelForm
+    template_name = 'label_add.html'
+    success_url = reverse_lazy('labels_list')
+
+    def form_valid(self, form):
+        form.instance.profile = self.request.user.profile
+        try:
+            return super().form_valid(form)
+        except IntegrityError:
+            form.add_error('name', "You already have this label")
+            return super().form_invalid(form)
+
+
+class ListLabelView(ListView):
+    model = Label
+    context_object_name = 'labels'
+    template_name = 'labels_list.html'
+
+    def get_queryset(self):
+        return super().get_queryset().filter(profile=self.request.user.profile)
+
+
+class UpdateLabelView(UpdateView):
+    model = Label
+    context_object_name = 'label'
+    template_name = 'label_update.html'
+    form_class = LabelForm
+    success_url = reverse_lazy('labels_list')
+
+    def form_valid(self, form):
+        try:
+            return super().form_valid(form)
+        except IntegrityError:
+            form.add_error('name', "You already have this label")
+            return super().form_invalid(form)
+
+
+class DeleteLabelView(DeleteView):
+    model = Label
+    context_object_name = 'label'
+    template_name = 'label_delete.html'
+    success_url = reverse_lazy('labels_list')
