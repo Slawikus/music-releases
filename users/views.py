@@ -86,7 +86,7 @@ class ListLabelView(ListView):
 
 class UpdateLabelView(UpdateView):
     model = Label
-    context_object_name = 'labels'
+    context_object_name = 'label'
     template_name = 'label_update.html'
     form_class = LabelForm
     success_url = reverse_lazy('labels_list')
@@ -101,6 +101,6 @@ class UpdateLabelView(UpdateView):
 
 class DeleteLabelView(DeleteView):
     model = Label
-    context_object_name = 'labels'
+    context_object_name = 'label'
     template_name = 'label_delete.html'
     success_url = reverse_lazy('labels_list')

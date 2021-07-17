@@ -8,7 +8,7 @@
   {% include 'profile_navbar.html' %}
   <div class="row mt-2 mb-2">
     <div class="col-4">
-      <h5 class="mb-4">{{ labels.name }}</h5>
+      <h5 class="mb-4">{{ label.name }}</h5>
       <form method="post" autocomplete="off" enctype='multipart/form-data'>
         {% csrf_token %}
         {{ form|crispy }}
