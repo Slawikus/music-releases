@@ -3,9 +3,10 @@ from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.db import IntegrityError
+from django.shortcuts import render
 
-from .forms import CustomUserCreationForm, EditProfileForm, CreateCurrencyForm, LabelForm
-from .models import Profile, ProfileCurrency, Label
+from .forms import CustomUserCreationForm, EditProfileForm, CreateCurrencyForm, LabelForm, ReleaseForm
+from .models import Profile, ProfileCurrency, Label, Release
 
 
 # Create your views here.
@@ -104,3 +105,19 @@ class DeleteLabelView(DeleteView):
     context_object_name = 'label'
     template_name = 'label_delete.html'
     success_url = reverse_lazy('labels_list')
+
+
+class CreateReleaseView(CreateView):
+    model = Release
+    form_class = ReleaseForm
+    template_name = 'release_add.html'
+    success_url = '/'
+
+class ReleaseListView(ListView):
+
+    model = Release
+    paginate_by = 10
+    template_name = "all_releases.html"
+
+    def get_context_data(self, **kwargs):
+        return super().get_context_data(**kwargs)

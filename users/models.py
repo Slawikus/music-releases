@@ -115,18 +115,28 @@ class Label(models.Model):
             ),
         ]
 
+    def __str__(self):
+        return f"Label: {self.name}"
+
 class Style(models.Model):
 
     name = models.CharField(
         max_length=250,
         verbose_name='base style'
     )
+    def __str__(self):
+        return f"Style: {self.name}"
 
 class Release(models.Model):
 
     band_name = models.CharField(
         max_length=250,
         verbose_name='band'
+    )
+    name = models.CharField(
+        max_length=250,
+        verbose_name='music_name',
+        default="ID"    
     )
     country = CountryField(
         blank=True,
@@ -159,6 +169,9 @@ class Release(models.Model):
         verbose_name="sample music",
         upload_to='music/'
     )
+
+    def __str__(self):
+        return f"Release: {self.name}"
 
 
 

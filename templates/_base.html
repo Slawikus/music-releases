@@ -8,9 +8,17 @@
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+  
   <title>{% block title %}Music Releases App{% endblock title %}</title>
 </head>
 <body>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+    *
+    {
+      font-family: 'Bebas Neue', cursive;
+    }
+  </style>
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
   <div class="container-fluid">
     <a href="{% url 'home' %}" class="navbar-brand">Music Releases</a>
@@ -21,10 +29,13 @@
             <a class="nav-link" aria-current="page" href="#">Dashboard</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="#">All Releases</a>
+            <a class="nav-link" aria-current="page" href="{% url 'all_releases' %}">All Releases</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="#">My releases</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{% url 'release_add' %}">add release</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="{% url 'profile_edit' %}">Profile</a>

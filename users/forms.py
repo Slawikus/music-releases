@@ -3,8 +3,9 @@ from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.forms import ModelForm
 
 from configuration.settings import CURRENCY_CHOICES
-from .models import User, Profile, ProfileCurrency, Label
+from .models import User, Profile, ProfileCurrency, Label, Release
 
+from django.forms.widgets import DateInput
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -55,3 +56,14 @@ class LabelForm(ModelForm):
         self.request = kwargs.pop('request', None)
         super(LabelForm, self).__init__(*args, **kwargs)
         self.fields['logo'].widget.attrs.update({'class': 'form-control'})
+
+class ReleaseForm(ModelForm):
+
+    class Meta:
+        fields = ("band_name", "name", "country", "album", "date", "label", "style", "image", "sample")
+        model = Release
+
+    def __init__(self, *args, **kwargs):
+        super(ReleaseForm, self).__init__(*args, **kwargs)
+
+        self.fields['date'].widget = DateInput(attrs={"input_type": "date"})

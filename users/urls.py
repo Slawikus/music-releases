@@ -10,6 +10,8 @@ from .views import (
     ListLabelView,
     UpdateLabelView,
     DeleteLabelView,
+    CreateReleaseView,
+    ReleaseListView
 )
 
 urlpatterns = [
@@ -22,4 +24,6 @@ urlpatterns = [
     path('labels/new/', CreateLabelView.as_view(), name='label_add'),
     path('labels/<int:pk>/edit/', UpdateLabelView.as_view(), name='label_update'),
     path('labels/<int:pk>/delete/', DeleteLabelView.as_view(), name='label_delete'),
+    path('release/new/', CreateReleaseView.as_view(), name='release_add'),
+    path("releases/all/", ReleaseListView.as_view(), name="all_releases")
 ]
