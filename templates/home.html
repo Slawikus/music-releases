@@ -9,4 +9,7 @@
       This is an app for music releases.
     </p>
   </div>
+  {% if user.is_authenticated %}
+    <a class="btn btn-primary mt-2" href="{% url 'release_add' %}">New release</a>
+  {% endif %}
 {% endblock content %}

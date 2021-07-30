@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'pycountry',
 
     'users.apps.UsersConfig',
+    'releases.apps.ReleasesConfig',
 ]
 
 MIDDLEWARE = [
