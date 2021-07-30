@@ -41,7 +41,6 @@ class BaseRelease(ListView):
     template_name = "release_list.html"
     model = Release
 
-
 class AllReleaseView(BaseRelease):
 
     def get_queryset(self):
