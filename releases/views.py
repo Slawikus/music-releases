@@ -21,3 +21,8 @@ class CreateReleaseView(LoginRequiredMixin, CreateView):
         kwargs = super().get_form_kwargs()
         kwargs['profile'] = self.request.user.profile
         return kwargs
+
+class ListReleaseView(ListView):
+
+    template_name = "release_list.html"
+    model = Release

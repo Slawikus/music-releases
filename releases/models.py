@@ -84,3 +84,6 @@ class Release(models.Model):
         blank=True,
         null=True,
     )
+
+    def divide_media_format(self):
+        return " | ".join(self.media_format_details.split(", "))
