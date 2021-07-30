@@ -11,19 +11,7 @@ class DateInput(forms.DateInput):
 class CreateReleaseForm(ModelForm):
     class Meta:
         model = Release
-        fields = [
-            'band_name',
-            'country',
-            'album_title',
-            'release_date',
-            'label',
-            'base_style',
-            'cover_image',
-            'format',
-            'sample',
-            'media_format_details',
-            'limited_edition',
-        ]
+        exclude = ['profile']
         widgets = {
             'release_date': DateInput(),
             'format': forms.RadioSelect,

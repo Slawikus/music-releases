@@ -6,7 +6,6 @@ from django_countries.fields import CountryField
 from users.models import Profile, Label
 
 
-# Create your models here.
 def validate_file_size(value):
     filesize = value.size
 
@@ -43,29 +42,31 @@ class Release(models.Model):
         on_delete=models.CASCADE,
         related_name='release',
     )
-    STYLES = [
-            ('black_Metal', 'Black Metal'),
-            ('death_Metal', 'Death Metal'),
-            ('thrash_Metal', 'Thrash Metal'),
-        ]
+
+    class BaseStyle(models.TextChoices):
+        BLACK_METAL = 'BM', 'Black Metal'
+        DEATH_METAL = 'DM', 'Death Metal'
+        TRASH_METAL = 'TM', 'Thrash Metal'
+
     base_style = models.CharField(
         max_length=250,
-        choices=STYLES,
+        choices=BaseStyle.choices,
     )
     cover_image = models.ImageField(
         upload_to='images/covers/',
         verbose_name='Front cover image',
         help_text='Select image with minimum size of 800x800 pixel'
     )
-    FORMATS = [
-            ('CD', 'CD'),
-            ('Vinyl', 'Vinyl'),
-            ('Tape', 'Tape'),
-            ('DVD', 'DVD'),
-        ]
+
+    class Formats(models.TextChoices):
+        CD = 'CD', 'CD'
+        VINYL = 'Vinyl', 'Vinyl'
+        TAPE = 'Tape', 'Tape'
+        DVD = 'DVD', 'DVD'
+
     format = models.CharField(
         max_length=5,
-        choices=FORMATS,
+        choices=Formats.choices,
         default='CD'
     )
     sample = models.FileField(

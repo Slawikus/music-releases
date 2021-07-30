@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.urls import reverse_lazy
 
@@ -5,11 +6,11 @@ from .forms import CreateReleaseForm
 from .models import Release
 
 
-# Create your views here.
-class CreateReleaseView(CreateView):
+class CreateReleaseView(LoginRequiredMixin, CreateView):
     model = Release
     template_name = 'release_add.html'
     form_class = CreateReleaseForm
+    login_url = 'login'
     success_url = reverse_lazy('home')
 
     def form_valid(self, form):
