@@ -106,6 +106,9 @@ class Label(models.Model):
         verbose_name='Short label description',
     )
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         constraints = [
             models.UniqueConstraint(
