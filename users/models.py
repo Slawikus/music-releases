@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.forms.fields import CharField, DateField
 from django_countries.fields import CountryField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -113,6 +114,52 @@ class Label(models.Model):
                 name='unique_label_per_profile'
             ),
         ]
+
+class Style(models.Model):
+
+    name = models.CharField(
+        max_length=250,
+        verbose_name='base style'
+    )
+
+class Release(models.Model):
+
+    band_name = models.CharField(
+        max_length=250,
+        verbose_name='band'
+    )
+    country = CountryField(
+        blank=True,
+        null=True,
+        verbose_name='country'
+    )
+    album = models.CharField(
+        max_length=250,
+        verbose_name='album title'
+    )
+    date = models.DateField(
+        verbose_name='release date'
+    )
+    label = models.ForeignKey(
+        Label,
+        related_name='release',
+        on_delete=models.CASCADE
+    )
+    style = models.ForeignKey(
+        Style,
+        related_name='release',
+        on_delete=models.CASCADE
+    )
+
+    image = models.ImageField(
+        verbose_name='image',
+        upload_to='images/releases/'
+    )
+    sample = models.FileField(
+        verbose_name="sample music",
+        upload_to='music/'
+    )
+
 
 
 @receiver(post_save, sender=User)

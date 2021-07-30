@@ -10,6 +10,11 @@ psycopg2 = "*"
 gunicorn = "*"
 whitenoise = "*"
 pycountry = "*"
+django-crispy-forms = "*"
+crispy-bootstrap5 = "*"
+django-countries = "*"
+pillow = "*"
+django-multiselectfield = "*"
 
 [dev-packages]
 
