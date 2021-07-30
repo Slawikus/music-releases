@@ -4,7 +4,27 @@
 
 {% block content %}
 
-{% include "release_navbar.html" %}
+<nav class="navbar navbar-expand-md">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="{% url 'upcoming' %}">Upcoming</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="{% url 'recently_released' %}">Recently released</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="#">Recently added</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="{% url 'all_releases' %}">all</a>
+            </li>
+          </ul>
+        </div>
+    </div>
+</nav>
+
 
   {% for release in object_list %}
   <div class="p-4 shadow-4 rounded-3 mt-3" style="background-color: hsl(0, 0%, 94%);">

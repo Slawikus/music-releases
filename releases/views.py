@@ -1,10 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.urls import reverse_lazy
-
 from .forms import CreateReleaseForm
 from .models import Release
 
+from datetime import date
 
 class CreateReleaseView(LoginRequiredMixin, CreateView):
     model = Release
@@ -22,7 +22,18 @@ class CreateReleaseView(LoginRequiredMixin, CreateView):
         kwargs['profile'] = self.request.user.profile
         return kwargs
 
-class ListReleaseView(ListView):
+
+class AllReleaseView(ListView):
 
     template_name = "release_list.html"
     model = Release
+
+class UpcomingReleasesView(AllReleaseView):
+
+    def get_queryset(self):
+        return Release.objects.filter(release_date__gte=date.today())
+
+class RecentlyReleasedView(AllReleaseView):
+
+    def get_queryset(self):
+        return Release.objects.filter(release_date__lte=date.today())
