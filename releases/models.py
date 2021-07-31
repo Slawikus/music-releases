@@ -84,4 +84,4 @@ class Release(models.Model):
         blank=True,
         null=True,
     )
-    is_published = models.BooleanField(default=False)
+    is_submitted = models.BooleanField(default=False)
