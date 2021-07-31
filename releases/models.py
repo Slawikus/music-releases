@@ -1,7 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator
 from django.db import models
-from django.urls import reverse
 from django_countries.fields import CountryField
 
 from users.models import Profile, Label
@@ -86,6 +85,3 @@ class Release(models.Model):
         null=True,
     )
     is_published = models.BooleanField(default=False)
-
-    def get_absolute_url(self, *args, **kwargs):
-        return reverse('release_detail', kwargs={'pk': self.pk})
