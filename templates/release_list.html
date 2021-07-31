@@ -1,0 +1,39 @@
+{% extends '_base.html' %}
+
+{% block title %}Home Page{% endblock title %}
+
+{% block content %}
+
+{% include "release_date_navbar.html" %}
+
+  {% for release in object_list %}
+  <div class="p-4 shadow-4 rounded-3 mt-3" style="background-color: hsl(0, 0%, 94%);">
+    <div class="row">
+        <div class="col-2">
+            <img src="{{ release.cover_image.url }}" alt="" srcset="" class="img-thumbnail">
+        </div>
+        <div class="col-5">
+            <p>{{ release.band_name }} ({{ release.country }})</p>
+            <p>{{ release.album_title }} - {{ release.format }} | {{ release.divide_media_format }}</p>
+            <p>{{ release.base_style }}</p>
+            {% if not release.is_published %}
+                <p>{{ release.release_date }} {{ release.label }} ({{ release.label.profile.country }})</p>
+            {% else %}
+                <p>{{ release.published_date }} {{ release.label }} ({{ release.label.profile.country }})</p>
+            {% endif %}
+        </div>
+        <div class="col-5"></div>
+    </div>
+    <audio controls="controls">
+      <source src="{{ release.sample.url }}" type="audio/mpeg" />
+    </audio>
+
+    {% if not release.is_published %}
+        <form action="{% url 'publish' release.pk %}">
+            <button type="submit" class="btn btn-primary ml-4">Publish</button>
+        </form>
+    {% endif %}
+  </div>
+  {% endfor %}
+
+{% endblock content %}
