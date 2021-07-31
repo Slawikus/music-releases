@@ -45,9 +45,9 @@ class Release(models.Model):
     )
 
     class BaseStyle(models.TextChoices):
-        BLACK_METAL = 'BM', 'Black Metal'
-        DEATH_METAL = 'DM', 'Death Metal'
-        TRASH_METAL = 'TM', 'Thrash Metal'
+        BLACK_METAL = 'Black Metal', 'Black Metal'
+        DEATH_METAL = 'Death Metal', 'Death Metal'
+        TRASH_METAL = 'Trash Metal', 'Thrash Metal'
 
     base_style = models.CharField(
         max_length=250,

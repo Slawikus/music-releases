@@ -4,6 +4,7 @@ from django.views.generic import CreateView, UpdateView, ListView
 from django.urls import reverse_lazy, reverse
 from .forms import CreateReleaseForm
 from .models import Release
+from .filters import ReleaseFilter
 
 from datetime import date
 
@@ -38,6 +39,7 @@ class SubmitReleaseView(UpdateView):
 
 
 class BaseRelease(ListView):
+
     template_name = "release_list.html"
     model = Release
 
@@ -48,7 +50,15 @@ class AllReleaseView(BaseRelease):
         return Release.objects.filter(is_published=True)
 
 
-class UpcomingReleasesView(BaseRelease):
+class UpcomingReleasesView(ListView):
+
+    template_name = "upcoming.html"
+    model = Release
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["filter"] = ReleaseFilter(self.request.GET, queryset=self.get_queryset())
+        return context
 
     def get_queryset(self):
         return super().get_queryset().filter(is_published=True,
@@ -64,7 +74,7 @@ class RecentlyReleasedView(BaseRelease):
                                              ).order_by("-published_date")
 
 
-class RecentlyAddedView(BaseRelease):
+class MyReleasesView(BaseRelease):
 
     def get_queryset(self):
         return super().get_queryset().filter(profile=self.request.user.profile).order_by("-release_date")
