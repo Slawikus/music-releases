@@ -30,7 +30,7 @@ class SubmitReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Release
     fields = ['is_submitted']
     login_url = 'login'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('recently_added')
 
     def form_valid(self, form):
         form.instance.is_submitted = True
@@ -49,13 +49,13 @@ class BaseRelease(ListView):
 class AllReleaseView(BaseRelease):
 
     def get_queryset(self):
-        return Release.objects.filter(is_published=True)
+        return Release.objects.filter(is_submitted=True)
 
 
 class UpcomingReleasesView(BaseRelease):
 
     def get_queryset(self):
-        return super().get_queryset().filter(is_published=True,
+        return super().get_queryset().filter(is_submitted=True,
                                              release_date__gte=date.today(),
                                              ).order_by("-published_date")
 
@@ -63,7 +63,7 @@ class UpcomingReleasesView(BaseRelease):
 class RecentlyReleasedView(BaseRelease):
 
     def get_queryset(self):
-        return super().get_queryset().filter(is_published=True,
+        return super().get_queryset().filter(is_submitted=True,
                                              release_date__lte=date.today(),
                                              ).order_by("-published_date")
 
@@ -72,12 +72,3 @@ class RecentlyAddedView(BaseRelease):
 
     def get_queryset(self):
         return super().get_queryset().filter(profile=self.request.user.profile).order_by("-release_date")
-
-
-def publish_release(request, pk):
-    release = Release.objects.get(pk=pk)
-    release.is_published = True
-    release.published_date = date.today()
-    release.save()
-
-    return HttpResponseRedirect(reverse("recently_added"))

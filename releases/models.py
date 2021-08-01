@@ -94,4 +94,3 @@ class Release(models.Model):
 
     def divide_media_format(self):
         return " | ".join(self.media_format_details.split(", "))
-
