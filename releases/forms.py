@@ -11,7 +11,7 @@ class DateInput(forms.DateInput):
 class CreateReleaseForm(ModelForm):
     class Meta:
         model = Release
-        exclude = ['profile', 'is_published']
+        exclude = ['profile', 'is_submitted']
         widgets = {
             'release_date': DateInput(),
             'format': forms.RadioSelect,

@@ -85,14 +85,13 @@ class Release(models.Model):
         blank=True,
         null=True,
     )
-
     published_date = models.DateField(
         verbose_name="Release date",
         null=True,
         blank=True,
     )
-
-    is_published = models.BooleanField(default=False)
+    is_submitted = models.BooleanField(default=False)
 
     def divide_media_format(self):
         return " | ".join(self.media_format_details.split(", "))
+

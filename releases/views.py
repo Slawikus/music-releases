@@ -1,7 +1,8 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import CreateView, UpdateView, ListView
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
+
 from .forms import CreateReleaseForm
 from .models import Release
 from .filters import ReleaseFilter
@@ -26,16 +27,19 @@ class CreateReleaseView(LoginRequiredMixin, CreateView):
         return kwargs
 
 
-class SubmitReleaseView(UpdateView):
+class SubmitReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Release
-    fields = ['is_published']
-
-    def get_success_url(self):
-        return reverse('release_detail', kwargs={'pk': self.object.pk})
+    fields = ['is_submitted']
+    login_url = 'login'
+    success_url = reverse_lazy('home')
 
     def form_valid(self, form):
-        form.instance.is_published = True
+        form.instance.is_submitted = True
         return super().form_valid(form)
+
+    def test_func(self):
+        obj = self.get_object()
+        return obj.profile == self.request.user.profile
 
 
 class BaseRelease(ListView):
