@@ -41,9 +41,19 @@ class SubmitReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         obj = self.get_object()
         return obj.profile == self.request.user.profile
 
+class EditReleaseView(UpdateView, LoginRequiredMixin):
+
+    model = Release
+
+    login_url = 'login'
+    fields = ['band_name', 'album_title', 'cover_image', 'sample', 'limited_edition']
+    template_name = "edit_release.html"
+    success_url = reverse_lazy("my_releases")
+
 
 class BaseRelease(ListView, LoginRequiredMixin):
 
+    login_url = 'login'
     context_object_name = "releases"
 
     template_name = "release_list.html"
