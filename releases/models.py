@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator
 from django.db import models
+from django.urls import reverse
 from django_countries.fields import CountryField
 
 from users.models import Profile, Label
@@ -84,4 +85,12 @@ class Release(models.Model):
         blank=True,
         null=True,
     )
+    published_date = models.DateField(
+        verbose_name="Release date",
+        null=True,
+        blank=True,
+    )
     is_submitted = models.BooleanField(default=False)
+
+    def divide_media_format(self):
+        return " | ".join(self.media_format_details.split(", "))
