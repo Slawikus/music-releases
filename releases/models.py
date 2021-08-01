@@ -3,6 +3,7 @@ from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.urls import reverse
 from django_countries.fields import CountryField
+from django.utils import timezone
 
 from users.models import Profile, Label
 
@@ -32,12 +33,19 @@ class Release(models.Model):
         max_length=250,
         verbose_name='Album title'
     )
-    submitted_at = models.DateField(
+    release_date = models.DateField(
         verbose_name='Release date',
         help_text='For past/old releases exact date is not important, feel free just to select January 1st, but with '
                   'correct year. For recent/upcoming releases - please try to set the date exactly. This release will '
                   'be shown in Upcoming Releases section.',
     )
+
+    submitted_at = models.DateField(
+        verbose_name="submitted date",
+        blank=True,
+        null=True
+    )
+
     label = models.ForeignKey(
         Label,
         on_delete=models.CASCADE,
