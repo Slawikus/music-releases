@@ -42,7 +42,7 @@ class SubmitReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return obj.profile == self.request.user.profile
 
 
-class BaseRelease(ListView):
+class BaseRelease(ListView, LoginRequiredMixin):
 
     context_object_name = "releases"
 
