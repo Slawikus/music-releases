@@ -37,9 +37,9 @@
       <source src="{{ release.sample.url }}" type="audio/mpeg" />
     </audio>
 
-    {% if not release.is_published %}
-        <form action="{% url 'publish' release.pk %}">
-            <button type="submit" class="btn btn-primary ml-4">Publish</button>
+    {% if not release.is_submitted %}
+        <form action="#">
+            <button type="submit" class="btn btn-primary ml-4">Submit</button>
         </form>
     {% endif %}
   </div>

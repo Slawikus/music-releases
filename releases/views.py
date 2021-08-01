@@ -1,7 +1,8 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import CreateView, UpdateView, ListView
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
+
 from .forms import CreateReleaseForm
 from .models import Release
 from .filters import ReleaseFilter
@@ -26,19 +27,22 @@ class CreateReleaseView(LoginRequiredMixin, CreateView):
         return kwargs
 
 
-class SubmitReleaseView(UpdateView):
+class SubmitReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Release
-    fields = ['is_published']
-
-    def get_success_url(self):
-        return reverse('release_detail', kwargs={'pk': self.object.pk})
+    fields = ['is_submitted']
+    login_url = 'login'
+    success_url = reverse_lazy('home')
 
     def form_valid(self, form):
-        form.instance.is_published = True
+        form.instance.is_submitted = True
         return super().form_valid(form)
 
+    def test_func(self):
+        obj = self.get_object()
+        return obj.profile == self.request.user.profile
 
-class BaseRelease(ListView):
+
+class BaseRelease(ListView, LoginRequiredMixin):
 
     context_object_name = "releases"
 
@@ -49,7 +53,7 @@ class BaseRelease(ListView):
 class AllReleaseView(BaseRelease):
 
     def get_queryset(self):
-        return Release.objects.filter(is_published=True)
+        return Release.objects.filter(is_submitted=True)
 
 
 class UpcomingReleasesView(ListView, LoginRequiredMixin):
@@ -63,29 +67,20 @@ class UpcomingReleasesView(ListView, LoginRequiredMixin):
         return context
 
     def get_queryset(self):
-        return super().get_queryset().filter(is_published=True,
-                                             release_date__gte=date.today(),
-                                             ).order_by("-published_date")
+        return super().get_queryset().filter(is_submitted=True,
+                                             submitted_at__gte=date.today(),
+                                             ).order_by("-submitted_at")
 
 
 class RecentlySubmittedView(BaseRelease):
 
     def get_queryset(self):
-        return super().get_queryset().filter(is_published=True,
-                                             release_date__lte=date.today(),
-                                             ).order_by("-published_date")
+        return super().get_queryset().filter(is_submitted=True,
+                                             submitted_at__lte=date.today(),
+                                             ).order_by("-submitted_at")
 
 
-class MyReleasesView(BaseRelease):
+class MyReleasesView(BaseRelease, LoginRequiredMixin):
 
     def get_queryset(self):
-        return super().get_queryset().filter(profile=self.request.user.profile).order_by("-release_date")
-
-
-def publish_release(request, pk):
-    release = Release.objects.get(pk=pk)
-    release.is_published = True
-    release.published_date = date.today()
-    release.save()
-
-    return HttpResponseRedirect(reverse("recently_added"))
+        return super().get_queryset().filter(profile=self.request.user.profile).order_by("-submitted_at")
