@@ -40,7 +40,7 @@ class Release(models.Model):
                   'be shown in Upcoming Releases section.',
     )
 
-    submitted_at = models.DateField(
+    submitted_at = models.DateTimeField(
         verbose_name="submitted date",
         blank=True,
         null=True
