@@ -40,6 +40,8 @@ class SubmitReleaseView(UpdateView):
 
 class BaseRelease(ListView):
 
+    context_object_name = "releases"
+
     template_name = "release_list.html"
     model = Release
 
@@ -50,7 +52,7 @@ class AllReleaseView(BaseRelease):
         return Release.objects.filter(is_published=True)
 
 
-class UpcomingReleasesView(ListView):
+class UpcomingReleasesView(ListView, LoginRequiredMixin):
 
     template_name = "upcoming.html"
     model = Release
