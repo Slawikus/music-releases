@@ -1,13 +1,13 @@
 from django.urls import path
+from django.conf.urls import url
 
-from .views import CreateReleaseView, AllReleaseView, RecentlyAddedView, UpcomingReleasesView, RecentlyReleasedView, publish_release
+from .views import CreateReleaseView, AllReleaseView, MyReleasesView, UpcomingReleasesView, RecentlySubmittedView
 
 
 urlpatterns = [
     path('new/', CreateReleaseView.as_view(), name='release_add'),
-    path('<int:pk>/submit/', SubmitReleaseView.as_view(), name='release_submit'),
-    path('all/', AllReleaseView.as_view(), name='all_releases'),
-    path("upcoming/", UpcomingReleasesView.as_view(), name="upcoming"),
-    path("recently-released/", RecentlyReleasedView.as_view(), name='recently_released'),
-    path("recently-added/", RecentlyAddedView.as_view(), name="recently_added"),
-    path("publish/<int:pk>", publish_release, name='publish')
+    path('', AllReleaseView.as_view(), name='all_releases'),
+    url("upcoming/", UpcomingReleasesView.as_view(), name="upcoming_releases"),
+    path("recently-submitted/", RecentlySubmittedView.as_view(), name='recently_submitted'),    
+    path("my-releases/", MyReleasesView.as_view(), name='my_releases'),
+]

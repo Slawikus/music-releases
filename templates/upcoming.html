@@ -1,11 +1,21 @@
 {% extends '_base.html' %}
 
-{% block title %}Home Page{% endblock title %}
+{% load crispy_forms_tags %}
+
+{% block title %}Upcoming{% endblock title %}
 
 {% block content %}
 
-{% for release in releases %}
 
+  <div class="container">
+      <form action="GET">
+          {{ filter.form|crispy }}
+          <button type='submit' class='btn btn-primary'>filter</button>
+      </form>
+  </div>
+
+{% for release in filter.qs %}
+  
   <div class="p-4 shadow-4 rounded-3 mt-3" style="background-color: hsl(0, 0%, 94%);">
     <div class="row">
         <div class="col-2">
@@ -15,8 +25,11 @@
             <p>{{ release.band_name }} ({{ release.country }})</p>
             <p>{{ release.album_title }} - {{ release.format }} | {{ release.divide_media_format }}</p>
             <p>{{ release.base_style }}</p>
-            <p>{{ release.submitted_at }} {{ release.label }} ({{ release.label.profile.country }})</p>
-
+            {% if not release.is_published %}
+                <p>{{ release.release_date }} {{ release.label }} ({{ release.label.profile.country }})</p>
+            {% else %}
+                <p>{{ release.published_date }} {{ release.label }} ({{ release.label.profile.country }})</p>
+            {% endif %}
         </div>
         <div class="col-5"></div>
     </div>

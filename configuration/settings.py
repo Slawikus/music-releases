@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'django_countries',
     'pycountry',
+    'django_filters',
 
     'users.apps.UsersConfig',
     'releases.apps.ReleasesConfig',

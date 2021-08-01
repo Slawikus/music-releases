@@ -3,6 +3,7 @@ from django.core.validators import FileExtensionValidator
 from django.db import models
 from django.urls import reverse
 from django_countries.fields import CountryField
+from django.utils import timezone
 
 from users.models import Profile, Label
 
@@ -38,6 +39,13 @@ class Release(models.Model):
                   'correct year. For recent/upcoming releases - please try to set the date exactly. This release will '
                   'be shown in Upcoming Releases section.',
     )
+
+    submitted_at = models.DateTimeField(
+        verbose_name="submitted date",
+        blank=True,
+        null=True
+    )
+
     label = models.ForeignKey(
         Label,
         on_delete=models.CASCADE,
@@ -45,9 +53,9 @@ class Release(models.Model):
     )
 
     class BaseStyle(models.TextChoices):
-        BLACK_METAL = 'BM', 'Black Metal'
-        DEATH_METAL = 'DM', 'Death Metal'
-        TRASH_METAL = 'TM', 'Thrash Metal'
+        BLACK_METAL = 'black_metal', 'Black Metal'
+        DEATH_METAL = 'death_metal', 'Death Metal'
+        TRASH_METAL = 'trash_metal', 'Thrash Metal'
 
     base_style = models.CharField(
         max_length=250,
@@ -85,13 +93,8 @@ class Release(models.Model):
         blank=True,
         null=True,
     )
-    published_date = models.DateField(
-        verbose_name="Release date",
-        null=True,
-        blank=True,
-    )
+
     is_submitted = models.BooleanField(default=False)
 
     def divide_media_format(self):
         return " | ".join(self.media_format_details.split(", "))
-
