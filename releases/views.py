@@ -68,7 +68,7 @@ class UpcomingReleasesView(ListView, LoginRequiredMixin):
                                              ).order_by("-published_date")
 
 
-class RecentlyReleasedView(BaseRelease):
+class RecentlySubmittedView(BaseRelease):
 
     def get_queryset(self):
         return super().get_queryset().filter(is_published=True,
