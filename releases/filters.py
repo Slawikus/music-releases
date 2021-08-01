@@ -19,4 +19,4 @@ class ReleaseFilter(django_filters.FilterSet):
     class Meta:
 
         model = Release
-        fields = ["base_style", "release_date"]
+        fields = ["base_style", "submitted_at"]

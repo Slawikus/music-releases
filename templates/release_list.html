@@ -15,11 +15,8 @@
             <p>{{ release.band_name }} ({{ release.country }})</p>
             <p>{{ release.album_title }} - {{ release.format }} | {{ release.divide_media_format }}</p>
             <p>{{ release.base_style }}</p>
-            {% if not release.is_published %}
-                <p>{{ release.release_date }} {{ release.label }} ({{ release.label.profile.country }})</p>
-            {% else %}
-                <p>{{ release.published_date }} {{ release.label }} ({{ release.label.profile.country }})</p>
-            {% endif %}
+            <p>{{ release.submitted_at }} {{ release.label }} ({{ release.label.profile.country }})</p>
+
         </div>
         <div class="col-5"></div>
     </div>
@@ -28,7 +25,7 @@
     </audio>
 
     {% if not release.is_submitted %}
-        <form action="{% url 'submit' release.pk %}">
+        <form action="#">
             <button type="submit" class="btn btn-primary ml-4">Submit</button>
         </form>
     {% endif %}

@@ -32,7 +32,7 @@ class Release(models.Model):
         max_length=250,
         verbose_name='Album title'
     )
-    release_date = models.DateField(
+    submitted_at = models.DateField(
         verbose_name='Release date',
         help_text='For past/old releases exact date is not important, feel free just to select January 1st, but with '
                   'correct year. For recent/upcoming releases - please try to set the date exactly. This release will '
@@ -85,13 +85,8 @@ class Release(models.Model):
         blank=True,
         null=True,
     )
-    published_date = models.DateField(
-        verbose_name="Release date",
-        null=True,
-        blank=True,
-    )
+
     is_submitted = models.BooleanField(default=False)
 
     def divide_media_format(self):
         return " | ".join(self.media_format_details.split(", "))
-
