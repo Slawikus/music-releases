@@ -53,7 +53,7 @@ class BaseRelease(ListView):
 class AllReleaseView(BaseRelease):
 
     def get_queryset(self):
-        return Release.objects.filter(is_published=True)
+        return Release.objects.filter(is_submitted=True)
 
 
 class UpcomingReleasesView(ListView, LoginRequiredMixin):
@@ -67,7 +67,7 @@ class UpcomingReleasesView(ListView, LoginRequiredMixin):
         return context
 
     def get_queryset(self):
-        return super().get_queryset().filter(is_published=True,
+        return super().get_queryset().filter(is_submitted=True,
                                              release_date__gte=date.today(),
                                              ).order_by("-published_date")
 
@@ -75,7 +75,7 @@ class UpcomingReleasesView(ListView, LoginRequiredMixin):
 class RecentlySubmittedView(BaseRelease):
 
     def get_queryset(self):
-        return super().get_queryset().filter(is_published=True,
+        return super().get_queryset().filter(is_submitted=True,
                                              release_date__lte=date.today(),
                                              ).order_by("-published_date")
 
@@ -86,9 +86,9 @@ class MyReleasesView(BaseRelease):
         return super().get_queryset().filter(profile=self.request.user.profile).order_by("-release_date")
 
 
-def publish_release(request, pk):
+def submit_release(request, pk):
     release = Release.objects.get(pk=pk)
-    release.is_published = True
+    release.is_submitted = True
     release.published_date = date.today()
     release.save()
 
