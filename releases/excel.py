@@ -4,9 +4,7 @@ from xlsxwriter.workbook import Workbook
 from .models import Release
 
 def get_excel_file(request):
-    # your view logic here
 
-    # create a workbook in memory
     output = BytesIO()
 
     book = Workbook(output)
@@ -22,9 +20,11 @@ def get_excel_file(request):
 
     book.close()
 
+    filename = "releases"
+
     # construct response
     output.seek(0)
     response = HttpResponse(output.read(), content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-    response['Content-Disposition'] = "attachment; filename=test.xlsx"
+    response['Content-Disposition'] = f"attachment; filename={filename}.xlsx"
 
     return response
