@@ -14,7 +14,6 @@ class CreateReleaseView(LoginRequiredMixin, CreateView):
     model = Release
     template_name = 'release_add.html'
     form_class = CreateReleaseForm
-    login_url = 'login'
     success_url = reverse_lazy('home')
 
     def form_valid(self, form):
@@ -30,7 +29,6 @@ class CreateReleaseView(LoginRequiredMixin, CreateView):
 class SubmitReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Release
     fields = ['is_submitted']
-    login_url = 'login'
     success_url = reverse_lazy('home')
 
     def form_valid(self, form):
@@ -45,15 +43,22 @@ class EditReleaseView(UpdateView, LoginRequiredMixin):
 
     model = Release
 
-    login_url = 'login'
     fields = ['band_name', 'album_title', 'cover_image', 'sample', 'limited_edition']
     template_name = "edit_release.html"
     success_url = reverse_lazy("my_releases")
 
+def submit_release(request, pk):
+
+    release = Release.objects.get(pk=pk)
+    if release.profile == request.user.profile:
+        release.is_submitted = True
+        release.save()
+
+    return HttpResponseRedirect(reverse("my_releases"))
+
 
 class BaseRelease(ListView, LoginRequiredMixin):
 
-    login_url = 'login'
     context_object_name = "releases"
 
     template_name = "release_list.html"
