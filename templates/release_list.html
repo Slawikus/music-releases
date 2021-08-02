@@ -27,7 +27,6 @@
       <audio controls="controls">
         <source src="{{ release.sample.url }}" type="audio/mpeg"/>
       </audio>
-
       {% if not release.is_submitted %}
         <form method="POST" action="{% url 'release_submit' release.pk %}">
           {% csrf_token %}

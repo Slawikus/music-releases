@@ -4,7 +4,7 @@ from django.db import models
 from django.urls import reverse
 from django_countries.fields import CountryField
 
-from users.models import Profile, Label
+from users.models import Profile, Label, ProfileCurrency
 
 
 def validate_file_size(value):
@@ -94,3 +94,21 @@ class Release(models.Model):
 
     def divide_media_format(self):
         return " | ".join(self.media_format_details.split(", "))
+
+
+class TradesWholesale(models.Model):
+    release = models.OneToOneField(Release, on_delete=models.CASCADE)
+    available_for_trade = models.BooleanField()
+    trade_points = models.PositiveIntegerField(null=True, blank=True)
+    trade_remarks = models.CharField(max_length=250, null=True, blank=True)
+    available_for_wholesale = models.BooleanField()
+    wholesale_prices = models.ForeignKey(ProfileCurrency, on_delete=models.CASCADE, related_name='wholesale_prices')
+
+
+class MarketingInfos(models.Model):
+    release = models.OneToOneField(Release, on_delete=models.CASCADE)
+    style = models.CharField(max_length=250, null=True, blank=True)
+    release_overview = models.TextField(null=True, blank=True)
+    youtube_url = models.URLField(null=True, blank=True)
+    soundcloud_url = models.URLField(null=True, blank=True)
+    press_feedback = models.TextField(null=True, blank=True)
