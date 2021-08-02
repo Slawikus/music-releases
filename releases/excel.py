@@ -9,14 +9,17 @@ def get_excel_file(request):
 
     book = Workbook(output)
     sheet = book.add_worksheet('releases')
+    sheet.set_column(1, 1, 20)
 
     releases = Release.objects.all()
 
     for row, release in enumerate(releases):
         sheet.write(row, 0, release.id)
         sheet.write(row, 1, release.band_name)
-        sheet.write(row, 2, release.release_date)
+        sheet.write(row, 2, str(release.release_date))
         sheet.write(row, 3, release.is_submitted)
+
+
 
     book.close()
 
