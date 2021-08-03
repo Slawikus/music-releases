@@ -7,8 +7,7 @@ from .forms import CreateReleaseForm
 from .models import Release
 from .filters import ReleaseFilter
 
-from datetime import date
-
+from django.utils.timezone import datetime
 
 class CreateReleaseView(LoginRequiredMixin, CreateView):
     model = Release
@@ -44,7 +43,7 @@ def submit_release(request, pk):
     release = Release.objects.get(pk=pk)
     if release.profile == request.user.profile:
         release.is_submitted = True
-        release.submitted_at = date.today()
+        release.submitted_at = datetime.today()
         release.save()
 
     return HttpResponseRedirect(reverse("my_releases"))
@@ -90,7 +89,7 @@ class UpcomingReleasesView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return super().get_queryset().filter(is_submitted=True,
-                                             submitted_at__gte=date.today(),
+                                             release_date__gte=datetime.today(),
                                              ).order_by("-submitted_at")
 
 
@@ -103,7 +102,7 @@ class RecentlySubmittedView(BaseRelease):
 
     def get_queryset(self):
         return super().get_queryset().filter(is_submitted=True,
-                                             submitted_at__lte=date.today(),
+                                             release_date__lte=datetime.today(),
                                              ).order_by("-submitted_at")
 
 
