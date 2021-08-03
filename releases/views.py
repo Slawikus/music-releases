@@ -44,6 +44,7 @@ def submit_release(request, pk):
     release = Release.objects.get(pk=pk)
     if release.profile == request.user.profile:
         release.is_submitted = True
+        release.submitted_at = date.today()
         release.save()
 
     return HttpResponseRedirect(reverse("my_releases"))
