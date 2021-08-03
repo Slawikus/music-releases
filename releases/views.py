@@ -40,6 +40,15 @@ class SubmitReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return obj.profile == self.request.user.profile
 
 
+def submit_release(request, pk):
+    release = Release.objects.get(pk=pk)
+    if release.profile == request.user.profile:
+        release.is_submitted = True
+        release.save()
+
+    return HttpResponseRedirect(reverse("my_releases"))
+
+
 class EditReleaseView(LoginRequiredMixin, UpdateView):
 
     model = Release
@@ -58,6 +67,11 @@ class BaseRelease(LoginRequiredMixin, ListView):
 
 
 class AllReleaseView(BaseRelease):
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "All Releases"
+        return context
 
     def get_queryset(self):
         return Release.objects.filter(is_submitted=True)
@@ -81,6 +95,11 @@ class UpcomingReleasesView(LoginRequiredMixin, ListView):
 
 class RecentlySubmittedView(BaseRelease):
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Recently Submitted Releases"
+        return context
+
     def get_queryset(self):
         return super().get_queryset().filter(is_submitted=True,
                                              submitted_at__lte=date.today(),
@@ -88,6 +107,11 @@ class RecentlySubmittedView(BaseRelease):
 
 
 class MyReleasesView(BaseRelease):
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "My Releases"
+        return context
 
     def get_queryset(self):
         return super().get_queryset().filter(profile=self.request.user.profile).order_by("-submitted_at")
