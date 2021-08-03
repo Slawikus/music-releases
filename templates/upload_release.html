@@ -3,15 +3,57 @@
 {% block title %}Import release from Excel{% endblock title %}
 
 {% block content %}
+<form action="{% url 'import_releases' %}" method="POST" enctype="multipart/form-data">
+  <div class="row">
+      <div class="col-4">
+          <h6 class="mb-4 mt-3">Import release</h6>
+          <div class="row mt-2 mb-2">
 
-  <h6 class="mb-4 mt-3">Import release</h6>
-  <div class="row mt-2 mb-2">
-      <h6>Excel file must contain</h6>
-      <ul>
-          <li>band name</li>
-          <li></li>
-      </ul>
-      <input id="fileSelect" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+              <input id="fileSelect" name='excel' type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+
+              <h6 class="mt-2">Excel file must contain</h6>
+              <ol>
+                  <li>band name</li>
+                  <li>album title</li>
+                  <li>country</li>
+                  <li>release date</li>
+                  <li>media format</li>
+                  <li>format
+                     <ul>
+                         <li>CD</li>
+                         <li>Vinyl</li>
+                         <li>DVD</li>
+                         <li>Tape</li>
+                     </ul>
+                  </li>
+                  <li>limited edition (amount)</li>
+                  <li>
+                      base style
+                      <ul>
+                          <li>Black Metal</li>
+                          <li>Death Metal</li>
+                          <li>Trash Metal</li>
+                      </ul>
+                  </li>
+              </ol>
+
+
+          </div>
+      </div>
+      <div class="col-8">
+          <h6 class="mb-4 mt-3">Example</h6>
+          {% load static %}
+          <img src="{% static 'images/excel_example.png' %}" class="img-fluid" alt="">
+          <button id='btn' type="submit" href="#" class="btn btn-primary mt-4" disabled>Import</button>
+      </div>
 
   </div>
+    <script>
+        var input = document.getElementById("fileSelect");
+        input.oninput = function(){
+            button = document.getElementById("btn");
+            button.disabled = false;
+        };
+    </script>
+</form>
 {% endblock content %}

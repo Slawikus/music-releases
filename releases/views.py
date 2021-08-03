@@ -99,3 +99,7 @@ class ImportReleasesView(View):
 
     def get(self, request):
         return render(request, "upload_release.html")
+
+    def post(self, request):
+        file = request.FILES.get("file")
+        return reverse_lazy("my_releases")
