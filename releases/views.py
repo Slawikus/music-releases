@@ -25,20 +25,6 @@ class CreateReleaseView(LoginRequiredMixin, CreateView):
         return kwargs
 
 
-class SubmitReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = Release
-    fields = ['is_submitted']
-    success_url = reverse_lazy('home')
-
-    def form_valid(self, form):
-        form.instance.is_submitted = True
-        return super().form_valid(form)
-
-    def test_func(self):
-        obj = self.get_object()
-        return obj.profile == self.request.user.profile
-
-
 def submit_release(request, pk):
     release = Release.objects.get(pk=pk)
     if release.profile == request.user.profile:
