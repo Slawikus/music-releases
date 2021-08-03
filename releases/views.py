@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import CreateView, UpdateView, ListView
+from django.views.generic import CreateView, UpdateView, ListView, View
 from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 
 from .forms import CreateReleaseForm
@@ -41,8 +42,8 @@ class SubmitReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         obj = self.get_object()
         return obj.profile == self.request.user.profile
 
-class EditReleaseView(UpdateView, LoginRequiredMixin):
 
+class EditReleaseView(UpdateView, LoginRequiredMixin):
     model = Release
 
     login_url = 'login'
@@ -52,7 +53,6 @@ class EditReleaseView(UpdateView, LoginRequiredMixin):
 
 
 class BaseRelease(ListView, LoginRequiredMixin):
-
     login_url = 'login'
     context_object_name = "releases"
 
@@ -67,7 +67,6 @@ class AllReleaseView(BaseRelease):
 
 
 class UpcomingReleasesView(ListView, LoginRequiredMixin):
-
     template_name = "upcoming.html"
     model = Release
 
@@ -94,3 +93,9 @@ class MyReleasesView(BaseRelease, LoginRequiredMixin):
 
     def get_queryset(self):
         return super().get_queryset().filter(profile=self.request.user.profile).order_by("-submitted_at")
+
+
+class ImportReleasesView(View):
+
+    def get(self, request):
+        return render(request, "upload_release.html")

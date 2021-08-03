@@ -1,7 +1,7 @@
 from django.urls import path
 from django.conf.urls import url
 
-from .views import (CreateReleaseView, AllReleaseView, MyReleasesView, 
+from .views import (CreateReleaseView, AllReleaseView, MyReleasesView, ImportReleasesView,
                     UpcomingReleasesView, RecentlySubmittedView, EditReleaseView)
 
 from .excel import get_excel_file
@@ -14,5 +14,5 @@ urlpatterns = [
     path("recently-submitted/", RecentlySubmittedView.as_view(), name='recently_submitted'),    
     path("my-releases/", MyReleasesView.as_view(), name='my_releases'),
     path("edit-release/<int:pk>", EditReleaseView.as_view(), name='edit_release'),
-    path("excel/", get_excel_file, name="excel")
+    path("import-releases/", ImportReleasesView.as_view(), name="import_releases")
 ]

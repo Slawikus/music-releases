@@ -1,0 +1,17 @@
+{% extends '_base.html' %}
+
+{% block title %}Import release from Excel{% endblock title %}
+
+{% block content %}
+
+  <h6 class="mb-4 mt-3">Import release</h6>
+  <div class="row mt-2 mb-2">
+      <h6>Excel file must contain</h6>
+      <ul>
+          <li>band name</li>
+          <li></li>
+      </ul>
+      <input id="fileSelect" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+
+  </div>
+{% endblock content %}
