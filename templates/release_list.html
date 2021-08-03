@@ -28,7 +28,8 @@
                 </form>
             {% endif %}
 
-            {% if request.path == "/releases/my-releases/" %}
+            {% url 'my_releases' as my_releases %}
+            {% if request.path == my_releases %}
                 <form action="{% url 'edit_release' release.pk %}">
                     <button type="submit" class="btn btn-secondary mt-3">Edit</button>
                 </form>
