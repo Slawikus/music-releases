@@ -7,6 +7,7 @@ from django.urls import reverse_lazy, reverse
 from .forms import CreateReleaseForm
 from .models import Release
 from .filters import ReleaseFilter
+from .excel import save_excel_file
 
 from datetime import date
 
@@ -101,5 +102,13 @@ class ImportReleasesView(View):
         return render(request, "upload_release.html")
 
     def post(self, request):
-        file = request.FILES.get("file")
-        return reverse_lazy("my_releases")
+        file = request.FILES.get("excel")
+
+        # try:
+        save_excel_file(file, request.user.profile)
+        # except:
+        #
+        #     context = {"error": "Wrong excel format. Please write as shown in example"}
+        #     return render(request, "upload_release.html", context)
+
+        return HttpResponseRedirect(reverse("my_releases"))

@@ -4,6 +4,7 @@
 
 {% block content %}
 <form action="{% url 'import_releases' %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
   <div class="row">
       <div class="col-4">
           <h6 class="mb-4 mt-3">Import release</h6>
@@ -44,6 +45,7 @@
           <h6 class="mb-4 mt-3">Example</h6>
           {% load static %}
           <img src="{% static 'images/excel_example.png' %}" class="img-fluid" alt="">
+          <h5 style="color:red;">{{ error }}</h5>
           <button id='btn' type="submit" href="#" class="btn btn-primary mt-4" disabled>Import</button>
       </div>
 

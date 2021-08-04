@@ -4,8 +4,6 @@ from django.conf.urls import url
 from .views import (CreateReleaseView, AllReleaseView, MyReleasesView, ImportReleasesView,
                     UpcomingReleasesView, RecentlySubmittedView, EditReleaseView)
 
-from .excel import get_excel_file
-
 
 urlpatterns = [
     path('new/', CreateReleaseView.as_view(), name='release_add'),
