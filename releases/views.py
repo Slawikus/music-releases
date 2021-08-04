@@ -5,6 +5,8 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
 from django.contrib import messages
 
+from django.core.exceptions import ObjectDoesNotExist
+
 from .forms import CreateReleaseForm
 from .models import Release
 from .filters import ReleaseFilter
@@ -31,22 +33,29 @@ class CreateReleaseView(LoginRequiredMixin, CreateView):
 @login_required
 def submit_release(request, pk):
 
-    release = Release.objects.get(pk=pk)
-    if release.profile == request.user.profile:
-        if not release.is_submitted:
-            release.is_submitted = True
-            release.submitted_at = datetime.today()
-            release.save()
+    release = Release.objects.filter(pk=pk)
+    if release.exists():
+        messages.error(request, "Release does not exist")
+
+        if release.profile == request.user.profile:
+            if not release.is_submitted:
+                release.is_submitted = True
+                release.submitted_at = datetime.today()
+                release.save()
+            else:
+                messages.error(request, "release is already submitted")
+
         else:
-            messages.error(request, "release is already submitted")
+            messages.error(request, "You can't submit someone else's record")
 
     else:
-        messages.error(request, "You can't submit someone else's record")
+        messages.error(request, "Release does not exist")
 
     return HttpResponseRedirect(reverse("my_releases"))
 
 
 class EditReleaseView(LoginRequiredMixin, UpdateView):
+
     model = Release
 
     fields = ['band_name', 'album_title', 'cover_image', 'sample', 'limited_edition']
