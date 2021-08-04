@@ -1,13 +1,16 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.decorators import login_required
 from django.views.generic import CreateView, UpdateView, ListView
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
+from django.contrib import messages
 
 from .forms import CreateReleaseForm
 from .models import Release
 from .filters import ReleaseFilter
 
 from django.utils.timezone import datetime
+
 
 class CreateReleaseView(LoginRequiredMixin, CreateView):
     model = Release
@@ -25,18 +28,25 @@ class CreateReleaseView(LoginRequiredMixin, CreateView):
         return kwargs
 
 
+@login_required
 def submit_release(request, pk):
+
     release = Release.objects.get(pk=pk)
     if release.profile == request.user.profile:
-        release.is_submitted = True
-        release.submitted_at = datetime.today()
-        release.save()
+        if not release.is_submitted:
+            release.is_submitted = True
+            release.submitted_at = datetime.today()
+            release.save()
+        else:
+            messages.error(request, "release is already submitted")
+
+    else:
+        messages.error(request, "You can't submit someone else's record")
 
     return HttpResponseRedirect(reverse("my_releases"))
 
 
 class EditReleaseView(LoginRequiredMixin, UpdateView):
-
     model = Release
 
     fields = ['band_name', 'album_title', 'cover_image', 'sample', 'limited_edition']
@@ -45,7 +55,6 @@ class EditReleaseView(LoginRequiredMixin, UpdateView):
 
 
 class BaseRelease(LoginRequiredMixin, ListView):
-
     context_object_name = "releases"
 
     template_name = "release_list.html"
@@ -64,7 +73,6 @@ class AllReleaseView(BaseRelease):
 
 
 class UpcomingReleasesView(LoginRequiredMixin, ListView):
-
     template_name = "upcoming.html"
     model = Release
 
@@ -75,7 +83,7 @@ class UpcomingReleasesView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return super().get_queryset().filter(is_submitted=True,
-                                             release_date__gte=datetime.today(),
+                                             submitted_at__gte=datetime.today(),
                                              ).order_by("-submitted_at")
 
 
@@ -88,7 +96,7 @@ class RecentlySubmittedView(BaseRelease):
 
     def get_queryset(self):
         return super().get_queryset().filter(is_submitted=True,
-                                             release_date__lte=datetime.today(),
+                                             submitted_at__lte=datetime.today(),
                                              ).order_by("-submitted_at")
 
 

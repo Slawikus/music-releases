@@ -1,7 +1,7 @@
 from django.urls import path
 from django.conf.urls import url
 
-from .views import (CreateReleaseView, AllReleaseView, MyReleasesView,  submit_release, SubmitReleaseView,
+from .views import (CreateReleaseView, AllReleaseView, MyReleasesView,  submit_release,
                     UpcomingReleasesView, RecentlySubmittedView, EditReleaseView)
 
 
