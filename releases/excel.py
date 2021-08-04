@@ -1,10 +1,10 @@
 import openpyxl
 from .models import Release
 from configuration.settings import MEDIA_ROOT
+from django_countries import countries
 
 FORMATS = ["CD", "Vinyl", "DVD", "Tape"]
 STYLES = {"Black Metal": "BM", "Death Metal": "DM", "Trash Metal": "TM"}
-
 
 
 def save_excel_file(file, profile):
@@ -15,9 +15,14 @@ def save_excel_file(file, profile):
 
         format = sheet.cell(row, 6).value
         style = sheet.cell(row, 8).value
+
+        # as django_countries saves country in DB with 2 chars ("New Zealand" -> "NZ")
+        # and countries dict looks like {"NZ": "New Zealand"} I had to switch value and key
+        # than get short country name
+        valid_country = {y: x for x, y in dict(countries).items()}.get(sheet.cell(row, 3).value)
+
         # reformat DD.MM.YYYY format to YYYY-MM-DD
         valid_date = sheet.cell(row, 4).value.strftime("%Y-%m-%d")
-        valid_country = sheet.cell(row, 3).value
 
         release = Release(
             band_name=sheet.cell(row, 1).value,
