@@ -1,0 +1,34 @@
+{% extends '_base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Trades and Wholesale{% endblock title %}
+
+{% block content %}
+  {% include 'releases_navbar.html' %}
+  <h6 class="mb-4 mt-3">Trades and Wholesale</h6>
+  <div class="row mt-2 mb-2">
+    <div class="col-4">
+      <form method="post" autocomplete="off" enctype='multipart/form-data'>
+        {% csrf_token %}
+        {{ form|crispy }}
+        {% if release_currencies %}
+          <p>Wholesale prices</p>
+          <div class="card mb-2">
+            <ul class="list-group list-group-flush">
+              {% for currency in release_currencies %}
+                <li class="list-group-item">{{ currency.profile_currency__currency }}
+                  - {{ currency.currency_price }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+        <a class="btn btn-outline-secondary mb-4"
+           href="{% url 'release_wholesale_price_add' wholesale_and_trades.pk %}">Add wholesale price</a>
+        <br>
+        <button type="submit" class="btn btn-primary ml-4">Save</button>
+        <a class="btn btn-outline-primary" href="{% url 'home' %}">Cancel</a>
+      </form>
+    </div>
+  </div>
+{% endblock content %}

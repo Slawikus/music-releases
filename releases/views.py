@@ -1,9 +1,11 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import CreateView, UpdateView, ListView
+from django.views.generic import CreateView, UpdateView, ListView, DeleteView
 from django.urls import reverse_lazy, reverse
 
-from .forms import CreateReleaseForm
-from .models import Release
+from users.models import ProfileCurrency
+from .forms import CreateReleaseForm, UpdateTradesAndWholesaleForm, CreateWholesalePriceForm
+from .models import Release, WholesaleAndTrades, ReleaseWholesalePrice
 from .filters import ReleaseFilter
 
 from datetime import date
@@ -30,7 +32,7 @@ class SubmitReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Release
     fields = ['is_submitted']
     login_url = 'login'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('my_releases')
 
     def form_valid(self, form):
         form.instance.is_submitted = True
@@ -42,7 +44,6 @@ class SubmitReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 
 class BaseRelease(ListView, LoginRequiredMixin):
-
     context_object_name = "releases"
 
     template_name = "release_list.html"
@@ -56,7 +57,6 @@ class AllReleaseView(BaseRelease):
 
 
 class UpcomingReleasesView(ListView, LoginRequiredMixin):
-
     template_name = "upcoming.html"
     model = Release
 
@@ -83,3 +83,61 @@ class MyReleasesView(BaseRelease, LoginRequiredMixin):
 
     def get_queryset(self):
         return super().get_queryset().filter(profile=self.request.user.profile).order_by("-submitted_at")
+
+
+class UpdateWholesaleAndTradesView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = WholesaleAndTrades
+    form_class = UpdateTradesAndWholesaleForm
+    template_name = 'release_trades_wholesale.html'
+    login_url = 'login'
+    context_object_name = 'wholesale_and_trades'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        release_currencies = ReleaseWholesalePrice.objects.values('currency_price', 'profile_currency__currency', 'wholesale_and_trades').filter(wholesale_and_trades=self.kwargs.get('pk'))
+        # print(self.kwargs.get('pk'))
+        context.update({'release_currencies': release_currencies})
+
+        return context
+
+    def get_success_url(self):
+        return reverse('wholesale_and_trades_edit', args=[self.object.pk])
+
+    def test_func(self):
+        obj = self.get_object()
+        return obj.release.profile == self.request.user.profile
+
+
+class CreateWholesalePriceView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+    model = ReleaseWholesalePrice
+    template_name = 'wholesale_price_add.html'
+    form_class = CreateWholesalePriceForm
+    login_url = 'login'
+    success_url = reverse_lazy('home')
+
+    def form_valid(self, form):
+        form.instance.wholesale_and_trades = WholesaleAndTrades.objects.get(id=self.kwargs.get('pk'))
+        return super().form_valid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['profile'] = self.request.user.profile
+        kwargs['wholesale_and_trades'] = WholesaleAndTrades.objects.get(id=self.kwargs.get('pk'))
+        return kwargs
+
+    def get_success_url(self):
+        wholesale_and_trades = WholesaleAndTrades.objects.get(id=self.kwargs.get('pk'))
+        return reverse('wholesale_and_trades_edit', args=[wholesale_and_trades.pk])
+
+    def test_func(self):
+        obj = WholesaleAndTrades.objects.get(id=self.kwargs.get('pk'))
+        return obj.release.profile == self.request.user.profile
+
+
+# Реализую в следующем ПРе
+class UpdateWholesalePriceView(UpdateView):
+    model = ReleaseWholesalePrice
+
+
+class DeleteWholesalePriceView(DeleteView):
+    model = ReleaseWholesalePrice

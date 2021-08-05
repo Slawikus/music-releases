@@ -16,19 +16,25 @@
           <p>{{ release.album_title }} - {{ release.format }} | {{ release.divide_media_format }}</p>
           <p>{{ release.base_style }}</p>
           <p>{{ release.submitted_at }} {{ release.label }} ({{ release.label.profile.country }})</p>
-
         </div>
         <div class="col-5"></div>
       </div>
       <audio controls="controls">
         <source src="{{ release.sample.url }}" type="audio/mpeg"/>
       </audio>
-      {% if not release.is_submitted %}
-        <form action="#">
-          <button type="submit" class="btn btn-primary ml-4">Submit</button>
-        </form>
-      {% endif %}
+      <div class="row">
+        <div class="col-2">
+          {% if not release.is_submitted %}
+            <form method="POST" action="{% url "release_submit" release.pk %}">
+              {% csrf_token %}
+              <input type="submit" class="btn btn-secondary btn-sm" value="Submit">
+            </form>
+          {% endif %}
+          {#    Пока ПР с редактированием релиза не готов, кнопка редактирования релиза ведёт на "Wholesale and Trades". Когда будет готово, объединим.#}
+          <a class="btn btn-outline-secondary btn-sm mt-2"
+             href="{% url 'wholesale_and_trades_edit' release.pk %}">Edit</a>
+        </div>
+      </div>
     </div>
   {% endfor %}
-
 {% endblock content %}

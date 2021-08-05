@@ -1,6 +1,8 @@
 from django.core.exceptions import ValidationError
-from django.core.validators import FileExtensionValidator
+from django.core.validators import FileExtensionValidator, MinValueValidator, MaxValueValidator
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.urls import reverse
 from django_countries.fields import CountryField
 from django.utils import timezone
@@ -100,15 +102,48 @@ class Release(models.Model):
         return " | ".join(self.media_format_details.split(", "))
 
 
-class TradesWholesale(models.Model):
+class WholesaleAndTrades(models.Model):
+    YES_NO_CHOICES = (
+        (True, 'Yes'),
+        (False, 'No')
+    )
+
     release = models.OneToOneField(Release, on_delete=models.CASCADE)
-    available_for_trade = models.BooleanField()
-    trade_points = models.PositiveIntegerField(null=True, blank=True)
+    available_for_trade = models.BooleanField(default=False, choices=YES_NO_CHOICES)
+    trade_points = models.DecimalField(
+        decimal_places=1,
+        max_digits=3,
+        validators=[MinValueValidator(0), MaxValueValidator(30)],
+        null=True,
+        blank=True
+    )
     trade_remarks = models.CharField(max_length=250, null=True, blank=True)
-    available_for_wholesale = models.BooleanField()
-    wholesale_prices = models.ForeignKey(ProfileCurrency, on_delete=models.CASCADE, related_name='wholesale_prices')
+    available_for_wholesale = models.BooleanField(default=False, choices=YES_NO_CHOICES)
 
 
+class ReleaseWholesalePrice(models.Model):
+    wholesale_and_trades = models.ForeignKey(
+        WholesaleAndTrades,
+        related_name='wholesale_and_trades',
+        on_delete=models.CASCADE
+    )
+    profile_currency = models.ForeignKey(
+        ProfileCurrency,
+        on_delete=models.CASCADE,
+        related_name='profile_currency'
+    )
+    currency_price = models.DecimalField(decimal_places=2, max_digits=10)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['wholesale_and_trades', 'profile_currency'],
+                name='unique_wholesaleandtrades_per_currency'
+            ),
+        ]
+
+
+# Реализую в следующем ПРе
 class MarketingInfos(models.Model):
     release = models.OneToOneField(Release, on_delete=models.CASCADE)
     style = models.CharField(max_length=250, null=True, blank=True)
@@ -116,3 +151,10 @@ class MarketingInfos(models.Model):
     youtube_url = models.URLField(null=True, blank=True)
     soundcloud_url = models.URLField(null=True, blank=True)
     press_feedback = models.TextField(null=True, blank=True)
+
+
+@receiver(post_save, sender=Release)
+def create_or_update_release_wholesaleandtrades(sender, instance, created, **kwargs):
+    if created:
+        WholesaleAndTrades.objects.create(release=instance, id=instance.id)
+    instance.wholesaleandtrades.save()
