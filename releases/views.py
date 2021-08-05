@@ -105,7 +105,7 @@ class ImportReleasesView(View):
         file = request.FILES.get("excel")
 
         # try:
-        save_excel_file(file, request.user.profile)
+        save_excel_file(request, file, request.user.profile)
         # except:
         #
         #     context = {"error": "Wrong excel format. Please write as shown in example"}

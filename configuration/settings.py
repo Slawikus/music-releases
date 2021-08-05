@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 import dj_database_url
 import pycountry
+from django_countries.data import COUNTRIES
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -129,6 +130,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
+
 
 CURRENCY_CHOICES = [
     (currency.alpha_3, f'{currency.alpha_3} - {currency.name}')
