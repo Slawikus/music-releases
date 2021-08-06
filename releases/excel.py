@@ -40,6 +40,12 @@ def save_excel_file(file, profile):
         except:
             return f"wrong date format at {row} row, 4 column"
 
+        try:
+            label_name = sheet.cell(row, 9).value
+            label = profile.label.get(name=label_name)
+        except:
+            return f"You haven't label named {label_name}. Error at {row} row, 9 column"
+
         format = sheet.cell(row, 6).value
         style = sheet.cell(row, 8).value
 
@@ -57,7 +63,7 @@ def save_excel_file(file, profile):
                 sample=f"{MEDIA_ROOT}/audio/releases/dummy.mp3",
                 cover_image=f"{MEDIA_ROOT}/images/releases/dummy.jpg",
                 # Since a user can have several labels, for now I have done like this
-                label=profile.label.first()
+                label=label
 
             )
 
