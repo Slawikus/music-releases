@@ -95,7 +95,7 @@ class MyReleasesView(BaseRelease, LoginRequiredMixin):
         return super().get_queryset().filter(profile=self.request.user.profile).order_by("-submitted_at")
 
 
-class ImportReleasesView(FormView):
+class ImportReleasesView(FormView, LoginRequiredMixin):
 
     template_name = "upload_release.html"
     form_class = ImportReleaseForm
