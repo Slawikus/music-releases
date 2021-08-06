@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from django.views.generic import CreateView, UpdateView, ListView
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.urls import reverse_lazy, reverse
 from django.contrib import messages
 
@@ -53,6 +53,9 @@ def submit_release(request, pk):
             messages.error(request, "Release does not exist")
 
         return HttpResponseRedirect(reverse("my_releases"))
+
+    else:
+        return HttpResponseForbidden
 
 
 class EditReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
