@@ -33,28 +33,33 @@ class CreateReleaseView(LoginRequiredMixin, CreateView):
 @login_required
 def submit_release(request, pk):
 
-    release = Release.objects.filter(pk=pk)
-    if release.exists():
-        messages.error(request, "Release does not exist")
+    if request.method == "POST":
+        release = Release.objects.filter(pk=pk)
+        if release.exists():
+            messages.error(request, "Release does not exist")
 
-        if release.profile == request.user.profile:
-            if not release.is_submitted:
-                release.is_submitted = True
-                release.submitted_at = datetime.today()
-                release.save()
+            if release.profile == request.user.profile:
+                if not release.is_submitted:
+                    release.is_submitted = True
+                    release.submitted_at = datetime.today()
+                    release.save()
+                else:
+                    messages.error(request, "release is already submitted")
+
             else:
-                messages.error(request, "release is already submitted")
+                messages.error(request, "You can't submit someone else's record")
 
         else:
-            messages.error(request, "You can't submit someone else's record")
+            messages.error(request, "Release does not exist")
 
-    else:
-        messages.error(request, "Release does not exist")
-
-    return HttpResponseRedirect(reverse("my_releases"))
+        return HttpResponseRedirect(reverse("my_releases"))
 
 
-class EditReleaseView(LoginRequiredMixin, UpdateView):
+class EditReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+
+    def test_func(self):
+        key = self.kwargs.get(self.pk_url_kwarg)
+        return self.request.user.profile == Release.objects.get(pk=key).profile
 
     model = Release
 
