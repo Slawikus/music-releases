@@ -11,6 +11,12 @@ COUNTRIES_DICT = {full_name: short_name for short_name, full_name in COUNTRIES.i
 
 
 def save_excel_file(file, profile):
+    """
+    Parse, validate and save file. If there is error returns it, otherwise returns None
+    """
+
+    # you may say that file can be not excel format,
+    # but i added file validation in ReleaseImportForm (forms.py)
     workbook = openpyxl.load_workbook(file)
     sheet = workbook.active
 
@@ -29,6 +35,7 @@ def save_excel_file(file, profile):
             return f"Wrong country at {row} row, 3 column"
 
         try:
+            # Convert DD.MM.YYYY format to YYYY-MM-DD
             valid_date = sheet.cell(row, 4).value.strftime("%Y-%m-%d")
         except:
             return f"wrong date format at {row} row, 4 column"
@@ -49,6 +56,7 @@ def save_excel_file(file, profile):
                 profile=profile,
                 sample=f"{MEDIA_ROOT}/audio/releases/dummy.mp3",
                 cover_image=f"{MEDIA_ROOT}/images/releases/dummy.jpg",
+                # Since a user can have several labels, for now I have done like this
                 label=profile.label.first()
 
             )

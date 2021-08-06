@@ -105,7 +105,7 @@ class ImportReleasesView(FormView):
         file = form.cleaned_data.get("file")
         profile = self.request.user.profile
         result = save_excel_file(file, profile)
-        #if has any error
+        # if result contains any error
         if result:
             messages.error(self.request, result)
             return self.render_to_response(
