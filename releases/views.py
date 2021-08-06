@@ -1,10 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import CreateView, UpdateView, ListView, View
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
-from django.urls import reverse_lazy, reverse
+from django.views.generic import CreateView, UpdateView, ListView, FormView
+from django.urls import reverse_lazy
+from django.contrib import messages
 
-from .forms import CreateReleaseForm
+from .forms import CreateReleaseForm, ImportReleaseForm
 from .models import Release
 from .filters import ReleaseFilter
 from .excel import save_excel_file
@@ -96,19 +95,21 @@ class MyReleasesView(BaseRelease, LoginRequiredMixin):
         return super().get_queryset().filter(profile=self.request.user.profile).order_by("-submitted_at")
 
 
-class ImportReleasesView(View):
+class ImportReleasesView(FormView):
 
-    def get(self, request):
-        return render(request, "upload_release.html")
+    template_name = "upload_release.html"
+    form_class = ImportReleaseForm
+    success_url = reverse_lazy("my_releases")
 
-    def post(self, request):
-        file = request.FILES.get("excel")
-
-        # try:
-        save_excel_file(request, file, request.user.profile)
-        # except:
-        #
-        #     context = {"error": "Wrong excel format. Please write as shown in example"}
-        #     return render(request, "upload_release.html", context)
-
-        return HttpResponseRedirect(reverse("my_releases"))
+    def form_valid(self, form):
+        file = form.cleaned_data.get("file")
+        profile = self.request.user.profile
+        result = save_excel_file(file, profile)
+        #if has any error
+        if result:
+            messages.error(self.request, result)
+            return self.render_to_response(
+                self.get_context_data(request=self.request, form=form)
+            )
+        else:
+            return super().form_valid(form)

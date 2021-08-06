@@ -1,16 +1,20 @@
 {% extends '_base.html' %}
 
+{% load crispy_forms_tags %}
+{% load static %}
+
 {% block title %}Import release from Excel{% endblock title %}
 
 {% block content %}
 <form action="{% url 'import_releases' %}" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
+
   <div class="row">
       <div class="col-4">
           <h6 class="mb-4 mt-3">Import release</h6>
           <div class="row mt-2 mb-2">
 
-              <input id="fileSelect" name='excel' type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+                {% csrf_token %}
+               {{ form|crispy }}
 
               <h6 class="mt-2">Excel file must contain</h6>
               <ol>
@@ -43,19 +47,11 @@
       </div>
       <div class="col-8">
           <h6 class="mb-4 mt-3">Example</h6>
-          {% load static %}
           <img src="{% static 'images/excel_example.png' %}" class="img-fluid" alt="">
-          <h5 style="color:red;">{{ error }}</h5>
-          <button id='btn' type="submit" href="#" class="btn btn-primary mt-4" disabled>Import</button>
+          <button type="submit" class="btn btn-primary mt-4">Import</button>
       </div>
 
   </div>
-    <script>
-        var input = document.getElementById("fileSelect");
-        input.oninput = function(){
-            button = document.getElementById("btn");
-            button.disabled = false;
-        };
-    </script>
+
 </form>
 {% endblock content %}
