@@ -1,5 +1,5 @@
 from django.test import TestCase, Client, RequestFactory
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.contrib.auth import get_user_model
 
 from datetime import date
@@ -66,8 +66,9 @@ class TestViews(TestCase):
 
     def test_edit_release(self):
 
-        response = self.client.get("/releases/edit-release/10000")
+        response = self.client.get(reverse("edit_release", kwargs={"pk": 5}))
         self.assertEqual(response.status_code, 404)
+
 
 class TestAnonymousUserView(TestCase):
 
