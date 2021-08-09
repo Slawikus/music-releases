@@ -7,28 +7,41 @@ from datetime import date
 from users.models import User, Label
 from .views import UpcomingReleasesView
 
+
 # Create your tests here.
-class TestViews(TestCase):
+class BaseClientTest(TestCase):
 
     def setUp(self):
         self.client = Client()
         self.user = get_user_model()
         self.user.objects.create_user('lotus', password='qweytr21')
-        self.assertTrue(self.client.login(username='lotus', password='qweytr21'))
+        self.client.login(username='lotus', password='qweytr21')
 
-    def test_releases(self):
 
+class MyReleasesViewTest(BaseClientTest):
+
+    def test_response(self):
         response = self.client.get(reverse_lazy("my_releases"))
         self.assertEqual(response.status_code, 200)
 
+
+class AllReleasesViewTest(BaseClientTest):
+
+    def test_response(self):
         response = self.client.get(reverse_lazy("all_releases"))
         self.assertEqual(response.status_code, 200)
 
+
+class RecentlySubmittedReleasesView(BaseClientTest):
+
+    def test_response(self):
         response = self.client.get(reverse_lazy('recently_submitted'))
         self.assertEqual(response.status_code, 200)
 
-    def test_upcoming(self):
 
+class UpcomingViewTest(BaseClientTest):
+
+    def test_time(self):
         response = self.client.get(reverse_lazy('upcoming_releases'))
         self.assertTrue(response.status_code, 200)
 
@@ -42,15 +55,15 @@ class TestViews(TestCase):
         self.assertTrue(all([rel.release_date < date.today() for rel in context["releases"]]))
 
 
+class CreateReleaseTest(BaseClientTest):
 
-    def test_create_release(self):
-
+    def test_creation(self):
         response = self.client.get(reverse_lazy('release_add'))
         self.assertTrue(response.status_code, 200)
 
         profile = User.objects.first().profile
         label = Label.objects.create(name='testing label', profile=profile)
-        edit_response = self.client.post(reverse_lazy('release_add'),{
+        edit_response = self.client.post(reverse_lazy('release_add'), {
             "profile": profile.id,
             "band_name": "test_band",
             "country": "Monaco",
@@ -64,17 +77,9 @@ class TestViews(TestCase):
         })
         self.assertEqual(edit_response.status_code, 200)
 
-    def test_edit_release(self):
 
+class EditReleaseView(BaseClientTest):
+
+    def test_security(self):
         response = self.client.get(reverse("edit_release", kwargs={"pk": 5}))
         self.assertEqual(response.status_code, 404)
-
-
-class TestAnonymousUserView(TestCase):
-
-    def setUp(self):
-        self.client = Client()
-
-    def edit_release(self):
-        response = self.client.get("/releases/edit-release/5")
-        self.assertEqual(response.status_code, 403)
