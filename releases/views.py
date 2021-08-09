@@ -2,11 +2,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import CreateView, UpdateView, ListView, FormView
 from django.urls import reverse_lazy
 from django.contrib import messages
+from django.http import HttpResponse
 
 from .forms import CreateReleaseForm, ImportReleaseForm
 from .models import Release
 from .filters import ReleaseFilter
 from .excel import save_excel_file
+from configuration.settings import MEDIA_ROOT
 
 from datetime import date
 
@@ -43,7 +45,7 @@ class SubmitReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return obj.profile == self.request.user.profile
 
 
-class EditReleaseView(UpdateView, LoginRequiredMixin):
+class EditReleaseView(LoginRequiredMixin, UpdateView):
     model = Release
 
     login_url = 'login'
@@ -52,7 +54,7 @@ class EditReleaseView(UpdateView, LoginRequiredMixin):
     success_url = reverse_lazy("my_releases")
 
 
-class BaseRelease(ListView, LoginRequiredMixin):
+class BaseRelease(LoginRequiredMixin, ListView):
     login_url = 'login'
     context_object_name = "releases"
 
@@ -66,7 +68,7 @@ class AllReleaseView(BaseRelease):
         return Release.objects.filter(is_submitted=True)
 
 
-class UpcomingReleasesView(ListView, LoginRequiredMixin):
+class UpcomingReleasesView(LoginRequiredMixin, ListView):
     template_name = "upcoming.html"
     model = Release
 
@@ -89,13 +91,13 @@ class RecentlySubmittedView(BaseRelease):
                                              ).order_by("-submitted_at")
 
 
-class MyReleasesView(BaseRelease, LoginRequiredMixin):
+class MyReleasesView(BaseRelease):
 
     def get_queryset(self):
         return super().get_queryset().filter(profile=self.request.user.profile).order_by("-submitted_at")
 
 
-class ImportReleasesView(FormView, LoginRequiredMixin):
+class ImportReleasesView(LoginRequiredMixin, FormView):
 
     template_name = "upload_release.html"
     form_class = ImportReleaseForm
@@ -104,12 +106,21 @@ class ImportReleasesView(FormView, LoginRequiredMixin):
     def form_valid(self, form):
         file = form.cleaned_data.get("file")
         profile = self.request.user.profile
-        result = save_excel_file(file, profile)
+        import_error = save_excel_file(file, profile)
         # if result contains any error
-        if result:
-            messages.error(self.request, result)
+        if import_error:
+            messages.error(self.request, import_error)
             return self.render_to_response(
                 self.get_context_data(request=self.request, form=form)
             )
         else:
             return super().form_valid(form)
+
+def get_example_excel(request):
+
+    with open(f"{MEDIA_ROOT}/excel/example.xlsx", "rb") as file:
+        data = file.read()
+
+    response = HttpResponse(data, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = 'attachment; filename=example.xlsx'
+    return response

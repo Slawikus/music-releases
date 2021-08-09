@@ -62,7 +62,6 @@ def save_excel_file(file, profile):
                 profile=profile,
                 sample=f"{MEDIA_ROOT}/audio/releases/dummy.mp3",
                 cover_image=f"{MEDIA_ROOT}/images/releases/dummy.jpg",
-                # Since a user can have several labels, for now I have done like this
                 label=label
 
             )
