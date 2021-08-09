@@ -7,7 +7,6 @@ from datetime import date
 from users.models import User, Label
 from .views import UpcomingReleasesView
 
-
 # Create your tests here.
 class BaseClientTest(TestCase):
 
