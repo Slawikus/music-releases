@@ -35,8 +35,8 @@ def submit_release(request, pk):
 
     if request.method == "POST":
         release = Release.objects.filter(pk=pk)
+
         if release.exists():
-            messages.error(request, "Release does not exist")
 
             if release.profile == request.user.profile:
                 if not release.is_submitted:
@@ -61,8 +61,8 @@ def submit_release(request, pk):
 class EditReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def test_func(self):
-        key = self.kwargs.get(self.pk_url_kwarg)
-        return self.request.user.profile == Release.objects.get(pk=key).profile
+        obj = self.get_object()
+        return obj.profile == self.request.user.profile
 
     model = Release
 
