@@ -6,6 +6,12 @@ from datetime import date
 
 from users.models import User, Label
 from .views import UpcomingReleasesView
+from .factories import (
+    ReleaseFactory,
+    UserFactory,
+    ProfileFactory,
+    LabelFactory
+)
 
 # Create your tests here.
 class BaseClientTest(TestCase):
@@ -43,6 +49,10 @@ class UpcomingViewTest(BaseClientTest):
     def test_time(self):
         response = self.client.get(reverse_lazy('upcoming_releases'))
         self.assertTrue(response.status_code, 200)
+
+        # setup test releases
+        for i in range(10):
+            ReleaseFactory()
 
         # setup view
         request = RequestFactory().get("/")
