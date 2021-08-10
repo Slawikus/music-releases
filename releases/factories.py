@@ -5,6 +5,8 @@ import random
 from django.db.models.signals import post_save
 
 
+# more about using profile and user models in factory boy
+# here https://factoryboy.readthedocs.io/en/stable/recipes.html#:~:text=class%20ProfileFactory(factory.django.DjangoModelFactory)%3A
 @factory.django.mute_signals(post_save)
 class ProfileFactory(factory.django.DjangoModelFactory):
     class Meta:
@@ -35,15 +37,15 @@ class LabelFactory(factory.django.DjangoModelFactory):
 class ReleaseFactory(factory.django.DjangoModelFactory):
     profile = factory.SubFactory(ProfileFactory)
     band_name = factory.Faker("name")
-    country = factory.Faker("country")
-    album_title = factory.Faker("misc")
-    release_date = factory.Faker("datetime")
+    country = "ru"
+    album_title = factory.Faker("name")
+    release_date = factory.Faker("date_time")
     label = factory.SubFactory(LabelFactory)
     base_style = random.choices(Release.BaseStyle.values)
     cover_image = factory.django.ImageField(color=factory.Faker("color"))
-    format = random.choices(Release.Formats.values)
-    sample = factory.Faker("path")
-    is_submitted = random.choices([True, False])
+    format = "CD"
+    sample = factory.Faker("name")
+    is_submitted = random.choices([True, False])[0]
 
     class Meta:
         model = Release

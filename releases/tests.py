@@ -8,7 +8,6 @@ from users.models import User, Label
 from .views import UpcomingReleasesView
 from .factories import (
     ReleaseFactory,
-    UserFactory,
     ProfileFactory,
     LabelFactory
 )
@@ -51,8 +50,10 @@ class UpcomingViewTest(BaseClientTest):
         self.assertTrue(response.status_code, 200)
 
         # setup test releases
+        profile = ProfileFactory.create()
+        label = LabelFactory(profile=profile)
         for i in range(10):
-            ReleaseFactory()
+            ReleaseFactory(profile=profile, label=label)
 
         # setup view
         request = RequestFactory().get("/")
@@ -70,8 +71,8 @@ class CreateReleaseTest(BaseClientTest):
         response = self.client.get(reverse_lazy('release_add'))
         self.assertTrue(response.status_code, 200)
 
-        profile = User.objects.first().profile
-        label = Label.objects.create(name='testing label', profile=profile)
+        profile = ProfileFactory.create()
+        label = LabelFactory(profile=profile)
         edit_response = self.client.post(reverse_lazy('release_add'), {
             "profile": profile.id,
             "band_name": "test_band",
