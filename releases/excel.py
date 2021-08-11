@@ -1,6 +1,5 @@
 import openpyxl
 from .models import Release
-from configuration.settings import MEDIA_ROOT
 from django_countries.data import COUNTRIES
 
 FORMATS = Release.Formats.values
@@ -23,7 +22,6 @@ def save_excel_file(file, profile):
     for row in range(2, sheet.max_row + 1):
 
         # check if all cells in sheet not empty
-
         if not all([sheet.cell(row, col).value != "" for col in range(1, sheet.max_column + 1)]):
             return "There are empty values. Please check your excel file"
 
@@ -50,7 +48,7 @@ def save_excel_file(file, profile):
         style = sheet.cell(row, 8).value
 
         try:
-            release = Release(
+            release = Release.objects.create(
                 band_name=sheet.cell(row, 1).value,
                 album_title=sheet.cell(row, 2).value,
                 country=valid_country,
@@ -60,13 +58,11 @@ def save_excel_file(file, profile):
                 limited_edition=sheet.cell(row, 7).value,
                 base_style=style if (style in STYLES) else "Other",
                 profile=profile,
-                sample=f"{MEDIA_ROOT}/audio/releases/dummy.mp3",
-                cover_image=f"{MEDIA_ROOT}/images/releases/dummy.jpg",
+                sample="dummy.mp3",
+                cover_image="dummy.jpg",
                 label=label
 
             )
-
-            release.save()
 
         except:
             return "import failed. Your file may contain empty cells"

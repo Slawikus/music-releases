@@ -2,13 +2,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import CreateView, UpdateView, ListView, FormView
 from django.urls import reverse_lazy
 from django.contrib import messages
-from django.http import HttpResponse
 
 from .forms import CreateReleaseForm, ImportReleaseForm
 from .models import Release
 from .filters import ReleaseFilter
 from .excel import save_excel_file
-from configuration.settings import MEDIA_ROOT
 
 from datetime import date
 
@@ -115,12 +113,3 @@ class ImportReleasesView(LoginRequiredMixin, FormView):
             )
         else:
             return super().form_valid(form)
-
-def get_example_excel(request):
-
-    with open(f"{MEDIA_ROOT}/excel/example.xlsx", "rb") as file:
-        data = file.read()
-
-    response = HttpResponse(data, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-    response['Content-Disposition'] = 'attachment; filename=example.xlsx'
-    return response
