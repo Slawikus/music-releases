@@ -15,7 +15,6 @@ class ReleaseFactory(factory.django.DjangoModelFactory):
     cover_image = factory.django.ImageField(color=factory.Faker("color"))
     format = "CD"
     sample = factory.Faker("name")
-    is_submitted = random.choices([True, False])[0]
 
     class Meta:
         model = Release

@@ -51,7 +51,7 @@ class EditReleaseView(UpdateView, LoginRequiredMixin):
     success_url = reverse_lazy("my_releases")
 
 
-class BaseRelease(ListView, LoginRequiredMixin):
+class BaseRelease(LoginRequiredMixin, ListView):
 
     login_url = 'login'
     context_object_name = "releases"
@@ -66,7 +66,7 @@ class AllReleaseView(BaseRelease):
         return Release.objects.filter(is_submitted=True)
 
 
-class UpcomingReleasesView(ListView, LoginRequiredMixin):
+class UpcomingReleasesView(LoginRequiredMixin, ListView):
 
     template_name = "upcoming.html"
     model = Release
@@ -90,7 +90,7 @@ class RecentlySubmittedView(BaseRelease):
                                              ).order_by("-submitted_at")
 
 
-class MyReleasesView(BaseRelease, LoginRequiredMixin):
+class MyReleasesView(BaseRelease):
 
     def get_queryset(self):
         return super().get_queryset().filter(profile=self.request.user.profile).order_by("-submitted_at")
