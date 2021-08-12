@@ -124,7 +124,6 @@ class UpcomingViewTest(BaseClientTest):
         label = LabelFactory(profile=profile)
         for i in range(10):
             ReleaseFactory(profile=profile, label=label)
-
         context = get_view_context(self.user, UpcomingReleasesView)
         # check if all release dates are in future
         self.assertTrue(all([rel.release_date < timezone.now() for rel in context["releases"]]))
@@ -163,4 +162,4 @@ class EditReleaseView(BaseClientTest):
         anonymous = Client()
         response = anonymous.get(reverse("edit_release", kwargs={"pk": release.id}))
 
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 302)
