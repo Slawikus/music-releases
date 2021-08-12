@@ -1,6 +1,7 @@
 import openpyxl
 from .models import Release
 from django_countries.data import COUNTRIES
+from configuration.settings import STATIC_ROOT
 
 FORMATS = Release.Formats.values
 STYLES = Release.BaseStyle.values
@@ -21,9 +22,6 @@ def save_excel_file(file, profile):
 
     for row in range(2, sheet.max_row + 1):
 
-        # check if all cells in sheet not empty
-        if not all([sheet.cell(row, col).value != "" for col in range(1, sheet.max_column + 1)]):
-            return "There are empty values. Please check your excel file"
 
         try:
             # as django_countries saves country in DB with 2 chars ("New Zealand" -> "NZ")
@@ -58,8 +56,8 @@ def save_excel_file(file, profile):
                 limited_edition=sheet.cell(row, 7).value,
                 base_style=style if (style in STYLES) else "Other",
                 profile=profile,
-                sample="dummy.mp3",
-                cover_image="dummy.jpg",
+                sample="dummy/dummy.mp3",
+                cover_image="dummy/dummy.jpg",
                 label=label
 
             )
