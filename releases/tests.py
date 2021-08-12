@@ -1,24 +1,27 @@
 from django.test import TestCase, Client, RequestFactory
 from django.urls import reverse_lazy, reverse
 
-from datetime import date
+from django.utils import timezone
+from datetime import timedelta
 
-from users.models import User, Label
-from .views import UpcomingReleasesView, MyReleasesView, AllReleaseView
+from releases.models import Release
+from users.models import User
+from .views import (UpcomingReleasesView,
+                    MyReleasesView,
+                    AllReleaseView,
+                    RecentlySubmittedView
+                    )
 from .factories import (
     ReleaseFactory,
     ProfileFactory,
     LabelFactory,
-    UserFactory
 )
 
 
 def get_view_context(user, view_class):
-
     request = RequestFactory().get("/")
     request.user = user
-
-    view = view_class(context_object_name='releases')
+    view = view_class()
     view.setup(request)
     view.object_list = view.get_queryset()
 
@@ -87,7 +90,7 @@ class AllReleasesViewTest(BaseClientTest):
         self.assertEqual(len(context["releases"]), 3)
 
 
-class RecentlySubmittedReleasesView(BaseClientTest):
+class RecentlySubmittedViewTest(BaseClientTest):
 
     def test_response(self):
         response = self.client.get(reverse_lazy('recently_submitted'))
@@ -97,12 +100,17 @@ class RecentlySubmittedReleasesView(BaseClientTest):
         label = LabelFactory(profile=self.user.profile)
 
         ReleaseFactory.create_batch(3, profile=self.user.profile, label=label)
-        ReleaseFactory.create_batch(5, profile=self.user.profile, label=label, is_submitted=True)
+        # create releases with random datetime and submitted
+        for i in [3, 2, 5, 1, 4]:
+            ReleaseFactory.create(profile=self.user.profile,
+                                  label=label,
+                                  is_submitted=True,
+                                  submitted_at=timezone.now() - timedelta(days=i)
+                                  )
 
-        context = get_view_context(self.user, RecentlySubmittedReleasesView)
+        context = get_view_context(self.user, RecentlySubmittedView)["releases"]
 
-        self.assertEqual(len(context["releases"]), 5)
-
+        self.assertEqual(len(context), 5)
 
 
 class UpcomingViewTest(BaseClientTest):
@@ -117,9 +125,9 @@ class UpcomingViewTest(BaseClientTest):
         for i in range(10):
             ReleaseFactory(profile=profile, label=label)
 
-        context = get_view_context(self.user, MyReleasesView)
+        context = get_view_context(self.user, UpcomingReleasesView)
         # check if all release dates are in future
-        self.assertTrue(all([rel.release_date < date.today() for rel in context["releases"]]))
+        self.assertTrue(all([rel.release_date < timezone.now() for rel in context["releases"]]))
 
 
 class CreateReleaseTest(BaseClientTest):
@@ -132,7 +140,7 @@ class CreateReleaseTest(BaseClientTest):
         label = LabelFactory(profile=profile)
         edit_response = self.client.post(reverse_lazy('release_add'), {
             "profile": profile.id,
-            "band_name": "test_band",
+            "band_name": "test_band", # this value will be checked bellow
             "country": "Monaco",
             "album_title": "test album",
             "release_date": "2021-01-01",
@@ -143,10 +151,16 @@ class CreateReleaseTest(BaseClientTest):
             "sample": "path/to/sample"
         })
         self.assertEqual(edit_response.status_code, 200)
-
+        self.assertTrue(Release.objects.filter(band_name="test_band").exists())
 
 class EditReleaseView(BaseClientTest):
 
     def test_security(self):
-        response = self.client.get(reverse("edit_release", kwargs={"pk": 5}))
-        self.assertEqual(response.status_code, 404)
+
+        label = LabelFactory(profile=self.user.profile)
+        release = ReleaseFactory.create(profile=self.user.profile, label=label, is_submitted=True)
+
+        anonymous = Client()
+        response = anonymous.get(reverse("edit_release", kwargs={"pk": release.id}))
+
+        self.assertEqual(response.status_code, 403)
