@@ -5,11 +5,12 @@ from django.contrib.auth import get_user_model
 from datetime import date
 
 from users.models import User, Label
-from .views import UpcomingReleasesView
+from .views import UpcomingReleasesView, MyReleasesView
 from .factories import (
     ReleaseFactory,
     ProfileFactory,
-    LabelFactory
+    LabelFactory,
+    UserFactory
 )
 
 # Create your tests here.
@@ -17,10 +18,8 @@ class BaseClientTest(TestCase):
 
     def setUp(self):
         self.client = Client()
-        self.user = get_user_model()
-        self.user.objects.create_user('lotus', password='qweytr21')
+        self.user = User.objects.create_user('lotus', password='qweytr21')
         self.client.login(username='lotus', password='qweytr21')
-
 
 class MyReleasesViewTest(BaseClientTest):
 
@@ -28,8 +27,26 @@ class MyReleasesViewTest(BaseClientTest):
         response = self.client.get(reverse_lazy("my_releases"))
         self.assertEqual(response.status_code, 200)
 
+    def test_security(self):
+        # create logged in user's releases
+        label = LabelFactory(profile=self.user.profile)
+        ReleaseFactory.create_batch(2, profile=self.user.profile, label=label)
+        # create another user's releases
+        other_user_profile = ProfileFactory()
+        other_label = LabelFactory(profile=other_user_profile)
+        ReleaseFactory.create_batch(3, profile=other_user_profile, label=other_label)
 
-class AllReleasesViewTest(BaseClientTest):
+        request = RequestFactory().get("/")
+        view = MyReleasesView(context_object_name='releases')
+        view.setup(request)
+        view.object_list = view.get_queryset()
+        context = view.get_context_data()
+
+        self.assertEqual(len(context["releases"]), 2)
+        self.assertTrue(all([i.profile == self.user.profile for i in context["releases"]]))
+
+
+class AllReleasesViewTest(TestCase):
 
     def test_response(self):
         response = self.client.get(reverse_lazy("all_releases"))
