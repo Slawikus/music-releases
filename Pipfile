@@ -12,6 +12,7 @@ whitenoise = "*"
 pycountry = "*"
 django-filter = "*"
 django-factory-boy = "*"
+django-extensions = "*"
 
 [dev-packages]
 
