@@ -1,34 +1,46 @@
 {% extends '_base.html' %}
 
-{% block title %}Home Page{% endblock title %}
+{% block title %}{{ title }}{% endblock title %}
 
 {% block content %}
 
 {% for release in releases %}
 
-  <div class="p-4 shadow-4 rounded-3 mt-3" style="background-color: hsl(0,0%,94%);">
+  <div class="p-4 shadow-4 rounded-3 mt-3" style="background-color: hsl(0, 0%, 94%);">
+
     <div class="row">
         <div class="col-2">
             <img src="{{ release.cover_image.url }}" alt="" srcset="" class="img-thumbnail">
         </div>
-        <div class="col-5">
+        <div class="col-4">
             <p>{{ release.band_name }} ({{ release.country }})</p>
             <p>{{ release.album_title }} - {{ release.format }} | {{ release.divide_media_format }}</p>
             <p>{{ release.base_style }}</p>
-            <p>{{ release.submitted_at }} {{ release.label }} ({{ release.label.profile.country }})</p>
+            <p>{{ release.submitted_at|date:"d.m.Y" }} {{ release.label }} ({{ release.label.profile.country }})</p>
 
         </div>
-        <div class="col-5"></div>
+        <div class="col-4"></div>
+
+        <!-- buttons -->
+        <div class="col-2">
+            {% if not release.is_submitted %}
+                <form action="{% url 'submit_release' release.pk %}" method="post">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            {% endif %}
+
+            {% url 'my_releases' as my_releases %}
+            {% if request.path == my_releases %}
+                <a href="{% url 'edit_release' release.pk %}" class="btn btn-secondary mt-3">Edit</a>
+            {% endif %}
+        </div>
+
     </div>
     <audio controls="controls">
       <source src="{{ release.sample.url }}" type="audio/mpeg" />
     </audio>
 
-    {% if not release.is_submitted %}
-        <form action="#">
-            <button type="submit" class="btn btn-primary ml-4">Submit</button>
-        </form>
-    {% endif %}
+    
   </div>
   {% endfor %}
 
