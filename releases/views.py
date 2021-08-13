@@ -36,6 +36,8 @@ class SubmitReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def form_valid(self, form):
         form.instance.is_submitted = True
+        # wholesale_and_trades = WholesaleAndTrades.objects.create(release=form.instance, id=form.instance.id)
+        # wholesale_and_trades.save()
         return super().form_valid(form)
 
     def test_func(self):
@@ -94,8 +96,8 @@ class UpdateWholesaleAndTradesView(LoginRequiredMixin, UserPassesTestMixin, Upda
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        release_currencies = ReleaseWholesalePrice.objects.values('currency_price', 'profile_currency__currency', 'wholesale_and_trades').filter(wholesale_and_trades=self.kwargs.get('pk'))
-        # print(self.kwargs.get('pk'))
+        release_currencies = ReleaseWholesalePrice.objects.values('price', 'currency__currency', 'release')\
+            .filter(release=self.kwargs.get('pk'))
         context.update({'release_currencies': release_currencies})
 
         return context
@@ -116,13 +118,13 @@ class CreateWholesalePriceView(LoginRequiredMixin, UserPassesTestMixin, CreateVi
     success_url = reverse_lazy('home')
 
     def form_valid(self, form):
-        form.instance.wholesale_and_trades = WholesaleAndTrades.objects.get(id=self.kwargs.get('pk'))
+        form.instance.release = Release.objects.get(id=self.kwargs.get('pk'))
         return super().form_valid(form)
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['profile'] = self.request.user.profile
-        kwargs['wholesale_and_trades'] = WholesaleAndTrades.objects.get(id=self.kwargs.get('pk'))
+        kwargs['release'] = Release.objects.get(id=self.kwargs.get('pk'))
         return kwargs
 
     def get_success_url(self):
@@ -130,14 +132,10 @@ class CreateWholesalePriceView(LoginRequiredMixin, UserPassesTestMixin, CreateVi
         return reverse('wholesale_and_trades_edit', args=[wholesale_and_trades.pk])
 
     def test_func(self):
-        obj = WholesaleAndTrades.objects.get(id=self.kwargs.get('pk'))
-        return obj.release.profile == self.request.user.profile
+        obj = Release.objects.get(id=self.kwargs.get('pk'))
+        return obj.profile == self.request.user.profile
 
 
 # Реализую в следующем ПРе
-class UpdateWholesalePriceView(UpdateView):
-    model = ReleaseWholesalePrice
-
-
 class DeleteWholesalePriceView(DeleteView):
     model = ReleaseWholesalePrice

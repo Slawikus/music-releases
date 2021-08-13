@@ -98,8 +98,23 @@ class Release(models.Model):
 
     is_submitted = models.BooleanField(default=False)
 
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        is_new = self.id is None
+        super().save(force_insert, force_update)
+        if is_new:
+            WholesaleAndTrades.objects.create(release=self, id=self.id)
+
     def divide_media_format(self):
         return " | ".join(self.media_format_details.split(", "))
+
+    def currencies_without_price(self, profile):
+        profile_currencies = ProfileCurrency.objects.filter(profile=profile)
+        release_currencies_ids = ReleaseWholesalePrice.objects.filter(release=self).values_list('currency', flat=True)
+        release_currencies = ProfileCurrency.objects.filter(id__in=release_currencies_ids)
+        currency_choices = profile_currencies.exclude(id__in=release_currencies)
+
+        return currency_choices
 
 
 class WholesaleAndTrades(models.Model):
@@ -122,23 +137,23 @@ class WholesaleAndTrades(models.Model):
 
 
 class ReleaseWholesalePrice(models.Model):
-    wholesale_and_trades = models.ForeignKey(
-        WholesaleAndTrades,
-        related_name='wholesale_and_trades',
+    release = models.ForeignKey(
+        Release,
+        related_name='release',
         on_delete=models.CASCADE
     )
-    profile_currency = models.ForeignKey(
+    currency = models.ForeignKey(
         ProfileCurrency,
+        related_name='release_currency',
         on_delete=models.CASCADE,
-        related_name='profile_currency'
     )
-    currency_price = models.DecimalField(decimal_places=2, max_digits=10)
+    price = models.DecimalField(decimal_places=2, max_digits=10)
 
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['wholesale_and_trades', 'profile_currency'],
-                name='unique_wholesaleandtrades_per_currency'
+                fields=['release', 'currency'],
+                name='unique_release_per_currency'
             ),
         ]
 
@@ -151,10 +166,3 @@ class MarketingInfos(models.Model):
     youtube_url = models.URLField(null=True, blank=True)
     soundcloud_url = models.URLField(null=True, blank=True)
     press_feedback = models.TextField(null=True, blank=True)
-
-
-@receiver(post_save, sender=Release)
-def create_or_update_release_wholesaleandtrades(sender, instance, created, **kwargs):
-    if created:
-        WholesaleAndTrades.objects.create(release=instance, id=instance.id)
-    instance.wholesaleandtrades.save()

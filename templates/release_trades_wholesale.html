@@ -17,8 +17,8 @@
           <div class="card mb-2">
             <ul class="list-group list-group-flush">
               {% for currency in release_currencies %}
-                <li class="list-group-item">{{ currency.profile_currency__currency }}
-                  - {{ currency.currency_price }}</li>
+                <li class="list-group-item">{{ currency.currency__currency }}
+                  - {{ currency.price }}</li>
               {% endfor %}
             </ul>
           </div>

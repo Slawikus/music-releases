@@ -44,19 +44,18 @@ class UpdateTradesAndWholesaleForm(ModelForm):
 class CreateWholesalePriceForm(ModelForm):
     class Meta:
         model = ReleaseWholesalePrice
-        fields = '__all__'
-        exclude = ['wholesale_and_trades']
+        exclude = ['release']
 
-    def __init__(self, profile, wholesale_and_trades, *args, **kwargs):
+    def __init__(self, profile, release, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if self.instance:
-            self.fields['profile_currency'].queryset = self.get_currency_choices(profile, wholesale_and_trades)
+            self.fields['currency'].queryset = release.currencies_without_price(profile)
 
-    @staticmethod
-    def get_currency_choices(profile, wholesale_and_trades):
-        profile_currencies = ProfileCurrency.objects.filter(profile=profile)
-        release_currencies_ids = ReleaseWholesalePrice.objects.filter(wholesale_and_trades=wholesale_and_trades).values_list('profile_currency', flat=True)
-        release_currencies = ProfileCurrency.objects.filter(id__in=release_currencies_ids)
-        currency_choices = profile_currencies.exclude(id__in=release_currencies)
-
-        return currency_choices
+    # @staticmethod
+    # def get_currency_choices(profile, release):
+    #     profile_currencies = ProfileCurrency.objects.filter(profile=profile)
+    #     release_currencies_ids = ReleaseWholesalePrice.objects.filter(release=release).values_list('currency', flat=True)
+    #     release_currencies = ProfileCurrency.objects.filter(id__in=release_currencies_ids)
+    #     currency_choices = profile_currencies.exclude(id__in=release_currencies)
+    #
+    #     return currency_choices
