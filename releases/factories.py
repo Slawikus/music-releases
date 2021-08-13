@@ -1,10 +1,13 @@
-import factory
-from users.factories import UserFactory, LabelFactory, ProfileFactory
-from datetime import datetime
-from .models import Release
 import random
-from factory.fuzzy import FuzzyDateTime
+from datetime import datetime
+
+import factory
 import pytz
+from factory.fuzzy import FuzzyDateTime
+
+from users.factories import LabelFactory, ProfileFactory
+from .models import Release
+
 
 class ReleaseFactory(factory.django.DjangoModelFactory):
     profile = factory.SubFactory(ProfileFactory)

@@ -1,21 +1,16 @@
-from django.test import TestCase, Client, RequestFactory
-from django.urls import reverse_lazy, reverse
-
-from django.utils import timezone
 from datetime import timedelta
 
-from releases.models import Release
+from django.test import TestCase, Client, RequestFactory
+from django.urls import reverse_lazy, reverse
+from django.utils import timezone
+
 from users.models import User
+from .factories import ReleaseFactory, ProfileFactory, LabelFactory
 from .views import (UpcomingReleasesView,
                     MyReleasesView,
                     AllReleaseView,
                     RecentlySubmittedView
                     )
-from .factories import (
-    ReleaseFactory,
-    ProfileFactory,
-    LabelFactory,
-)
 
 
 def get_view_context(user, view_class):
@@ -139,7 +134,7 @@ class CreateReleaseTest(BaseClientTest):
         label = LabelFactory(profile=profile)
         edit_response = self.client.post(reverse_lazy('release_add'), {
             "profile": profile.id,
-            "band_name": "test_band", # this value will be checked bellow
+            "band_name": "test_band",  # this value will be checked bellow
             "country": "Monaco",
             "album_title": "test album",
             "release_date": "2021-01-01",
