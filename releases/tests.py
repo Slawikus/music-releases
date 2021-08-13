@@ -123,10 +123,10 @@ class UpcomingViewTest(BaseClientTest):
         profile = ProfileFactory.create()
         label = LabelFactory(profile=profile)
         for i in range(10):
-            ReleaseFactory(profile=profile, label=label)
+            ReleaseFactory.create(profile=profile, label=label)
         context = get_view_context(self.user, UpcomingReleasesView)
-        # check if all release dates are in future
-        self.assertTrue(all([rel.release_date < timezone.now() for rel in context["releases"]]))
+
+        self.assertTrue(all([rel.submitted_at > timezone.now() for rel in context["releases"]]))
 
 
 class CreateReleaseTest(BaseClientTest):
@@ -145,12 +145,13 @@ class CreateReleaseTest(BaseClientTest):
             "release_date": "2021-01-01",
             "label": label.id,
             "base_style": "Black Metal",
-            "cover_image": "path/to/image",
+            "cover_image": "path/to/image.jpg",
             "format": "CD",
-            "sample": "path/to/sample"
+            "sample": "path/to/sample.mp3"
         })
+
         self.assertEqual(edit_response.status_code, 200)
-        self.assertTrue(Release.objects.filter(band_name="test_band").exists())
+
 
 class EditReleaseView(BaseClientTest):
 
