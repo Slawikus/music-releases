@@ -1,13 +1,11 @@
 import random
 from datetime import datetime
-
 import factory
 import pytz
 from factory.fuzzy import FuzzyDateTime
-
 from users.factories import LabelFactory, ProfileFactory, UserFactory
 from .models import Release
-
+from configuration.settings import MEDIA_ROOT
 
 class ReleaseFactory(factory.django.DjangoModelFactory):
     profile = factory.SubFactory(ProfileFactory)
@@ -23,7 +21,7 @@ class ReleaseFactory(factory.django.DjangoModelFactory):
     base_style = random.choices(Release.BaseStyle.values)
     cover_image = factory.django.ImageField(color=factory.Faker("color"))
     format = "CD"
-    sample = factory.Faker("name")
+    sample = f"{MEDIA_ROOT}/music/drake_hotline-bling.mp3"
 
     class Meta:
         model = Release

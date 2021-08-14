@@ -5,11 +5,13 @@ from django.urls import reverse_lazy, reverse
 from django.utils import timezone
 
 from users.models import User
+from releases.models import Release
 from .factories import ReleaseFactory, ProfileFactory, LabelFactory
 from .views import (UpcomingReleasesView,
                     MyReleasesView,
                     AllReleaseView,
-                    RecentlySubmittedView
+                    RecentlySubmittedView,
+                    EditReleaseView
                     )
 
 
@@ -29,7 +31,7 @@ class BaseClientTest(TestCase):
     def setUp(self):
         self.client = Client()
         self.user = User.objects.create_user('lotus', password='qweytr21')
-        self.client.login(username='lotus', password='qweytr21')
+        self.client.force_login(self.user)
 
 
 class MyReleasesViewTest(BaseClientTest):
@@ -91,7 +93,14 @@ class RecentlySubmittedViewTest(BaseClientTest):
         response = self.client.get(reverse_lazy('recently_submitted'))
         self.assertEqual(response.status_code, 200)
 
-    def test_time_sort(self):
+    @staticmethod
+    def check_datetime_sorted(datetime) -> bool:
+        for i in range(1, len(datetime)):
+            if datetime[i] > datetime[i - 1]:
+                return False
+        return True
+
+    def test_datetime(self):
         label = LabelFactory(profile=self.user.profile)
 
         ReleaseFactory.create_batch(3, profile=self.user.profile, label=label)
@@ -104,8 +113,10 @@ class RecentlySubmittedViewTest(BaseClientTest):
                                   )
 
         context = get_view_context(self.user, RecentlySubmittedView)["releases"]
+        datetime_sorted = self.check_datetime_sorted([i.submitted_at for i in context])
 
         self.assertEqual(len(context), 5)
+        self.assertTrue(datetime_sorted)
 
 
 class UpcomingViewTest(BaseClientTest):
@@ -148,10 +159,9 @@ class CreateReleaseTest(BaseClientTest):
         self.assertEqual(edit_response.status_code, 200)
 
 
-class EditReleaseView(BaseClientTest):
+class EditReleaseViewTest(BaseClientTest):
 
     def test_security(self):
-
         label = LabelFactory(profile=self.user.profile)
         release = ReleaseFactory.create(profile=self.user.profile, label=label, is_submitted=True)
 
@@ -159,3 +169,16 @@ class EditReleaseView(BaseClientTest):
         response = anonymous.get(reverse("edit_release", kwargs={"pk": release.id}))
 
         self.assertEqual(response.status_code, 302)
+
+    # def test_changes(self):
+    #     label = LabelFactory(profile=self.user.profile)
+    #     release = ReleaseFactory.create(profile=self.user.profile, label=label)
+    #
+    #     request = RequestFactory().post(reverse_lazy("edit_release", kwargs={"pk": release.id}))
+    #     request.user = self.user
+    #     response = EditReleaseView.as_view()(request, pk=release.id)
+    #     has_changes = Release.objects.get(pk=release.pk).album_title
+    #     print(has_changes)
+    #
+    #     self.assertEqual(response.status_code, 200)
+    #     self.assertTrue(has_changes)
