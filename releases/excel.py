@@ -1,12 +1,13 @@
 import openpyxl
 from .models import Release
 from django_countries.data import COUNTRIES
-from configuration.settings import STATIC_ROOT
+
+from django.core.exceptions import ObjectDoesNotExist
+from django.db import IntegrityError
 
 FORMATS = Release.Formats.values
 STYLES = Release.BaseStyle.values
 
-# There are 249 countries in dict, it may
 COUNTRIES_DICT = {full_name: short_name for short_name, full_name in COUNTRIES.items()}
 
 
@@ -22,24 +23,22 @@ def save_excel_file(file, profile):
 
     for row in range(2, sheet.max_row + 1):
 
-
-        try:
-            # as django_countries saves country in DB with 2 chars ("New Zealand" -> "NZ")
-            # and countries dict looks like {"NZ": "New Zealand"}
-            valid_country = COUNTRIES_DICT[sheet.cell(row, 3).value]
-        except:
+        # as django_countries saves country in DB with 2 chars ("New Zealand" -> "NZ")
+        # and countries dict looks like {"NZ": "New Zealand"}
+        valid_country = COUNTRIES_DICT[sheet.cell(row, 3).value]
+        if not valid_country:
             return f"Wrong country at {row} row, 3 column"
 
         try:
             # Convert DD.MM.YYYY format to YYYY-MM-DD
             valid_date = sheet.cell(row, 4).value.strftime("%Y-%m-%d")
-        except:
+        except AttributeError:
             return f"wrong date format at {row} row, 4 column"
 
         try:
             label_name = sheet.cell(row, 9).value
             label = profile.label.get(name=label_name)
-        except:
+        except ObjectDoesNotExist:
             return f"You haven't label named {label_name}. Error at {row} row, 9 column"
 
         format = sheet.cell(row, 6).value
@@ -62,5 +61,5 @@ def save_excel_file(file, profile):
 
             )
 
-        except:
+        except IntegrityError:
             return "import failed. Your file may contain empty cells"
