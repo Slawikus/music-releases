@@ -5,7 +5,7 @@ import factory
 import pytz
 from factory.fuzzy import FuzzyDateTime
 
-from users.factories import LabelFactory, ProfileFactory
+from users.factories import LabelFactory, ProfileFactory, UserFactory
 from .models import Release
 
 
