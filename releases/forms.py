@@ -13,7 +13,7 @@ class DateInput(forms.DateInput):
 class CreateReleaseForm(ModelForm):
     class Meta:
         model = Release
-        exclude = ['profile', 'is_submitted']
+        exclude = ['profile', 'is_submitted', 'submitted_at']
         widgets = {
             'release_date': DateInput(),
             'format': forms.RadioSelect,
@@ -29,6 +29,21 @@ class CreateReleaseForm(ModelForm):
 
         if self.instance:
             self.fields['label'].queryset = Label.objects.filter(profile=self.profile)
+
+
+class UpdateReleaseForm(ModelForm):
+    class Meta:
+        model = Release
+        fields = ['band_name', 'album_title', 'cover_image', 'sample', 'limited_edition']
+        widgets = {
+            'sample': forms.FileInput(attrs={'accept': 'application/mp3'})
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['cover_image'].widget.attrs.update({'class': 'form-control'})
+        self.fields['sample'].widget.attrs.update({'class': 'form-control'})
 
 
 class UpdateTradesAndWholesaleForm(ModelForm):
@@ -50,12 +65,3 @@ class CreateWholesalePriceForm(ModelForm):
         super().__init__(*args, **kwargs)
         if self.instance:
             self.fields['currency'].queryset = release.currencies_without_price(profile)
-
-    # @staticmethod
-    # def get_currency_choices(profile, release):
-    #     profile_currencies = ProfileCurrency.objects.filter(profile=profile)
-    #     release_currencies_ids = ReleaseWholesalePrice.objects.filter(release=release).values_list('currency', flat=True)
-    #     release_currencies = ProfileCurrency.objects.filter(id__in=release_currencies_ids)
-    #     currency_choices = profile_currencies.exclude(id__in=release_currencies)
-    #
-    #     return currency_choices
