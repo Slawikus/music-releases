@@ -143,7 +143,7 @@ class CreateReleaseTest(BaseClientTest):
 
         profile = ProfileFactory.create()
         label = LabelFactory(profile=profile)
-        edit_response = self.client.post(reverse_lazy('release_add'), {
+        create_response = self.client.post(reverse_lazy('release_add'), {
             "profile": profile.id,
             "band_name": "test_band",  # this value will be checked bellow
             "country": "Monaco",
@@ -156,7 +156,7 @@ class CreateReleaseTest(BaseClientTest):
             "sample": "path/to/sample.mp3"
         })
 
-        self.assertEqual(edit_response.status_code, 200)
+        self.assertEqual(create_response.status_code, 200)
 
 
 class EditReleaseViewTest(BaseClientTest):

@@ -60,6 +60,7 @@ def submit_release(request, pk):
 class EditReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def test_func(self):
+        print(self.request.POST)
         obj = self.get_object()
         return obj.profile == self.request.user.profile
 
@@ -68,6 +69,8 @@ class EditReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     fields = ['band_name', 'album_title', 'cover_image', 'sample', 'limited_edition']
     template_name = "edit_release.html"
     success_url = reverse_lazy("my_releases")
+
+
 
 
 class BaseRelease(LoginRequiredMixin, ListView):
