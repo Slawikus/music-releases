@@ -144,18 +144,19 @@ class CreateReleaseTest(BaseClientTest):
         profile = ProfileFactory.create()
         label = LabelFactory(profile=profile)
         create_response = self.client.post(reverse_lazy('release_add'), {
-            "profile": profile.id,
             "band_name": "test_band",  # this value will be checked bellow
             "country": "Monaco",
             "album_title": "test album",
             "release_date": "2021-01-01",
             "label": label.id,
             "base_style": "Black Metal",
-            "cover_image": "path/to/image.jpg",
+            "cover_image": "C:/Users/TM/Desktop/music-releases/media/dummy/dummy.jpg",
             "format": "CD",
-            "sample": "path/to/sample.mp3"
+            "sample": "C:/Users/TM/Desktop/music-releases/media/dummy/dummy.mp3"
         })
 
+        release_exists = len(Release.objects.all()) > 0
+        self.assertTrue(release_exists)
         self.assertEqual(create_response.status_code, 200)
 
 
@@ -179,7 +180,6 @@ class EditReleaseViewTest(BaseClientTest):
         request.user = self.user
         response = EditReleaseView.as_view()(request, pk=release.id)
         has_changes = Release.objects.get(pk=release.pk).album_title
-        print(has_changes)
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue(has_changes)
