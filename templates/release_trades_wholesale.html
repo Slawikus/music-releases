@@ -17,8 +17,16 @@
           <div class="card mb-2">
             <ul class="list-group list-group-flush">
               {% for currency in release_currencies %}
-                <li class="list-group-item">{{ currency.currency__currency }}
-                  - {{ currency.price }}</li>
+                <li class="list-group-item d-flex justify-content-between">
+                  <p class="m-0">
+                    <b>{{ currency.currency }}:</b> {{ currency.price }}
+                    {{ currency.id }}
+                  </p>
+                  <form method="POST" action="{% url "wholesale_price_delete" currency.pk %}">
+                    {% csrf_token %}
+                    <input type="submit" class="btn btn-danger btn-sm" value="delete">
+                  </form>
+                </li>
               {% endfor %}
             </ul>
           </div>

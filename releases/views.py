@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.db.models import Prefetch
 from django.views.generic import CreateView, UpdateView, ListView, DeleteView
 from django.urls import reverse_lazy, reverse
 from django.utils.timezone import datetime
@@ -51,7 +52,6 @@ class EditReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 
 class BaseRelease(LoginRequiredMixin, ListView):
-
     context_object_name = "releases"
 
     template_name = "release_list.html"
@@ -116,10 +116,12 @@ class UpdateWholesaleAndTradesView(LoginRequiredMixin, UserPassesTestMixin, Upda
     context_object_name = 'wholesale_and_trades'
 
     def get_context_data(self, **kwargs):
+        release_currencies = ReleaseWholesalePrice.objects.select_related('currency').filter(release=self.kwargs.get('pk'))
         context = super().get_context_data(**kwargs)
-        release_currencies = ReleaseWholesalePrice.objects.values('price', 'currency__currency', 'release')\
-            .filter(release=self.kwargs.get('pk'))
-        context.update({'release_currencies': release_currencies})
+
+        context.update(
+            {'release_currencies': release_currencies}
+        )
 
         return context
 
@@ -157,6 +159,8 @@ class CreateWholesalePriceView(LoginRequiredMixin, UserPassesTestMixin, CreateVi
         return obj.profile == self.request.user.profile
 
 
-# Реализую в следующем ПРе
 class DeleteWholesalePriceView(DeleteView):
     model = ReleaseWholesalePrice
+
+    def get_success_url(self):
+        return reverse('wholesale_and_trades_edit', args=[self.object.pk])
