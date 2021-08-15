@@ -170,15 +170,16 @@ class EditReleaseViewTest(BaseClientTest):
 
         self.assertEqual(response.status_code, 302)
 
-    # def test_changes(self):
-    #     label = LabelFactory(profile=self.user.profile)
-    #     release = ReleaseFactory.create(profile=self.user.profile, label=label)
-    #
-    #     request = RequestFactory().post(reverse_lazy("edit_release", kwargs={"pk": release.id}))
-    #     request.user = self.user
-    #     response = EditReleaseView.as_view()(request, pk=release.id)
-    #     has_changes = Release.objects.get(pk=release.pk).album_title
-    #     print(has_changes)
-    #
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertTrue(has_changes)
+
+    def test_changes(self):
+        label = LabelFactory(profile=self.user.profile)
+        release = ReleaseFactory.create(profile=self.user.profile, label=label)
+
+        request = RequestFactory().post(reverse("edit_release", kwargs={"pk": release.id}), {"album_title": "Madness"})
+        request.user = self.user
+        response = EditReleaseView.as_view()(request, pk=release.id)
+        has_changes = Release.objects.get(pk=release.pk).album_title
+        print(has_changes)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(has_changes)
