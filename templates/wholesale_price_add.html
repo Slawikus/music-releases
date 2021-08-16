@@ -2,7 +2,7 @@
 
 {% load crispy_forms_tags %}
 
-{% block title %}Add wholesale price{% endblock title %}
+{% block title %}Edit wholesale price{% endblock title %}
 
 {% block content %}
   {% include 'releases_navbar.html' %}
@@ -15,6 +15,20 @@
         <button type="submit" class="btn btn-primary ml-4">Save</button>
         <a class="btn btn-secondary" href="{% url 'home' %}">Cancel</a>
       </form>
+
+      {% for currency in object_list %}
+      <li class="list-group-item d-flex justify-content-between">
+        <p class="m-0">
+          <b>{{ currency.currency }}:</b> {{ currency.price }}
+          {{ currency.id }}
+        </p>
+        <form action="{% url 'wholesale_price_delete' currency.id %}" method="POST">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger">delete</button>
+        </form>
+      </li>
+      {% endfor %}
+
     </div>
   </div>
 {% endblock content %}

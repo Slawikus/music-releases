@@ -16,7 +16,23 @@
           <p>{{ release.base_style }}</p>
           <p>{{ release.submitted_at|date:"d.m.Y" }} {{ release.label }} ({{ release.label.profile.country }})</p>
         </div>
-        <div class="col-4"></div>
+        <div class="col-4">
+
+          <p>
+            Trade points:
+            {% if release.wholesaleandtrades.trade_points is None %}
+              -
+            {% else %}
+              {{ release.wholesaleandtrades.trade_points }}
+            {% endif %}
+          </p>
+          <p>Wholesale prices: </p>
+            {% for price in release.release_price.all %}
+              <p>{{ price.price }} {{ price.currency }}</p>
+            {% endfor %}
+
+        </div>
+
         <div class="col-2">
           {% if not release.is_submitted %}
             <form action="{% url 'release_submit' release.pk %}" method="post">
