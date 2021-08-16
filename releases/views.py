@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Prefetch
+from django.http import HttpResponseRedirect
 from django.views.generic import CreateView, UpdateView, ListView, DeleteView
 from django.urls import reverse_lazy, reverse
 from django.utils.timezone import datetime
@@ -164,3 +165,8 @@ class DeleteWholesalePriceView(DeleteView):
 
     def get_success_url(self):
         return reverse('wholesale_and_trades_edit', args=[self.object.pk])
+
+    def delete(self, request, *args, **kwargs):
+        query = ReleaseWholesalePrice.objects.get(pk=kwargs["pk"])
+        query.delete()
+        return HttpResponseRedirect(reverse_lazy('home'))
