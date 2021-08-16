@@ -6,10 +6,14 @@ from django.urls import reverse_lazy, reverse
 from django.contrib import messages
 
 from django.core.exceptions import ObjectDoesNotExist
+from django.views.generic import CreateView, UpdateView, ListView, FormView
+from django.urls import reverse_lazy
+from django.contrib import messages
 
-from .forms import CreateReleaseForm
+from .forms import CreateReleaseForm, ImportReleaseForm
 from .models import Release
 from .filters import ReleaseFilter
+from .excel import save_excel_file
 
 from django.utils.timezone import datetime
 
@@ -126,3 +130,23 @@ class MyReleasesView(BaseRelease):
 
     def get_queryset(self):
         return super().get_queryset().filter(profile=self.request.user.profile).order_by("-submitted_at")
+
+
+class ImportReleasesView(LoginRequiredMixin, FormView):
+
+    template_name = "upload_release.html"
+    form_class = ImportReleaseForm
+    success_url = reverse_lazy("my_releases")
+
+    def form_valid(self, form):
+        file = form.cleaned_data.get("file")
+        profile = self.request.user.profile
+        import_error = save_excel_file(file, profile)
+        # if result contains any error
+        if import_error:
+            messages.error(self.request, import_error)
+            return self.render_to_response(
+                self.get_context_data(request=self.request, form=form)
+            )
+        else:
+            return super().form_valid(form)
