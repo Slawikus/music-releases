@@ -1,11 +1,13 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import CreateView, UpdateView, ListView, DeleteView
+from django.views.generic import CreateView, UpdateView, ListView, DeleteView, FormView
 from django.urls import reverse_lazy, reverse
 from django.utils.timezone import datetime
+from django.contrib import messages
 
-from .forms import CreateReleaseForm, UpdateTradesAndWholesaleForm, CreateWholesalePriceForm, UpdateReleaseForm
+from .forms import CreateReleaseForm, UpdateTradesAndWholesaleForm, CreateWholesalePriceForm, UpdateReleaseForm, ImportReleaseForm
 from .models import Release, WholesaleAndTrades, ReleaseWholesalePrice
 from .filters import ReleaseFilter
+from .excel import save_excel_file
 
 
 class CreateReleaseView(LoginRequiredMixin, CreateView):
@@ -157,6 +159,25 @@ class CreateWholesalePriceView(LoginRequiredMixin, UserPassesTestMixin, CreateVi
         return obj.profile == self.request.user.profile
 
 
-# Реализую в следующем ПРе
 class DeleteWholesalePriceView(DeleteView):
     model = ReleaseWholesalePrice
+
+
+class ImportReleasesView(LoginRequiredMixin, FormView):
+
+    template_name = "upload_release.html"
+    form_class = ImportReleaseForm
+    success_url = reverse_lazy("my_releases")
+
+    def form_valid(self, form):
+        file = form.cleaned_data.get("file")
+        profile = self.request.user.profile
+        import_error = save_excel_file(file, profile)
+        # if result contains any error
+        if import_error:
+            messages.error(self.request, import_error)
+            return self.render_to_response(
+                self.get_context_data(request=self.request, form=form)
+            )
+        else:
+            return super().form_valid(form)

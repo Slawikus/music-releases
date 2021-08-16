@@ -65,3 +65,10 @@ class CreateWholesalePriceForm(ModelForm):
         super().__init__(*args, **kwargs)
         if self.instance:
             self.fields['currency'].queryset = release.currencies_without_price(profile)
+
+
+class ImportReleaseForm(forms.Form):
+
+    file = forms.FileField(
+        widget=forms.FileInput(attrs={"accept": ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"})
+    )

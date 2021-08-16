@@ -11,6 +11,7 @@ gunicorn = "*"
 whitenoise = "*"
 pycountry = "*"
 django-filter = "*"
+openpyxl = "*"
 
 [dev-packages]
 
