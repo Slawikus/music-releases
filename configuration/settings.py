@@ -131,6 +131,7 @@ LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
+
 CURRENCY_CHOICES = [
     (currency.alpha_3, f'{currency.alpha_3} - {currency.name}')
     for currency in pycountry.currencies

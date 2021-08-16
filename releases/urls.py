@@ -1,7 +1,7 @@
 from django.urls import path
 from django.conf.urls import url
 
-from .views import (CreateReleaseView, AllReleaseView, MyReleasesView,  submit_release,
+from .views import (CreateReleaseView, AllReleaseView, MyReleasesView, ImportReleasesView, submit_release,
                     UpcomingReleasesView, RecentlySubmittedView, EditReleaseView)
 
 
@@ -13,4 +13,5 @@ urlpatterns = [
     path("my-releases/", MyReleasesView.as_view(), name='my_releases'),
     path("<int:pk>/submit/", submit_release, name='submit_release'),
     path("<int:pk>/edit/", EditReleaseView.as_view(), name='edit_release'),
+    path("import-releases/", ImportReleasesView.as_view(), name="import_releases"),
 ]
