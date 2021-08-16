@@ -16,3 +16,4 @@ media/
 *.pyc
 *.db
 *.pid
+/releases/migrations/0002_auto_20210816_1116.py

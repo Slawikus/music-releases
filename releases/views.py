@@ -159,6 +159,11 @@ class CreateWholesalePriceView(LoginRequiredMixin, UserPassesTestMixin, CreateVi
         obj = Release.objects.get(id=self.kwargs.get('pk'))
         return obj.profile == self.request.user.profile
 
+    def get_context_data(self, **kwargs):
+        release = Release.objects.get(id=self.kwargs.get('pk'))
+        kwargs["object_list"] = ReleaseWholesalePrice.objects.filter(release=release)
+        return super(CreateWholesalePriceView, self).get_context_data(**kwargs)
+
 
 class DeleteWholesalePriceView(DeleteView):
     model = ReleaseWholesalePrice

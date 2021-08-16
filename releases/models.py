@@ -135,7 +135,7 @@ class WholesaleAndTrades(models.Model):
 class ReleaseWholesalePrice(models.Model):
     release = models.ForeignKey(
         Release,
-        related_name='release',
+        related_name='release_price',
         on_delete=models.CASCADE
     )
     currency = models.ForeignKey(
