@@ -34,6 +34,7 @@ class SubmitReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def form_valid(self, form):
         form.instance.is_submitted = True
+        form.instance.submitted_at = datetime.now()
         return super().form_valid(form)
 
     def test_func(self):
@@ -119,9 +120,8 @@ class UpdateWholesaleAndTradesView(LoginRequiredMixin, UserPassesTestMixin, Upda
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        release_currencies = ReleaseWholesalePrice.objects.values('price', 'currency__currency', 'release')\
-            .filter(release=self.kwargs.get('pk'))
-        context.update({'release_currencies': release_currencies})
+        release_wholesale_prices = ReleaseWholesalePrice.objects.select_related('currency').filter(release=Release.objects.get(wholesaleandtrades=self.kwargs.get('pk')))
+        context.update({'release_wholesale_prices': release_wholesale_prices})
 
         return context
 
@@ -146,17 +146,21 @@ class CreateWholesalePriceView(LoginRequiredMixin, UserPassesTestMixin, CreateVi
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['profile'] = self.request.user.profile
         kwargs['release'] = Release.objects.get(id=self.kwargs.get('pk'))
         return kwargs
 
     def get_success_url(self):
-        wholesale_and_trades = WholesaleAndTrades.objects.get(id=self.kwargs.get('pk'))
+        wholesale_and_trades = WholesaleAndTrades.objects.get(release=self.kwargs.get('pk'))
         return reverse('wholesale_and_trades_edit', args=[wholesale_and_trades.pk])
 
     def test_func(self):
         obj = Release.objects.get(id=self.kwargs.get('pk'))
         return obj.profile == self.request.user.profile
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['release'] = Release.objects.get(id=self.kwargs.get('pk'))
+        return context
 
 
 class DeleteWholesalePriceView(DeleteView):

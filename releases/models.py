@@ -99,13 +99,13 @@ class Release(models.Model):
         is_new = self.id is None
         super().save(force_insert, force_update)
         if is_new:
-            WholesaleAndTrades.objects.create(release=self, id=self.id)
+            WholesaleAndTrades.objects.create(release=self)
 
     def divide_media_format(self):
         return " | ".join(self.media_format_details.split(", "))
 
-    def currencies_without_price(self, profile):
-        profile_currencies = ProfileCurrency.objects.filter(profile=profile)
+    def currencies_without_price(self):
+        profile_currencies = self.profile.currencies
         release_currencies_ids = ReleaseWholesalePrice.objects.filter(release=self).values_list('currency', flat=True)
         release_currencies = ProfileCurrency.objects.filter(id__in=release_currencies_ids)
         currency_choices = profile_currencies.exclude(id__in=release_currencies)
@@ -135,12 +135,12 @@ class WholesaleAndTrades(models.Model):
 class ReleaseWholesalePrice(models.Model):
     release = models.ForeignKey(
         Release,
-        related_name='release',
+        related_name='wholesale_prices',
         on_delete=models.CASCADE
     )
     currency = models.ForeignKey(
         ProfileCurrency,
-        related_name='release_currency',
+        related_name='wholesale_prices_for_currency',
         on_delete=models.CASCADE,
     )
     price = models.DecimalField(decimal_places=2, max_digits=10)
@@ -149,12 +149,11 @@ class ReleaseWholesalePrice(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=['release', 'currency'],
-                name='unique_release_per_currency'
+                name='unique_price_per_release_and_currency'
             ),
         ]
 
 
-# Реализую в следующем ПРе
 class MarketingInfos(models.Model):
     release = models.OneToOneField(Release, on_delete=models.CASCADE)
     style = models.CharField(max_length=250, null=True, blank=True)

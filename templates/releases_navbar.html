@@ -1,20 +1,36 @@
-<ul class="nav nav-tabs mt-3 mb-4">
-  <li class="nav-item">
-    <a class="nav-link
+{% if request.resolver_match.view_name != 'release_add' %}
+  <ul class="nav nav-tabs mt-3 mb-4">
+    <li class="nav-item">
+      <a class="nav-link
       {% if request.resolver_match.view_name == 'edit_release' %}
         active
       {% endif %}"
-       href="{% url 'edit_release' request.resolver_match.kwargs.pk %}">Trades & Wholesale</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link
+      {% if request.resolver_match.view_name in "'edit_release', release_wholesale_price_add" %}
+        href="{% url 'edit_release' request.resolver_match.kwargs.pk %}"
+      {% endif %}
+      {% if request.resolver_match.view_name == 'wholesale_and_trades_edit' %}
+        href="{% url 'edit_release' wholesale_and_trades.release.pk %}"
+      {% endif %}
+      >Release</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link
       {% if request.resolver_match.view_name in "'wholesale_and_trades_edit','release_wholesale_price_add'" %}
         active
       {% endif %}"
-       href="{% url 'wholesale_and_trades_edit' request.resolver_match.kwargs.pk %}">Trades & Wholesale</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">Marketing</a>
-  </li>
-</ul>
-
+      href="
+      {% if request.resolver_match.view_name == 'edit_release' %}
+        {% url 'wholesale_and_trades_edit' release.wholesaleandtrades.pk %}
+      {% endif %}
+      {% if request.resolver_match.view_name == 'wholesale_and_trades_edit' %}
+        {% url 'wholesale_and_trades_edit' wholesale_and_trades.pk %}
+      {% endif %}
+      {% if request.resolver_match.view_name == 'release_wholesale_price_add' %}
+        {% url 'wholesale_and_trades_edit' release.wholesaleandtrades.pk %}
+      {% endif %}
+      ">Trades & Wholesale</a>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Marketing</a>
+    </li>
+  </ul>
+{% endif %}
