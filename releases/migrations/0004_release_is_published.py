@@ -10,9 +10,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='release',
-            name='is_submitted',
-            field=models.BooleanField(default=False),
-        ),
+
     ]

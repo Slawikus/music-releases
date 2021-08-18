@@ -24,7 +24,6 @@ class CreateReleaseView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_form_kwargs(self):
-        print(self.request.POST)
         kwargs = super().get_form_kwargs()
         kwargs['profile'] = self.request.user.profile
         return kwargs
