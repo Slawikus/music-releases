@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ModelForm
 
 from .models import Release, Label
-
+from dal import autocomplete
 
 class DateInput(forms.DateInput):
     input_type = 'date'
@@ -15,7 +15,8 @@ class CreateReleaseForm(ModelForm):
         widgets = {
             'release_date': DateInput(),
             'format': forms.RadioSelect,
-            'sample': forms.FileInput(attrs={'accept': 'application/mp3'})
+            'sample': forms.FileInput(attrs={'accept': 'application/mp3'}),
+            'band_name': autocomplete.ListSelect2(url='band_autocomplete')
         }
 
     def __init__(self, *args, **kwargs):
@@ -27,6 +28,7 @@ class CreateReleaseForm(ModelForm):
 
         if self.instance:
             self.fields['label'].queryset = Label.objects.filter(profile=self.profile)
+
 
 class ImportReleaseForm(forms.Form):
 
