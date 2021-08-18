@@ -12,16 +12,13 @@
       <form method="post" autocomplete="off" enctype='multipart/form-data'>
         {% csrf_token %}
         {{ form|crispy }}
-        {% if release_currencies %}
+        {% if release_wholesale_prices %}
           <p>Wholesale prices</p>
           <div class="card mb-2">
             <ul class="list-group list-group-flush">
-              {% for currency in release_currencies %}
-                <li class="list-group-item d-flex justify-content-between">
-                  <p class="m-0">
-                    <b>{{ currency.currency }}:</b> {{ currency.price }}
-                  </p>
-                </li>
+              {% for price in release_wholesale_prices %}
+                <li class="list-group-item">{{ price.currency }}
+                  - {{ price.price }}</li>
               {% endfor %}
             </ul>
           </div>

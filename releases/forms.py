@@ -61,7 +61,14 @@ class CreateWholesalePriceForm(ModelForm):
         model = ReleaseWholesalePrice
         exclude = ['release']
 
-    def __init__(self, profile, release, *args, **kwargs):
+    def __init__(self, release, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if self.instance:
-            self.fields['currency'].queryset = release.currencies_without_price(profile)
+            self.fields['currency'].queryset = release.currencies_without_price()
+
+
+class ImportReleaseForm(forms.Form):
+
+    file = forms.FileField(
+        widget=forms.FileInput(attrs={"accept": ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"})
+    )

@@ -1,13 +1,15 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Prefetch
 from django.http import HttpResponseRedirect
-from django.views.generic import CreateView, UpdateView, ListView, DeleteView
+from django.views.generic import CreateView, UpdateView, ListView, DeleteView, FormView
 from django.urls import reverse_lazy, reverse
 from django.utils.timezone import datetime
+from django.contrib import messages
 
-from .forms import CreateReleaseForm, UpdateTradesAndWholesaleForm, CreateWholesalePriceForm, UpdateReleaseForm
+from .forms import CreateReleaseForm, UpdateTradesAndWholesaleForm, CreateWholesalePriceForm, UpdateReleaseForm, ImportReleaseForm
 from .models import Release, WholesaleAndTrades, ReleaseWholesalePrice
 from .filters import ReleaseFilter
+from .excel import save_excel_file
 
 
 class CreateReleaseView(LoginRequiredMixin, CreateView):
@@ -34,6 +36,7 @@ class SubmitReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def form_valid(self, form):
         form.instance.is_submitted = True
+        form.instance.submitted_at = datetime.now()
         return super().form_valid(form)
 
     def test_func(self):
@@ -117,12 +120,9 @@ class UpdateWholesaleAndTradesView(LoginRequiredMixin, UserPassesTestMixin, Upda
     context_object_name = 'wholesale_and_trades'
 
     def get_context_data(self, **kwargs):
-        release_currencies = ReleaseWholesalePrice.objects.select_related('currency').filter(release=self.kwargs.get('pk'))
         context = super().get_context_data(**kwargs)
-
-        context.update(
-            {'release_currencies': release_currencies}
-        )
+        release_wholesale_prices = ReleaseWholesalePrice.objects.select_related('currency').filter(release=Release.objects.get(wholesaleandtrades=self.kwargs.get('pk')))
+        context.update({'release_wholesale_prices': release_wholesale_prices})
 
         return context
 
@@ -147,12 +147,11 @@ class CreateWholesalePriceView(LoginRequiredMixin, UserPassesTestMixin, CreateVi
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['profile'] = self.request.user.profile
         kwargs['release'] = Release.objects.get(id=self.kwargs.get('pk'))
         return kwargs
 
     def get_success_url(self):
-        wholesale_and_trades = WholesaleAndTrades.objects.get(id=self.kwargs.get('pk'))
+        wholesale_and_trades = WholesaleAndTrades.objects.get(release=self.kwargs.get('pk'))
         return reverse('wholesale_and_trades_edit', args=[wholesale_and_trades.pk])
 
     def test_func(self):
@@ -160,9 +159,14 @@ class CreateWholesalePriceView(LoginRequiredMixin, UserPassesTestMixin, CreateVi
         return obj.profile == self.request.user.profile
 
     def get_context_data(self, **kwargs):
-        release = Release.objects.get(id=self.kwargs.get('pk'))
-        kwargs["object_list"] = ReleaseWholesalePrice.objects.filter(release=release)
-        return super(CreateWholesalePriceView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
+        context['release'] = Release.objects.get(id=self.kwargs.get('pk'))
+        return context
+
+    # def get_context_data(self, **kwargs):
+    #     release = Release.objects.get(id=self.kwargs.get('pk'))
+    #     kwargs["object_list"] = ReleaseWholesalePrice.objects.filter(release=release)
+    #     return super(CreateWholesalePriceView, self).get_context_data(**kwargs)
 
 
 class DeleteWholesalePriceView(DeleteView):
@@ -175,3 +179,23 @@ class DeleteWholesalePriceView(DeleteView):
         query = ReleaseWholesalePrice.objects.get(pk=kwargs["pk"])
         query.delete()
         return HttpResponseRedirect(reverse_lazy('home'))
+
+
+class ImportReleasesView(LoginRequiredMixin, FormView):
+
+    template_name = "upload_release.html"
+    form_class = ImportReleaseForm
+    success_url = reverse_lazy("my_releases")
+
+    def form_valid(self, form):
+        file = form.cleaned_data.get("file")
+        profile = self.request.user.profile
+        import_error = save_excel_file(file, profile)
+        # if result contains any error
+        if import_error:
+            messages.error(self.request, import_error)
+            return self.render_to_response(
+                self.get_context_data(request=self.request, form=form)
+            )
+        else:
+            return super().form_valid(form)

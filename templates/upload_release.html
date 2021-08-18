@@ -1,0 +1,57 @@
+{% extends '_base.html' %}
+
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block title %}Import release from Excel{% endblock title %}
+
+{% block content %}
+<form action="{% url 'import_releases' %}" method="POST" enctype="multipart/form-data">
+
+  <div class="row">
+      <div class="col-4">
+          <h6 class="mb-4 mt-3">Import release</h6>
+          <div class="row mt-2 mb-2">
+
+                {% csrf_token %}
+               {{ form|crispy }}
+
+              <h6 class="mt-2">Excel file must contain</h6>
+              <ol>
+                  <li>band name</li>
+                  <li>album title</li>
+                  <li>country</li>
+                  <li>release date</li>
+                  <li>media format</li>
+                  <li>format
+                     <ul>
+                         <li>CD</li>
+                         <li>Vinyl</li>
+                         <li>DVD</li>
+                         <li>Tape</li>
+                     </ul>
+                  </li>
+                  <li>limited edition (amount)</li>
+                  <li>
+                      base style
+                      <ul>
+                          <li>Black Metal</li>
+                          <li>Death Metal</li>
+                          <li>Trash Metal</li>
+                      </ul>
+                  </li>
+                  <li>Your label name</li>
+              </ol>
+
+
+          </div>
+      </div>
+      <div class="col-8">
+          <button type="submit" class="btn btn-primary mt-4">Import</button>
+          <a href="{% static 'excel/example.xlsx' %}" class="btn btn-secondary mt-4">Download example excel</a>
+      </div>
+
+  </div>
+
+</form>
+{% endblock content %}

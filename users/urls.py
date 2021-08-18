@@ -10,6 +10,7 @@ from .views import (
     ListLabelView,
     UpdateLabelView,
     DeleteLabelView,
+
 )
 
 urlpatterns = [
