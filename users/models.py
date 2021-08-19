@@ -118,6 +118,12 @@ class Label(models.Model):
         ]
 
 
+class Invitation(models.Model):
+
+    slug = models.SlugField(max_length=255)
+    label = models.ForeignKey(Label, on_delete=models.CASCADE, related_name="invitation")
+
+
 @receiver(post_save, sender=User)
 def create_or_update_user_profile(sender, instance, created, **kwargs):
     if created:

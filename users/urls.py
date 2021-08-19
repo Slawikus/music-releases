@@ -21,6 +21,7 @@ urlpatterns = [
     path('currencies/<int:pk>/delete/', DeleteProfileCurrencyView.as_view(), name='currency_delete'),
     path('labels/', ListLabelView.as_view(), name='labels_list'),
     path('labels/new/', CreateLabelView.as_view(), name='label_add'),
+    path('create-invitation/<str:slug>', CreateLabelView.as_view(), name='create_invitation'),
     path('labels/<int:pk>/edit/', UpdateLabelView.as_view(), name='label_update'),
     path('labels/<int:pk>/delete/', DeleteLabelView.as_view(), name='label_delete'),
 ]

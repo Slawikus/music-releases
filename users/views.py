@@ -74,6 +74,9 @@ class CreateLabelView(CreateView):
             form.add_error('name', "You already have this label")
             return super().form_invalid(form)
 
+    def get_success_url(self):
+        pass
+
 
 class ListLabelView(ListView):
     model = Label
