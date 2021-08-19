@@ -12,7 +12,6 @@ whitenoise = "*"
 pycountry = "*"
 django-filter = "*"
 openpyxl = "*"
-django-autocomplete-light = "*"
 
 [dev-packages]
 
