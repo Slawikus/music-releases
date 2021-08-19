@@ -4,7 +4,7 @@ from django.http import JsonResponse, HttpResponseForbidden
 
 def get_band_name(request, query):
 
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         return HttpResponseForbidden
 
     result = []
