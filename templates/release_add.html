@@ -13,17 +13,34 @@
       <form method="post" enctype='multipart/form-data'>
         {% csrf_token %}
         {{ form|crispy }}
+        <datalist id="options"></datalist>
         <button type="submit" class="btn btn-primary ml-4">Save draft</button>
         <a class="btn btn-secondary" href="{% url 'home' %}">Cancel</a>
       </form>
     </div>
   </div>
-<script>
-  document.addEventListener('dal-init-function', function () {
-    yl.registerFunction( 'your_autocomplete_function', function ($, element) {
-        var $element = $(element);
-        // autocomplete function here
-    });
-  })
-</script>
+
+
+
+
 {% endblock content %}
+{% block script %}
+  var band_input = $("#id_band_name");
+  var datalist = $("#options");
+  band_input.attr("list", "options");
+
+  band_input.on("input", function(){
+    $.ajax({
+      url: "{% url 'band_autocomplete' %}"+band_input.val(),
+      success: function(data){
+        console.log(data)
+        datalist.empty();
+        result = data
+
+        for (var i=0; i < result.length; i++){
+          datalist.append("<option value="+result[i]+">")
+        }
+      }
+    })
+  });
+{% endblock %}

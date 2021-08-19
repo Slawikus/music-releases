@@ -1,16 +1,13 @@
-from dal import autocomplete
 from .models import Release
+from django.http import JsonResponse
 
 
-class BandNameAutoComplete(autocomplete.Select2QuerySetView):
-    def get_queryset(self):
+def get_band_name(request, query):
+    result = []
+    if query:
+        releases = Release.objects.filter(band_name__istartswith=query)
 
-        if not self.request.user.is_authenticated:
-            return Release.objects.none()
+        for release in releases:
+            result.append(release.band_name)
 
-        qs = Release.objects.all()
-
-        if self.q:
-            qs = qs.filter(band_name__istartswith=self.q)
-
-        return qs
+    return JsonResponse(result, safe=False)
