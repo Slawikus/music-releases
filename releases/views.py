@@ -1,11 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
-from django.views.generic import CreateView, UpdateView, ListView
 from django.http import HttpResponseRedirect, HttpResponseForbidden
-from django.urls import reverse_lazy, reverse
-from django.contrib import messages
+from django.urls import reverse
 
-from django.core.exceptions import ObjectDoesNotExist
 from django.views.generic import CreateView, UpdateView, ListView, FormView
 from django.urls import reverse_lazy
 from django.contrib import messages
