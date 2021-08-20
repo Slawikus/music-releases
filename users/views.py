@@ -8,6 +8,9 @@ from django.db import IntegrityError
 from .forms import CustomUserCreationForm, EditProfileForm, CreateCurrencyForm, LabelForm
 from .models import Profile, ProfileCurrency, Label, Invitation
 
+from random import sample
+from string import ascii_letters
+
 
 # Create your views here.
 class SignUpView(UserPassesTestMixin, CreateView):
@@ -16,10 +19,30 @@ class SignUpView(UserPassesTestMixin, CreateView):
     success_url = '/'
 
     def test_func(self):
-        if Invitation.objects.filter(slug=self.kwargs['slug']).exists():
-            Invitation.objects.get(slug=self.kwargs['slug']).delete()
-            return True
-        return False
+        return Invitation.objects.filter(slug=self.kwargs['slug']).exists()
+
+    def form_valid(self, form):
+
+        response = super(SignUpView, self).form_valid(form)
+        # if valid create invites and delete old
+
+        for _ in range(3):
+            slug = "".join([str(i) for i in sample(ascii_letters, len(ascii_letters))])
+            profile = Profile.objects.last()
+            Invitation.objects.create(slug=slug, profile=profile)
+
+        Invitation.objects.get(slug=self.kwargs['slug']).delete()
+
+        return response
+
+
+class ShowInvitationsView(ListView):
+    model = Invitation
+    template_name = "invitation.html"
+    context_object_name = "invitations"
+
+    def get_queryset(self):
+        return super().get_queryset().filter(profile=self.request.user.profile)
 
 
 class EditProfileView(UpdateView):

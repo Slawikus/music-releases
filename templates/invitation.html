@@ -1,0 +1,17 @@
+{% extends '_base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Invitations{% endblock title %}
+
+{% block content %}
+  {% include 'profile_navbar.html' %}
+  <div class="row mt-2 mb-2">
+    <div class="col-4">
+      <h3>You can share these invitation links</h3>
+      {% for invite in invitations %}
+        <p class="text-primary">{{ request.get_host }}/{{ invite.slug }}</p>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock content %}

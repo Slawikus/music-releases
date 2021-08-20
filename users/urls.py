@@ -10,7 +10,7 @@ from .views import (
     ListLabelView,
     UpdateLabelView,
     DeleteLabelView,
-
+    ShowInvitationsView
 )
 
 urlpatterns = [
@@ -24,4 +24,5 @@ urlpatterns = [
     path('create-invitation/<str:slug>', CreateLabelView.as_view(), name='create_invitation'),
     path('labels/<int:pk>/edit/', UpdateLabelView.as_view(), name='label_update'),
     path('labels/<int:pk>/delete/', DeleteLabelView.as_view(), name='label_delete'),
+    path('invitations/', ShowInvitationsView.as_view(), name='invitations')
 ]
