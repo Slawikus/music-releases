@@ -23,17 +23,17 @@ class SignUpView(UserPassesTestMixin, CreateView):
 
     def form_valid(self, form):
 
-        response = super(SignUpView, self).form_valid(form)
+        valid = super(SignUpView, self).form_valid(form)
         # if valid create invites and delete old
+        if valid:
+            for _ in range(3):
+                slug = "".join([str(i) for i in sample(ascii_letters, len(ascii_letters))])
+                profile = Profile.objects.last()
+                Invitation.objects.create(slug=slug, profile=profile)
 
-        for _ in range(3):
-            slug = "".join([str(i) for i in sample(ascii_letters, len(ascii_letters))])
-            profile = Profile.objects.last()
-            Invitation.objects.create(slug=slug, profile=profile)
+            Invitation.objects.get(slug=self.kwargs['slug']).delete()
 
-        Invitation.objects.get(slug=self.kwargs['slug']).delete()
-
-        return response
+        return valid
 
 
 class ShowInvitationsView(ListView):
