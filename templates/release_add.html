@@ -25,22 +25,22 @@
 
 {% endblock content %}
 {% block script %}
-  var band_input = $("#id_band_name");
-  var datalist = $("#options");
+<script>
+  let band_input = $("#id_band_name");
+  let datalist = $("#options");
   band_input.attr("list", "options");
 
   band_input.on("input", function(){
     $.ajax({
       url: "{% url 'band_autocomplete' %}"+band_input.val(),
       success: function(data){
-        console.log(data)
         datalist.empty();
-        result = data
 
-        for (var i=0; i < result.length; i++){
-          datalist.append("<option value="+result[i]+">")
+        for (let i=0; i < data.length; i++){
+          datalist.append("<option value="+data[i]+">")
         }
       }
     })
   });
+</script>
 {% endblock %}
