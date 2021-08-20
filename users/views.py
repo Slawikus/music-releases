@@ -1,18 +1,25 @@
 from django.contrib import messages
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.db import IntegrityError
 
 from .forms import CustomUserCreationForm, EditProfileForm, CreateCurrencyForm, LabelForm
-from .models import Profile, ProfileCurrency, Label
+from .models import Profile, ProfileCurrency, Label, Invitation
 
 
 # Create your views here.
-class SignUpView(CreateView):
+class SignUpView(UserPassesTestMixin, CreateView):
     form_class = CustomUserCreationForm
     template_name = 'signup.html'
     success_url = '/'
+
+    def test_func(self):
+        if Invitation.objects.filter(slug=self.kwargs['slug']).exists():
+            Invitation.objects.get(slug=self.kwargs['slug']).delete()
+            return True
+        return False
 
 
 class EditProfileView(UpdateView):

@@ -121,7 +121,7 @@ class Label(models.Model):
 class Invitation(models.Model):
 
     slug = models.SlugField(max_length=255)
-    label = models.ForeignKey(Label, on_delete=models.CASCADE, related_name="invitation")
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="invitation")
 
 
 @receiver(post_save, sender=User)
