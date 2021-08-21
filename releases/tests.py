@@ -5,9 +5,9 @@ from django.urls import reverse_lazy, reverse
 from django.utils import timezone
 from configuration.settings import BASE_DIR
 
-from users.models import User
 from releases.models import Release
-from .factories import ReleaseFactory, ProfileFactory, LabelFactory
+from releases.factories import ReleaseFactory
+from users.factories import ProfileFactory, LabelFactory, UserWithProfileFactory
 from releases import views
 
 
@@ -24,21 +24,23 @@ def get_view_context(user, view_class):
 class BaseClientTest(TestCase):
     def setUp(self):
         self.client = Client()
-        self.user = User.objects.create_user('lotus', password='qweytr21')
+        self.user = UserWithProfileFactory.create()
         self.client.force_login(self.user)
 
 
 class MyReleasesViewTest(BaseClientTest):
-    def test_response(self):
+    def test_it_shows_my_releases_page(self):
         response = self.client.get(reverse_lazy("my_releases"))
+
         self.assertEqual(response.status_code, 200)
 
-    def test_un_logged_user(self):
+    def test_it_redirects_unlogged_user(self):
         anonymous = Client()
         response = anonymous.get(reverse_lazy("my_releases"))
-        self.assertEqual(response.status_code, 302)
 
-    def test_security(self):
+        self.assertRedirects(response, f"{reverse('login')}?next={reverse('my_releases')}")
+
+    def test_it_shows_users_releases(self):
         # create logged in user's releases
         label = LabelFactory(profile=self.user.profile)
         ReleaseFactory.create_batch(2, profile=self.user.profile, label=label)
@@ -48,10 +50,10 @@ class MyReleasesViewTest(BaseClientTest):
         other_label = LabelFactory(profile=other_user_profile)
         ReleaseFactory.create_batch(3, profile=other_user_profile, label=other_label)
 
-        context = get_view_context(self.user, views.MyReleasesView)
+        response = self.client.get(reverse('my_releases'))
 
-        self.assertEqual(len(context["releases"]), 2)
-        self.assertTrue(all([i.profile == self.user.profile for i in context["releases"]]))
+        self.assertEqual(len(response.context["releases"]), 2)
+        self.assertTrue(all([i.profile == self.user.profile for i in response.context["releases"]]))
 
 
 class AllReleasesViewTest(BaseClientTest):
@@ -75,9 +77,9 @@ class AllReleasesViewTest(BaseClientTest):
         ReleaseFactory.create_batch(2, profile=other_user_profile, label=other_label)
         ReleaseFactory.create_batch(2, profile=other_user_profile, label=other_label, is_submitted=True)
 
-        context = get_view_context(self.user, views.AllReleaseView)
+        response = self.client.get(reverse('all_releases'))
 
-        self.assertEqual(len(context["releases"]), 3)
+        self.assertEqual(len(response.context["releases"]), 3)
 
 
 class RecentlySubmittedViewTest(BaseClientTest):
@@ -120,9 +122,10 @@ class UpcomingViewTest(BaseClientTest):
         label = LabelFactory(profile=self.user.profile)
         for i in range(10):
             ReleaseFactory.create(profile=self.user.profile, label=label)
-        context = get_view_context(self.user, views.UpcomingReleasesView)
 
-        self.assertTrue(all([rel.submitted_at > timezone.now() for rel in context["releases"]]))
+        response = self.client.get(reverse('upcoming_releases'))
+
+        self.assertTrue(all([rel.submitted_at > timezone.now() for rel in response.context["releases"]]))
 
 
 class CreateReleaseTest(BaseClientTest):
