@@ -134,12 +134,14 @@ class CreateReleaseTest(BaseClientTest):
     def test_it_creates_the_release(self):
         label = LabelFactory(profile=self.user.profile)
 
+        album_title = 'Some Album Title'
+
         with open(f"{BASE_DIR}/releases/test_files/dummy.jpg", 'rb') as dummy_jpg:
             with open(f"{BASE_DIR}/releases/test_files/dummy.mp3", 'rb') as dummy_mp3:
                 response = self.client.post(reverse_lazy('release_add'), {
-                    "band_name": "test_band",  # this value will be checked bellow
+                    "band_name": "test_band",
                     "country": "MC",
-                    "album_title": "test album",
+                    "album_title": album_title,
                     "release_date": "2021-01-01",
                     "submitted_at": "2021-08-18",
                     "label": label.id,
@@ -153,6 +155,7 @@ class CreateReleaseTest(BaseClientTest):
                 })
 
         self.assertEqual(Release.objects.count(), 1)
+        self.assertEqual(Release.objects.first().album_title, album_title)
         self.assertRedirects(response, reverse('home'))
 
 
