@@ -10,7 +10,8 @@ from .views import (
     ListLabelView,
     UpdateLabelView,
     DeleteLabelView,
-
+    SubmissionLinkView,
+    BandSubmissionListView,
 )
 
 urlpatterns = [
@@ -23,4 +24,6 @@ urlpatterns = [
     path('labels/new/', CreateLabelView.as_view(), name='label_add'),
     path('labels/<int:pk>/edit/', UpdateLabelView.as_view(), name='label_update'),
     path('labels/<int:pk>/delete/', DeleteLabelView.as_view(), name='label_delete'),
+    path('submission-links/', SubmissionLinkView.as_view(), name='submission_links'),
+    path('submissions/', BandSubmissionListView.as_view(), name='submissions')
 ]

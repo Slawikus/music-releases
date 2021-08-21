@@ -4,6 +4,7 @@ from django.forms import ModelForm
 
 from configuration.settings import CURRENCY_CHOICES
 from .models import User, Profile, ProfileCurrency, Label
+from band_submission.models import BandSubmissionLink
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -55,3 +56,9 @@ class LabelForm(ModelForm):
         self.request = kwargs.pop('request', None)
         super(LabelForm, self).__init__(*args, **kwargs)
         self.fields['logo'].widget.attrs.update({'class': 'form-control'})
+
+
+class SubmissionLinkForm(ModelForm):
+    class Meta:
+        model = BandSubmissionLink
+        exclude = ['profile', 'slug']

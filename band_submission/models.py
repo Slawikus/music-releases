@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import FileExtensionValidator
+from users.models import Profile, Label
 # Create your models here.
 
 
@@ -20,3 +21,10 @@ class BandSubmission(models.Model):
     biography = models.TextField(
         help_text="Write about releases, press mention or tour dates"
     )
+
+
+class BandSubmissionLink(models.Model):
+
+    slug = models.SlugField(max_length=255)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    label = models.ForeignKey(Label, on_delete=models.CASCADE)
