@@ -97,4 +97,24 @@ class Release(models.Model):
     is_submitted = models.BooleanField(default=False)
 
     def divide_media_format(self):
+        if self.media_format_details is None:
+            return None
         return " | ".join(self.media_format_details.split(", "))
+
+
+class BandSubmission(models.Model):
+
+    name = models.CharField(max_length=255)
+    demo_sample = models.FileField(
+        upload_to='audio/releases/',
+        validators=[FileExtensionValidator(['mp3'])]
+    )
+    logo = models.ImageField(
+        upload_to='images/covers/',
+        verbose_name='band logo',
+        blank=True,
+        null=True,
+    )
+    biography = models.TextField(
+        help_text="Write about releases, press mention or tour dates"
+    )
