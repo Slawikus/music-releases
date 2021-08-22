@@ -1,9 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
+
+from django.views.generic import CreateView, UpdateView, ListView, FormView
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.urls import reverse
 
-from django.views.generic import CreateView, UpdateView, ListView, FormView
 from django.urls import reverse_lazy
 from django.contrib import messages
 
@@ -12,7 +13,7 @@ from .models import Release
 from .filters import ReleaseFilter
 from .excel import save_excel_file
 
-from django.utils.timezone import datetime
+from django.utils import timezone
 
 
 class CreateReleaseView(LoginRequiredMixin, CreateView):
@@ -33,7 +34,6 @@ class CreateReleaseView(LoginRequiredMixin, CreateView):
 
 @login_required
 def submit_release(request, pk):
-
     if request.method == "POST":
         release = Release.objects.filter(pk=pk)
 
@@ -42,7 +42,7 @@ def submit_release(request, pk):
             if release.profile == request.user.profile:
                 if not release.is_submitted:
                     release.is_submitted = True
-                    release.submitted_at = datetime.today()
+                    release.submitted_at = timezone.now()
                     release.save()
                 else:
                     messages.error(request, "release is already submitted")
@@ -101,7 +101,7 @@ class UpcomingReleasesView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return super().get_queryset().filter(is_submitted=True,
-                                             submitted_at__gte=datetime.today(),
+                                             submitted_at__gte=timezone.now(),
                                              ).order_by("-submitted_at")
 
 
@@ -114,7 +114,7 @@ class RecentlySubmittedView(BaseRelease):
 
     def get_queryset(self):
         return super().get_queryset().filter(is_submitted=True,
-                                             submitted_at__lte=datetime.today(),
+                                             submitted_at__lte=timezone.now(),
                                              ).order_by("-submitted_at")
 
 
@@ -130,7 +130,6 @@ class MyReleasesView(BaseRelease):
 
 
 class ImportReleasesView(LoginRequiredMixin, FormView):
-
     template_name = "upload_release.html"
     form_class = ImportReleaseForm
     success_url = reverse_lazy("my_releases")
