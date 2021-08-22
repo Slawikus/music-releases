@@ -1,9 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator
 from django.db import models
-from django.urls import reverse
 from django_countries.fields import CountryField
-from django.utils import timezone
 
 from users.models import Profile, Label
 
@@ -97,4 +95,6 @@ class Release(models.Model):
     is_submitted = models.BooleanField(default=False)
 
     def divide_media_format(self):
+        if self.media_format_details is None:
+            return None
         return " | ".join(self.media_format_details.split(", "))
