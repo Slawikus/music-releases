@@ -34,7 +34,6 @@ class CreateReleaseView(LoginRequiredMixin, CreateView):
 
 @login_required
 def submit_release(request, pk):
-
     if request.method == "POST":
         release = Release.objects.filter(pk=pk)
 
@@ -131,7 +130,6 @@ class MyReleasesView(BaseRelease):
 
 
 class ImportReleasesView(LoginRequiredMixin, FormView):
-
     template_name = "upload_release.html"
     form_class = ImportReleaseForm
     success_url = reverse_lazy("my_releases")

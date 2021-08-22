@@ -27,8 +27,6 @@ class BaseClientTest(TestCase):
         self.user = UserWithProfileFactory.create()
         self.client.force_login(self.user)
 
-# Create your tests here.
-class TestViews(TestCase):
 
 class MyReleasesViewTest(BaseClientTest):
     def test_it_shows_my_releases_page(self):
