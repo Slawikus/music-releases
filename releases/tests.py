@@ -4,7 +4,6 @@ from django.test import TestCase, Client, RequestFactory
 from django.urls import reverse_lazy, reverse
 from django.utils import timezone
 from configuration.settings import MEDIA_ROOT
-from pprint import pprint
 
 from users.models import User
 from releases.models import Release
@@ -137,34 +136,6 @@ class UpcomingViewTest(BaseClientTest):
         self.assertTrue(all([rel.submitted_at > timezone.now() for rel in context["releases"]]))
 
 
-class CreateReleaseTest(BaseClientTest):
-
-    def test_creation(self):
-        response = self.client.get(reverse_lazy('release_add'))
-        self.assertTrue(response.status_code, 200)
-
-        profile = ProfileFactory.create()
-        label = LabelFactory(profile=profile)
-        create_response = self.client.post(reverse_lazy('release_add'), {
-            "band_name": "test_band",  # this value will be checked bellow
-            "country": "Monaco",
-            "album_title": "test album",
-            "release_date": "2021-01-01",
-            "submitted_at": "2021-08-18",
-            "label": label.id,
-            "base_style": "Black Metal",
-            "cover_image": f"{MEDIA_ROOT}/dummy/dummy.jpg",
-            "format": "CD",
-            "sample": f"{MEDIA_ROOT}/dummy/dummy.mp3",
-            "limited_edition": 10,
-            "media_format_details": "something",
-
-        })
-        release_exists = len(Release.objects.all()) == 1
-        self.assertTrue(release_exists)
-        self.assertEqual(create_response.status_code, 200)
-
-
 class EditReleaseViewTest(BaseClientTest):
 
     def test_security(self):
@@ -175,22 +146,3 @@ class EditReleaseViewTest(BaseClientTest):
         response = anonymous.get(reverse("edit_release", kwargs={"pk": release.id}))
 
         self.assertEqual(response.status_code, 302)
-
-
-    def test_changes(self):
-        label = LabelFactory(profile=self.user.profile)
-        release = ReleaseFactory.create(profile=self.user.profile, label=label)
-
-        request = RequestFactory().post(reverse("edit_release", kwargs={"pk": release.id}), {
-            "band_name": "",
-            "album_title": "Madness",
-            "cover_image": "",
-            "sample": "",
-            "limited_edition": 10,
-        })
-        request.user = self.user
-        response = EditReleaseView.as_view()(request, pk=release.id)
-        has_changes = Release.objects.get(pk=release.pk).album_title == "Madness"
-
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue(has_changes)
