@@ -1,0 +1,8 @@
+name: Demo action
+on: [push]
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "running on ${{ runner.os }} OS. GitHub server"
+      - run: echo "checkout new push"
