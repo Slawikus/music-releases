@@ -5,7 +5,7 @@ from .views import (CreateReleaseView, AllReleaseView, MyReleasesView,
                     UpcomingReleasesView, RecentlySubmittedView, EditReleaseView,
                     UpdateWholesaleAndTradesView, CreateWholesalePriceView, DeleteWholesalePriceView,
                     SubmitReleaseView, UpdateWholesaleAndTradesView, CreateWholesalePriceView,
-                    SubmitReleaseView, ImportReleasesView)
+                    SubmitReleaseView, ImportReleasesView, UpdateMarketingInfosView)
 
 
 urlpatterns = [
@@ -21,4 +21,5 @@ urlpatterns = [
     path("import-releases/", ImportReleasesView.as_view(), name="import_releases"),
     path('<int:pk>/release_wholesale_price', CreateWholesalePriceView.as_view(), name='release_wholesale_price_add'),
     path('<int:pk>/wholesale_price_delete', DeleteWholesalePriceView.as_view(), name='wholesale_price_delete'),
+    path('<int:pk>/marketing_infos', UpdateMarketingInfosView.as_view(), name='marketing_infos_edit'),
 ]

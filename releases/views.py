@@ -6,8 +6,9 @@ from django.urls import reverse_lazy, reverse
 from django.utils.timezone import datetime
 from django.contrib import messages
 
-from .forms import CreateReleaseForm, UpdateTradesAndWholesaleForm, CreateWholesalePriceForm, UpdateReleaseForm, ImportReleaseForm
-from .models import Release, WholesaleAndTrades, ReleaseWholesalePrice
+from .forms import CreateReleaseForm, UpdateTradesAndWholesaleForm, CreateWholesalePriceForm, UpdateReleaseForm, \
+    ImportReleaseForm, UpdateMarketingInfosForm
+from .models import Release, WholesaleAndTrades, ReleaseWholesalePrice, MarketingInfos
 from .filters import ReleaseFilter
 from .excel import save_excel_file
 
@@ -53,6 +54,9 @@ class EditReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def test_func(self):
         obj = self.get_object()
         return obj.profile == self.request.user.profile
+
+    def get_success_url(self):
+        return reverse('edit_release', args=[self.object.pk])
 
 
 class BaseRelease(LoginRequiredMixin, ListView):
@@ -161,12 +165,8 @@ class CreateWholesalePriceView(LoginRequiredMixin, UserPassesTestMixin, CreateVi
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['release'] = Release.objects.get(id=self.kwargs.get('pk'))
+        context['release_wholesale_prices'] = ReleaseWholesalePrice.objects.filter(release=context['release'])
         return context
-
-    # def get_context_data(self, **kwargs):
-    #     release = Release.objects.get(id=self.kwargs.get('pk'))
-    #     kwargs["object_list"] = ReleaseWholesalePrice.objects.filter(release=release)
-    #     return super(CreateWholesalePriceView, self).get_context_data(**kwargs)
 
 
 class DeleteWholesalePriceView(DeleteView):
@@ -176,9 +176,12 @@ class DeleteWholesalePriceView(DeleteView):
         return reverse('wholesale_and_trades_edit', args=[self.object.pk])
 
     def delete(self, request, *args, **kwargs):
-        query = ReleaseWholesalePrice.objects.get(pk=kwargs["pk"])
-        query.delete()
-        return HttpResponseRedirect(reverse_lazy('home'))
+        wholesale_price = ReleaseWholesalePrice.objects.get(pk=kwargs["pk"])
+        wholesale_and_trades = WholesaleAndTrades.objects.get(
+            release=Release.objects.get(wholesale_prices=wholesale_price)
+        )
+        wholesale_price.delete()
+        return HttpResponseRedirect(reverse('wholesale_and_trades_edit', args=[wholesale_and_trades.id]))
 
 
 class ImportReleasesView(LoginRequiredMixin, FormView):
@@ -199,3 +202,18 @@ class ImportReleasesView(LoginRequiredMixin, FormView):
             )
         else:
             return super().form_valid(form)
+
+
+class UpdateMarketingInfosView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = MarketingInfos
+    form_class = UpdateMarketingInfosForm
+    template_name = 'marketing_infos_edit.html'
+    login_url = 'login'
+    success_url = reverse_lazy('home')
+
+    def get_success_url(self):
+        return reverse('marketing_infos_edit', args=[self.object.pk])
+
+    def test_func(self):
+        obj = self.get_object()
+        return obj.release.profile == self.request.user.profile
