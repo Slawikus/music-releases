@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.shortcuts import get_object_or_404
 from django.views.generic import CreateView, UpdateView, ListView, DeleteView, FormView
 from django.urls import reverse_lazy, reverse
 from django.utils.timezone import datetime
@@ -118,19 +119,32 @@ class UpdateWholesaleAndTradesView(LoginRequiredMixin, UserPassesTestMixin, Upda
     login_url = 'login'
     context_object_name = 'wholesale_and_trades'
 
+    def dispatch(self, request, *args, **kwargs):
+        self.release = get_object_or_404(Release, pk=self.kwargs.get("pk"))
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        release_wholesale_prices = ReleaseWholesalePrice.objects.select_related('currency').filter(release=Release.objects.get(wholesaleandtrades=self.kwargs.get('pk')))
-        context.update({'release_wholesale_prices': release_wholesale_prices})
+        release = self.release
+        release_wholesale_prices = ReleaseWholesalePrice.objects.select_related('currency').filter(release=self.release)
+        context.update(
+            {
+                'release_wholesale_prices': release_wholesale_prices,
+                'release': release
+            }
+        )
 
         return context
 
     def get_success_url(self):
-        return reverse('wholesale_and_trades_edit', args=[self.object.pk])
+        return reverse('wholesale_and_trades_edit', args=[self.release.pk])
 
     def test_func(self):
         obj = self.get_object()
         return obj.release.profile == self.request.user.profile
+
+    def get_object(self, queryset=None):
+        return self.release.wholesaleandtrades
 
 
 class CreateWholesalePriceView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
@@ -138,33 +152,31 @@ class CreateWholesalePriceView(LoginRequiredMixin, UserPassesTestMixin, CreateVi
     template_name = 'wholesale_price_add.html'
     form_class = CreateWholesalePriceForm
     login_url = 'login'
-    success_url = reverse_lazy('home')
+
+    def dispatch(self, request, *args, **kwargs):
+        self.release = get_object_or_404(Release, pk=self.kwargs.get("pk"))
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
-        form.instance.release = Release.objects.get(id=self.kwargs.get('pk'))
+        form.instance.release = self.release
         return super().form_valid(form)
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['release'] = Release.objects.get(id=self.kwargs.get('pk'))
+        kwargs['release'] = self.release
         return kwargs
 
     def get_success_url(self):
-        wholesale_and_trades = WholesaleAndTrades.objects.get(release=self.kwargs.get('pk'))
-        return reverse('wholesale_and_trades_edit', args=[wholesale_and_trades.pk])
+        return reverse('wholesale_and_trades_edit', args=[self.release.pk])
 
     def test_func(self):
-        obj = Release.objects.get(id=self.kwargs.get('pk'))
+        obj = self.release
         return obj.profile == self.request.user.profile
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['release'] = Release.objects.get(id=self.kwargs.get('pk'))
+        context['release'] = self.release
         return context
-
-
-class DeleteWholesalePriceView(DeleteView):
-    model = ReleaseWholesalePrice
 
 
 class ImportReleasesView(LoginRequiredMixin, FormView):
