@@ -214,7 +214,7 @@ class EditReleaseViewTest(BaseClientTest):
         self.assertEqual(release.album_title, new_album_title)
         self.assertRedirects(response, reverse('my_releases'))
 
-    def test_excel(self):
-        client = Client()
-        response = client.get(reverse_lazy("get_example_excel"))
-        self.assertEqual(response.status_code, 200)
+    # def test_excel(self):
+    #     client = Client()
+    #     response = client.get(reverse_lazy("get_example_excel"))
+    #     self.assertEqual(response.status_code, 200)
