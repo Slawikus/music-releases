@@ -51,4 +51,4 @@ jobs:
       env: 
         SECRET_KEY: abc
         DEBUG_MODE: True
-        DATABASE_URL: postgis://postgres:postgres@localhost:5432/postgres
+        DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
