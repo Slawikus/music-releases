@@ -12,6 +12,8 @@ whitenoise = "*"
 pycountry = "*"
 django-filter = "*"
 openpyxl = "*"
+django-factory-boy = "*"
+django-extensions = "*"
 
 [dev-packages]
 
