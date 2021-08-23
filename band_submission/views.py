@@ -16,8 +16,7 @@ class BandSubmissionView(UserPassesTestMixin, CreateView):
     def test_func(self):
         return BandSubmissionLink.objects.filter(slug=self.kwargs['slug']).exists()
 
-    def form_valid(self, form):
-        valid = super().form_valid(form)
-        BandSubmissionLink.objects.get(slug=self.kwargs['slug']).delete()
-
-        return valid
+    def get_form_kwargs(self):
+        kwargs = super(BandSubmissionView, self).get_form_kwargs()
+        kwargs['label'] = BandSubmissionLink.objects.get(slug=self.kwargs['slug']).label
+        return kwargs

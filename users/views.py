@@ -8,8 +8,8 @@ from django.db import IntegrityError
 from .forms import CustomUserCreationForm, EditProfileForm, CreateCurrencyForm, LabelForm, SubmissionLinkForm
 from .models import Profile, ProfileCurrency, Label
 from band_submission.models import BandSubmissionLink, BandSubmission
-from string import ascii_letters
-from random import sample
+from factory import Faker
+
 
 # Create your views here.
 class SignUpView(CreateView):
@@ -109,27 +109,7 @@ class DeleteLabelView(DeleteView):
     success_url = reverse_lazy('labels_list')
 
 
-class SubmissionLinkView(LoginRequiredMixin, CreateView):
-    model = BandSubmissionLink
-    form_class = SubmissionLinkForm
-    template_name = "submission_link.html"
-    success_url = reverse_lazy("submission_links")
-
-    def form_valid(self, form):
-        form.instance.profile = self.request.user.profile
-        form.instance.slug = "".join([str(i) for i in sample(ascii_letters, 18)])
-        return super().form_valid(form)
-
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        profile = self.request.user.profile
-        context['links'] = BandSubmissionLink.objects.filter(profile=profile)
-
-        return context
-
-
-class BandSubmissionListView(ListView):
+class BandSubmissionsView(ListView):
     model = BandSubmission
     template_name = "submission_list.html"
     context_object_name = "submissions"

@@ -5,15 +5,14 @@ from users.models import Profile, Label
 
 
 class BandSubmission(models.Model):
-
     name = models.CharField(max_length=255)
     demo_sample = models.FileField(
-        upload_to='audio/releases/',
-        validators=[FileExtensionValidator(['mp3'])],
+        upload_to='band_submissions/audio/',
+        validators=[FileExtensionValidator(['mp3', 'zip', 'rar'])],
     )
-    logo = models.ImageField(
-        upload_to='images/covers/',
-        verbose_name='band logo',
+    front_cover = models.ImageField(
+        upload_to='band_submissions/image/',
+        verbose_name='front cover',
         blank=True,
         null=True,
     )
@@ -21,10 +20,12 @@ class BandSubmission(models.Model):
     biography = models.TextField(
         help_text="Write about releases, press mention or tour dates"
     )
+    label = models.ForeignKey(Label,
+                              on_delete=models.CASCADE,
+                              related_name="band_submissions")
 
 
 class BandSubmissionLink(models.Model):
-
     slug = models.SlugField(max_length=255)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     label = models.ForeignKey(Label, on_delete=models.CASCADE)

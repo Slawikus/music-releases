@@ -1,17 +1,56 @@
-from django.test import TestCase, Client
-from users.models import Label
-from django.contrib.auth import get_user_model
+from django.test import TestCase, Client, RequestFactory
 from django.urls import reverse
+
+from users.factories import UserWithProfileFactory, LabelFactory
+from users.views import BandSubmissionListView
+from .factories import BandSubmissionLinkFactory
+from .models import BandSubmissionLink, BandSubmission
+from configuration.settings import BASE_DIR
 
 
 # Create your tests here.
-class BandSubmissionLinkTest(TestCase):
+class BandSubmissionTest(TestCase):
     def setUp(self):
-        self.email = "test@gmail.com"
-        self.password = "test123456"
-        self.user = get_user_model().objects.create(self.email, self.password)
+        self.client = Client()
+        self.user = UserWithProfileFactory.create()
+        self.client.force_login(self.user)
 
     def test_it_creates_submission_link(self):
+
+        label = LabelFactory(profile=self.user.profile)
+        response = self.client.post(reverse("submission_links"), {"label": label.id})
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(BandSubmissionLink.objects.count(), 1)
+
+    def test_it_opens_form_by_link(self):
+        label = LabelFactory(profile=self.user.profile)
+        link = BandSubmissionLinkFactory.create(profile=self.user.profile, label=label).slug
         client = Client()
-        client.force_login(self.user)
-        response = client.post(reverse("submission_links"),)
+        response = client.get(reverse("band_submission", args=[link]))
+        self.assertEqual(response.status_code, 200)
+
+    def test_it_saves_submission(self):
+        label = LabelFactory(profile=self.user.profile)
+        link = BandSubmissionLinkFactory.create(profile=self.user.profile, label=label).slug
+        client = Client()
+        with open(f"{BASE_DIR}/releases/test_files/dummy.jpg", 'rb') as dummy_jpg:
+            with open(f"{BASE_DIR}/releases/test_files/dummy.mp3", 'rb') as dummy_mp3:
+                response = client.post(reverse("band_submission", args=[link]), {
+                    "name": "test",
+                    "demo_sample": dummy_mp3,
+                    "logo": dummy_jpg,
+                    "email": "test@gmail.com",
+                    "biography": "some description"
+                })
+
+        self.assertEqual(BandSubmission.objects.count(), 1)
+
+    def test_it_shows_submission_in_profile(self):
+
+
+        request = RequestFactory().get(reverse("submissions"))
+        request.user = self.user
+        view = BandSubmissionListView(request)
+
+        self.assertEqual(view.object_list.count(), 1)
