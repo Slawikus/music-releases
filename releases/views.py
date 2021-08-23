@@ -2,13 +2,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import get_object_or_404
 from django.views.generic import CreateView, UpdateView, ListView, DeleteView, FormView
 from django.urls import reverse_lazy, reverse
-from django.utils.timezone import datetime
 from django.contrib import messages
 
 from .forms import CreateReleaseForm, UpdateTradesAndWholesaleForm, CreateWholesalePriceForm, UpdateReleaseForm, ImportReleaseForm
 from .models import Release, WholesaleAndTrades, ReleaseWholesalePrice
 from .filters import ReleaseFilter
 from .excel import save_excel_file
+
+from django.utils import timezone
 
 
 class CreateReleaseView(LoginRequiredMixin, CreateView):
@@ -35,7 +36,7 @@ class SubmitReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def form_valid(self, form):
         form.instance.is_submitted = True
-        form.instance.submitted_at = datetime.now()
+        form.instance.submitted_at = timezone.datetime.now()
         return super().form_valid(form)
 
     def test_func(self):
@@ -84,7 +85,7 @@ class UpcomingReleasesView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return super().get_queryset().filter(is_submitted=True,
-                                             submitted_at__gte=datetime.today(),
+                                             submitted_at__gte=timezone.now(),
                                              ).order_by("-submitted_at")
 
 
@@ -97,7 +98,7 @@ class RecentlySubmittedView(BaseRelease):
 
     def get_queryset(self):
         return super().get_queryset().filter(is_submitted=True,
-                                             submitted_at__lte=datetime.today(),
+                                             submitted_at__lte=timezone.now(),
                                              ).order_by("-submitted_at")
 
 
