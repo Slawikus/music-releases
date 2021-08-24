@@ -1,16 +1,7 @@
 import factory
 from users.factories import LabelFactory, UserWithProfileFactory
-from .models import BandSubmissionLink, BandSubmission
+from .models import BandSubmission
 from configuration.settings import BASE_DIR
-
-
-class BandSubmissionLinkFactory(factory.django.DjangoModelFactory):
-    profile = factory.SubFactory(UserWithProfileFactory)
-    label = factory.SubFactory(LabelFactory)
-    slug = factory.Faker("password")
-
-    class Meta:
-        model = BandSubmissionLink
 
 
 class BandSubmissionFactory(factory.django.DjangoModelFactory):
