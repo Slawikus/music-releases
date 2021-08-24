@@ -6,7 +6,6 @@ from configuration.settings import CURRENCY_CHOICES
 from .models import User, Profile, ProfileCurrency, Label
 
 
-
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
 

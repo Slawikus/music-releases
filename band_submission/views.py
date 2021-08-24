@@ -1,6 +1,7 @@
 from django.views.generic import CreateView
 from django.urls import reverse_lazy
-from django.core.exceptions import PermissionDenied
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.http import HttpResponseForbidden
 
 from .forms import BandSubmissionForm
 from .models import BandSubmission
@@ -8,20 +9,19 @@ from users.models import Profile
 # Create your views here.
 
 
-class BandSubmissionCreateView(CreateView):
+class BandSubmissionCreateView(UserPassesTestMixin, CreateView):
     model = BandSubmission
     template_name = "band_submission.html"
     form_class = BandSubmissionForm
     success_url = reverse_lazy("success")
 
-    def dispatch(self, request, *args, **kwargs):
-
+    def test_func(self):
         profile = Profile.objects.filter(submission_uuid=self.kwargs['uuid'])
-        if not profile.exists():
-            raise PermissionDenied
-        return super(BandSubmissionCreateView, self).dispatch(request, *args, **kwargs)
+        return profile.exists()
 
-    def get_form_kwargs(self):
-        kwargs = super(BandSubmissionCreateView, self).get_form_kwargs()
-        kwargs['profile'] = Profile.objects.get(submission_uuid=self.kwargs['uuid'])
-        return kwargs
+    def handle_no_permission(self):
+        return HttpResponseForbidden(self.request)
+
+    def form_valid(self, form):
+        form.instance.profile = Profile.objects.get(submission_uuid=self.kwargs['uuid'])
+        return super().form_valid(form)
