@@ -5,58 +5,21 @@
       {% if request.resolver_match.view_name == 'edit_release' %}
         active
       {% endif %}"
-      href="
-      {% if request.resolver_match.view_name in "'edit_release', release_wholesale_price_add" %}
-        {% url 'edit_release' request.resolver_match.kwargs.pk %}
-      {% endif %}
-      {% if request.resolver_match.view_name == 'wholesale_and_trades_edit' %}
-        {% url 'edit_release' wholesale_and_trades.release.pk %}
-      {% endif %}
-      {% if request.resolver_match.view_name == 'marketing_infos_edit' %}
-        {% url 'edit_release' marketinginfos.release.pk %}
-      {% endif %}
-      ">Release</a>
+         href="{% url 'edit_release' release.pk %}">Release</a>
     </li>
     <li class="nav-item">
       <a class="nav-link
       {% if request.resolver_match.view_name in "'wholesale_and_trades_edit','release_wholesale_price_add'" %}
         active
       {% endif %}"
-         href="
-      {% if request.resolver_match.view_name == 'edit_release' %}
-        {% url 'wholesale_and_trades_edit' release.wholesaleandtrades.pk %}
-      {% endif %}
-      {% if request.resolver_match.view_name == 'wholesale_and_trades_edit' %}
-        {% url 'wholesale_and_trades_edit' wholesale_and_trades.pk %}
-      {% endif %}
-      {% if request.resolver_match.view_name == 'release_wholesale_price_add' %}
-        {% url 'wholesale_and_trades_edit' release.wholesaleandtrades.pk %}
-      {% endif %}
-      {% if request.resolver_match.view_name == 'marketing_infos_edit' %}
-        {% url 'wholesale_and_trades_edit' marketinginfos.release.wholesaleandtrades.pk %}
-      {% endif %}
-      ">Trades & Wholesale</a>
-    <li class="nav-item">
+         href="{% url 'wholesale_and_trades_edit' release.pk %}">Trades & Wholesale</a>
+    </li>
     <li class="nav-item">
       <a class="nav-link
       {% if request.resolver_match.view_name == 'marketing_infos_edit' %}
         active
       {% endif %}"
-         href="
-      {% if request.resolver_match.view_name == 'edit_release' %}
-        {% url 'marketing_infos_edit' release.marketinginfos.id %}
-      {% endif %}
-      {% if request.resolver_match.view_name == 'wholesale_and_trades_edit' %}
-        {% url 'marketing_infos_edit' wholesale_and_trades.release.marketinginfos.id %}
-      {% endif %}
-      {% if request.resolver_match.view_name == 'release_wholesale_price_add' %}
-        {% url 'marketing_infos_edit' release.marketinginfos.id %}
-      {% endif %}
-      {% if request.resolver_match.view_name == 'marketing_infos_edit' %}
-        {% url 'marketing_infos_edit' marketinginfos.pk %}
-      {% endif %}
-      ">Marketing</a>
-    <li class="nav-item">
+         href="{% url 'marketing_infos_edit' release.pk %}">Marketing Infos</a>
     </li>
   </ul>
 {% endif %}

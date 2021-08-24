@@ -12,6 +12,12 @@ whitenoise = "*"
 pycountry = "*"
 django-filter = "*"
 openpyxl = "*"
+django-factory-boy = "*"
+django-extensions = "*"
+django-crispy-forms = "*"
+crispy-bootstrap5 = "*"
+django-countries = "*"
+pillow = "*"
 
 [dev-packages]
 

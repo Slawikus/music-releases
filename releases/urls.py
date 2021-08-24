@@ -3,8 +3,7 @@ from django.conf.urls import url
 
 from .views import (CreateReleaseView, AllReleaseView, MyReleasesView,
                     UpcomingReleasesView, RecentlySubmittedView, EditReleaseView,
-                    UpdateWholesaleAndTradesView, CreateWholesalePriceView, DeleteWholesalePriceView,
-                    SubmitReleaseView, UpdateWholesaleAndTradesView, CreateWholesalePriceView,
+                    DeleteWholesalePriceView, UpdateWholesaleAndTradesView, CreateWholesalePriceView,
                     SubmitReleaseView, ImportReleasesView, UpdateMarketingInfosView)
 
 

@@ -45,11 +45,14 @@
             <a href="{% url 'edit_release' release.pk %}" class="btn btn-secondary mt-3">Edit</a>
           {% endif %}
         </div>
-      </div>
-      <audio controls="controls">
-        <source src="{{ release.sample.url }}" type="audio/mpeg"/>
-      </audio>
+
     </div>
+    <audio controls="controls">
+      <source src="{{ release.sample.url }}" type="audio/mpeg" />
+    </audio>
+
+    
+  </div>
   {% endfor %}
 
 {% endblock content %}

@@ -103,6 +103,8 @@ class Release(models.Model):
             MarketingInfos.objects.create(release=self)
 
     def divide_media_format(self):
+        if self.media_format_details is None:
+            return None
         return " | ".join(self.media_format_details.split(", "))
 
     def currencies_without_price(self):

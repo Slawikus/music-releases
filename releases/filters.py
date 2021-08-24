@@ -1,6 +1,7 @@
 import django_filters
 from .models import Release
 
+
 class ReleaseFilter(django_filters.FilterSet):
 
     class Meta:

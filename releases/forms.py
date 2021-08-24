@@ -1,8 +1,6 @@
 from django import forms
 from django.forms import ModelForm
 
-from configuration.settings import CURRENCY_CHOICES
-from users.models import ProfileCurrency
 from .models import Release, Label, WholesaleAndTrades, ReleaseWholesalePrice, MarketingInfos
 
 
