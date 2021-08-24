@@ -5,6 +5,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from configuration.settings import CURRENCY_CHOICES
+import uuid
 
 
 # Create your models here.
@@ -56,6 +57,14 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.email
+
+    def save(self, *args, **kwargs):
+        is_new = self._state.adding
+        super(Profile, self).save(*args, **kwargs)
+        if is_new:
+            profile = Profile.objects.last()
+            for _ in range(3):
+                Invitation.objects.create(profile=profile)
 
 
 class ProfileCurrency(models.Model):
@@ -120,8 +129,9 @@ class Label(models.Model):
 
 class Invitation(models.Model):
 
-    slug = models.SlugField(max_length=255)
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="invitation")
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="invitations")
+    active = models.BooleanField(default=True)
 
 
 @receiver(post_save, sender=User)

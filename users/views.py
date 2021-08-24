@@ -7,31 +7,30 @@ from django.db import IntegrityError
 
 from .forms import CustomUserCreationForm, EditProfileForm, CreateCurrencyForm, LabelForm
 from .models import Profile, ProfileCurrency, Label, Invitation
-
-from random import sample
-from string import ascii_letters
+from django.core.exceptions import PermissionDenied
 
 
 # Create your views here.
-class SignUpView(UserPassesTestMixin, CreateView):
+class SignUpView(CreateView):
     form_class = CustomUserCreationForm
     template_name = 'signup.html'
     success_url = '/'
 
-    def test_func(self):
-        return Invitation.objects.filter(slug=self.kwargs['slug']).exists()
+    def dispatch(self, request, *args, **kwargs):
+        invitation = Invitation.objects.filter(uuid=self.kwargs['uuid'])
+        if invitation.exists():
+            if invitation[0].active:
+                return super(SignUpView, self).dispatch(request, *args, **kwargs)
+
+        raise PermissionDenied
 
     def form_valid(self, form):
 
         valid = super(SignUpView, self).form_valid(form)
-        # if valid create invites and delete old
         if valid:
-            for _ in range(3):
-                slug = "".join([str(i) for i in sample(ascii_letters, len(ascii_letters))])
-                profile = Profile.objects.last()
-                Invitation.objects.create(slug=slug, profile=profile)
-
-            Invitation.objects.get(slug=self.kwargs['slug']).delete()
+            invitation = Invitation.objects.get(uuid=self.kwargs['uuid'])
+            invitation.active = False
+            invitation.save()
 
         return valid
 
