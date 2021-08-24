@@ -2,9 +2,9 @@ from django.test import TestCase, Client, RequestFactory
 from django.urls import reverse
 
 from users.factories import UserWithProfileFactory, LabelFactory
-from users.views import BandSubmissionListView
+from users.views import BandSubmissionsView
 from .factories import BandSubmissionLinkFactory
-from .models import BandSubmissionLink, BandSubmission
+from .models import BandSubmission
 from configuration.settings import BASE_DIR
 
 
@@ -15,13 +15,6 @@ class BandSubmissionTest(TestCase):
         self.user = UserWithProfileFactory.create()
         self.client.force_login(self.user)
 
-    def test_it_creates_submission_link(self):
-
-        label = LabelFactory(profile=self.user.profile)
-        response = self.client.post(reverse("submission_links"), {"label": label.id})
-
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(BandSubmissionLink.objects.count(), 1)
 
     def test_it_opens_form_by_link(self):
         label = LabelFactory(profile=self.user.profile)
@@ -51,6 +44,6 @@ class BandSubmissionTest(TestCase):
 
         request = RequestFactory().get(reverse("submissions"))
         request.user = self.user
-        view = BandSubmissionListView(request)
+        view = BandSubmissionsView(request)
 
         self.assertEqual(view.object_list.count(), 1)

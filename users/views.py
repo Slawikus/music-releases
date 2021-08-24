@@ -2,13 +2,12 @@ from django.contrib import messages
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.db import IntegrityError
 
-from .forms import CustomUserCreationForm, EditProfileForm, CreateCurrencyForm, LabelForm, SubmissionLinkForm
+from .forms import CustomUserCreationForm, EditProfileForm, CreateCurrencyForm, LabelForm
 from .models import Profile, ProfileCurrency, Label
-from band_submission.models import BandSubmissionLink, BandSubmission
-from factory import Faker
+from band_submission.models import BandSubmission
 
 
 # Create your views here.
@@ -115,15 +114,10 @@ class BandSubmissionsView(LoginRequiredMixin, ListView):
     context_object_name = "submissions"
 
     def get_queryset(self):
-        return BandSubmission.objects.filter(label__profile=self.request.user.profile)
+        return BandSubmission.objects.filter(profile=self.request.user.profile)
 
-
-
-
-
-
-
-
-
-
-
+    def get_context_data(self, **kwargs):
+        context = super(BandSubmissionsView, self).get_context_data(**kwargs)
+        uuid = self.request.user.profile.submission_uuid
+        context["link"] = reverse("band_submission", args=[uuid])
+        return context

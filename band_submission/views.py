@@ -1,6 +1,6 @@
 from django.views.generic import CreateView
 from django.urls import reverse_lazy
-from django.contrib.auth.
+from django.core.exceptions import PermissionDenied
 
 from .forms import BandSubmissionForm
 from .models import BandSubmission
@@ -16,11 +16,12 @@ class BandSubmissionCreateView(CreateView):
 
     def dispatch(self, request, *args, **kwargs):
 
-        return super(BandSubmissionCreateView, self).dispatch(*args, **kwargs)
-
-    def test_func(self):
-        return Profile.objects.filter(submission_uuid=self.kwargs['uuid']).exists()
+        profile = Profile.objects.filter(submission_uuid=self.kwargs['uuid'])
+        if not profile.exists():
+            raise PermissionDenied
+        return super(BandSubmissionCreateView, self).dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):
         kwargs = super(BandSubmissionCreateView, self).get_form_kwargs()
+        kwargs['profile'] = Profile.objects.get(submission_uuid=self.kwargs['uuid'])
         return kwargs
