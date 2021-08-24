@@ -116,18 +116,17 @@ class RecentlySubmittedViewTest(BaseClientTest):
 class UpcomingViewTest(BaseClientTest):
 
     def test_time(self):
-        pass
-        # response = self.client.get(reverse_lazy('upcoming_releases'))
-        # self.assertTrue(response.status_code, 200)
-        #
-        # setup test releases
-        # label = LabelFactory(profile=self.user.profile)
-        # for i in range(10):
-        #     ReleaseFactory.create(profile=self.user.profile, label=label)
-        #
-        # response = self.client.get(reverse('upcoming_releases'))
-        #
-        # self.assertTrue(all([rel.submitted_at > timezone.now() for rel in response.context["releases"]]))
+
+        response = self.client.get(reverse_lazy('upcoming_releases'))
+        self.assertTrue(response.status_code, 200)
+
+        label = LabelFactory(profile=self.user.profile)
+        for i in range(10):
+            ReleaseFactory.create(profile=self.user.profile, label=label)
+
+        response = self.client.get(reverse('upcoming_releases'))
+
+        self.assertTrue(all([rel.submitted_at > timezone.now() for rel in response.context["releases"]]))
 
 
 class CreateReleaseTest(BaseClientTest):
@@ -161,7 +160,7 @@ class CreateReleaseTest(BaseClientTest):
 
         self.assertEqual(Release.objects.count(), 1)
         self.assertEqual(Release.objects.first().album_title, album_title)
-        self.assertRedirects(response, reverse('home'))
+        self.assertRedirects(response, reverse("my_releases"))
 
 
 class EditReleaseViewTest(BaseClientTest):
@@ -214,8 +213,3 @@ class EditReleaseViewTest(BaseClientTest):
 
         self.assertEqual(release.album_title, new_album_title)
         self.assertRedirects(response, reverse('my_releases'))
-
-    # def test_excel(self):
-    #     client = Client()
-    #     response = client.get(reverse_lazy("get_example_excel"))
-    #     self.assertEqual(response.status_code, 200)
