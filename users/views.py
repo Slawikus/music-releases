@@ -109,7 +109,21 @@ class DeleteLabelView(DeleteView):
     success_url = reverse_lazy('labels_list')
 
 
-class BandSubmissionsView(ListView):
+class BandSubmissionsView(LoginRequiredMixin, ListView):
     model = BandSubmission
     template_name = "submission_list.html"
     context_object_name = "submissions"
+
+    def get_queryset(self):
+        return BandSubmission.objects.filter(label__profile=self.request.user.profile)
+
+
+
+
+
+
+
+
+
+
+
