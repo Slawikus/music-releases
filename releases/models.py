@@ -1,9 +1,9 @@
 from django.core.exceptions import ValidationError
-from django.core.validators import FileExtensionValidator
+from django.core.validators import FileExtensionValidator, MinValueValidator, MaxValueValidator
 from django.db import models
 from django_countries.fields import CountryField
 
-from users.models import Profile, Label
+from users.models import Profile, Label, ProfileCurrency
 
 
 def validate_file_size(value):
@@ -94,7 +94,72 @@ class Release(models.Model):
 
     is_submitted = models.BooleanField(default=False)
 
+    def save(self, force_insert=False, force_update=False, using=None,
+             update_fields=None):
+        is_new = self.id is None
+        super().save(force_insert, force_update)
+        if is_new:
+            WholesaleAndTrades.objects.create(release=self)
+
     def divide_media_format(self):
         if self.media_format_details is None:
             return None
         return " | ".join(self.media_format_details.split(", "))
+
+    def currencies_without_price(self):
+        profile_currencies = self.profile.currencies
+        release_currencies_ids = ReleaseWholesalePrice.objects.filter(release=self).values_list('currency', flat=True)
+        release_currencies = ProfileCurrency.objects.filter(id__in=release_currencies_ids)
+        currency_choices = profile_currencies.exclude(id__in=release_currencies)
+
+        return currency_choices
+
+
+class WholesaleAndTrades(models.Model):
+    YES_NO_CHOICES = (
+        (True, 'Yes'),
+        (False, 'No')
+    )
+
+    release = models.OneToOneField(Release, on_delete=models.CASCADE)
+    available_for_trade = models.BooleanField(default=False, choices=YES_NO_CHOICES)
+    trade_points = models.DecimalField(
+        decimal_places=1,
+        max_digits=3,
+        validators=[MinValueValidator(0), MaxValueValidator(30)],
+        null=True,
+        blank=True
+    )
+    trade_remarks = models.CharField(max_length=250, null=True, blank=True)
+    available_for_wholesale = models.BooleanField(default=False, choices=YES_NO_CHOICES)
+
+
+class ReleaseWholesalePrice(models.Model):
+    release = models.ForeignKey(
+        Release,
+        related_name='wholesale_prices',
+        on_delete=models.CASCADE
+    )
+    currency = models.ForeignKey(
+        ProfileCurrency,
+        related_name='wholesale_prices_for_currency',
+        on_delete=models.CASCADE,
+    )
+    price = models.DecimalField(decimal_places=2, max_digits=10)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['release', 'currency'],
+                name='unique_price_per_release_and_currency'
+            ),
+        ]
+
+
+class MarketingInfos(models.Model):
+    release = models.OneToOneField(Release, on_delete=models.CASCADE)
+    style = models.CharField(max_length=250, null=True, blank=True)
+    release_overview = models.TextField(null=True, blank=True)
+    youtube_url = models.URLField(null=True, blank=True)
+    soundcloud_url = models.URLField(null=True, blank=True)
+    press_feedback = models.TextField(null=True, blank=True)

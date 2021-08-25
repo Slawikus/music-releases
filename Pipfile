@@ -14,7 +14,10 @@ django-filter = "*"
 openpyxl = "*"
 django-factory-boy = "*"
 django-extensions = "*"
-psycopg2-binary = "*"
+django-crispy-forms = "*"
+crispy-bootstrap5 = "*"
+django-countries = "*"
+pillow = "*"
 
 [dev-packages]
 

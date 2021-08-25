@@ -1,15 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.contrib.auth.decorators import login_required
-
-from django.views.generic import CreateView, UpdateView, ListView, FormView
-from django.http import HttpResponseRedirect, HttpResponseForbidden
-from django.urls import reverse
-
-from django.urls import reverse_lazy
+from django.shortcuts import get_object_or_404
+from django.views.generic import CreateView, UpdateView, ListView, DeleteView, FormView
+from django.urls import reverse_lazy, reverse
 from django.contrib import messages
 
-from .forms import CreateReleaseForm, ImportReleaseForm
-from .models import Release
+from .forms import CreateReleaseForm, UpdateTradesAndWholesaleForm, CreateWholesalePriceForm, UpdateReleaseForm, ImportReleaseForm
+from .models import Release, WholesaleAndTrades, ReleaseWholesalePrice
 from .filters import ReleaseFilter
 from .excel import save_excel_file
 
@@ -20,7 +16,7 @@ class CreateReleaseView(LoginRequiredMixin, CreateView):
     model = Release
     template_name = 'release_add.html'
     form_class = CreateReleaseForm
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('my_releases')
 
     def form_valid(self, form):
         form.instance.profile = self.request.user.profile
@@ -32,47 +28,35 @@ class CreateReleaseView(LoginRequiredMixin, CreateView):
         return kwargs
 
 
-@login_required
-def submit_release(request, pk):
-    if request.method == "POST":
-        release = Release.objects.filter(pk=pk)
+class SubmitReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Release
+    fields = ['is_submitted']
+    login_url = 'login'
+    success_url = reverse_lazy('all_releases')
 
-        if release.exists():
-
-            if release.profile == request.user.profile:
-                if not release.is_submitted:
-                    release.is_submitted = True
-                    release.submitted_at = timezone.now()
-                    release.save()
-                else:
-                    messages.error(request, "release is already submitted")
-
-            else:
-                messages.error(request, "You can't submit someone else's record")
-
-        else:
-            messages.error(request, "Release does not exist")
-
-        return HttpResponseRedirect(reverse("my_releases"))
-
-    else:
-        return HttpResponseForbidden
-
-
-class EditReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    def form_valid(self, form):
+        form.instance.is_submitted = True
+        form.instance.submitted_at = timezone.datetime.now()
+        return super().form_valid(form)
 
     def test_func(self):
         obj = self.get_object()
         return obj.profile == self.request.user.profile
 
-    model = Release
 
-    fields = ['band_name', 'album_title', 'cover_image', 'sample', 'limited_edition']
+class EditReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Release
+    form_class = UpdateReleaseForm
     template_name = "edit_release.html"
     success_url = reverse_lazy("my_releases")
 
+    def test_func(self):
+        obj = self.get_object()
+        return obj.profile == self.request.user.profile
+
 
 class BaseRelease(LoginRequiredMixin, ListView):
+
     context_object_name = "releases"
 
     template_name = "release_list.html"
@@ -130,7 +114,75 @@ class MyReleasesView(BaseRelease):
         return super().get_queryset().filter(profile=self.request.user.profile).order_by("-submitted_at")
 
 
+class UpdateWholesaleAndTradesView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = WholesaleAndTrades
+    form_class = UpdateTradesAndWholesaleForm
+    template_name = 'release_trades_wholesale.html'
+    login_url = 'login'
+    context_object_name = 'wholesale_and_trades'
+
+    def dispatch(self, request, *args, **kwargs):
+        self.release = get_object_or_404(Release, pk=self.kwargs.get("pk"))
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        release = self.release
+        release_wholesale_prices = ReleaseWholesalePrice.objects.select_related('currency').filter(release=self.release)
+        context.update(
+            {
+                'release_wholesale_prices': release_wholesale_prices,
+                'release': release
+            }
+        )
+
+        return context
+
+    def get_success_url(self):
+        return reverse('wholesale_and_trades_edit', args=[self.release.pk])
+
+    def test_func(self):
+        obj = self.get_object()
+        return obj.release.profile == self.request.user.profile
+
+    def get_object(self, queryset=None):
+        return self.release.wholesaleandtrades
+
+
+class CreateWholesalePriceView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+    model = ReleaseWholesalePrice
+    template_name = 'wholesale_price_add.html'
+    form_class = CreateWholesalePriceForm
+    login_url = 'login'
+
+    def dispatch(self, request, *args, **kwargs):
+        self.release = get_object_or_404(Release, pk=self.kwargs.get("pk"))
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        form.instance.release = self.release
+        return super().form_valid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['release'] = self.release
+        return kwargs
+
+    def get_success_url(self):
+        return reverse('wholesale_and_trades_edit', args=[self.release.pk])
+
+    def test_func(self):
+        obj = self.release
+        return obj.profile == self.request.user.profile
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['release'] = self.release
+        return context
+
+
 class ImportReleasesView(LoginRequiredMixin, FormView):
+
     template_name = "upload_release.html"
     form_class = ImportReleaseForm
     success_url = reverse_lazy("my_releases")
