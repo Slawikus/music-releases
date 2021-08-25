@@ -55,9 +55,6 @@ class EditReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         obj = self.get_object()
         return obj.profile == self.request.user.profile
 
-    def get_success_url(self):
-        return reverse('edit_release', args=[self.object.pk])
-
 
 class BaseRelease(LoginRequiredMixin, ListView):
     context_object_name = "releases"
