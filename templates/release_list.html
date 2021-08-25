@@ -3,6 +3,10 @@
 {% block title %}{{ title }}{% endblock title %}
 
 {% block content %}
+  {% url 'my_releases' as my_releases %}
+  {% if request.path == my_releases %}
+      <a class="btn btn-secondary" href="{% url 'import_releases' %}">Import</a>
+  {% endif %}
 
   {% for release in releases %}
     <div class="p-4 shadow-4 rounded-3 mt-3" style="background-color: hsl(0, 0%, 94%);">
@@ -24,7 +28,6 @@
               <button type="submit" class="btn btn-primary">Submit</button>
             </form>
           {% endif %}
-          {% url 'my_releases' as my_releases %}
           {% if request.path == my_releases %}
             <a href="{% url 'edit_release' release.pk %}" class="btn btn-secondary mt-3">Edit</a>
           {% endif %}
