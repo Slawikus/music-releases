@@ -77,6 +77,7 @@ class AllReleaseView(BaseRelease):
 class UpcomingReleasesView(LoginRequiredMixin, ListView):
     template_name = "upcoming.html"
     model = Release
+    context_object_name = "releases"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
