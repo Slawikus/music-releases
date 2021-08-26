@@ -48,6 +48,9 @@ class EditReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Release
     form_class = UpdateReleaseForm
     template_name = "edit_release.html"
+
+    fields = ['band_name', 'album_title', 'cover_image', 'sample', 'limited_edition']
+    template_name = "release/edit_release.html"
     success_url = reverse_lazy("my_releases")
 
     def test_func(self):
@@ -56,10 +59,9 @@ class EditReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 
 class BaseRelease(LoginRequiredMixin, ListView):
-
     context_object_name = "releases"
 
-    template_name = "release_list.html"
+    template_name = "release/release_list.html"
     model = Release
 
 
@@ -75,7 +77,7 @@ class AllReleaseView(BaseRelease):
 
 
 class UpcomingReleasesView(LoginRequiredMixin, ListView):
-    template_name = "upcoming.html"
+    template_name = "release/upcoming.html"
     model = Release
     context_object_name = "releases"
 
@@ -182,8 +184,7 @@ class CreateWholesalePriceView(LoginRequiredMixin, UserPassesTestMixin, CreateVi
 
 
 class ImportReleasesView(LoginRequiredMixin, FormView):
-
-    template_name = "upload_release.html"
+    template_name = "release/upload_release.html"
     form_class = ImportReleaseForm
     success_url = reverse_lazy("my_releases")
 
