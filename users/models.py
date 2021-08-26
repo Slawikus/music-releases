@@ -129,9 +129,9 @@ class Label(models.Model):
 
 class Invitation(models.Model):
 
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    public_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="invitations")
-    active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True)
 
 
 @receiver(post_save, sender=User)

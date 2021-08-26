@@ -1,13 +1,13 @@
 from django.contrib import messages
+from django.http import HttpResponse
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
-from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.db import IntegrityError
 
 from .forms import CustomUserCreationForm, EditProfileForm, CreateCurrencyForm, LabelForm
 from .models import Profile, ProfileCurrency, Label, Invitation
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import ObjectDoesNotExist
 
 
 # Create your views here.
@@ -17,19 +17,23 @@ class SignUpView(CreateView):
     success_url = '/'
 
     def dispatch(self, request, *args, **kwargs):
-        invitation = Invitation.objects.filter(uuid=self.kwargs['uuid'])
-        if invitation.exists():
-            if invitation[0].active:
-                return super(SignUpView, self).dispatch(request, *args, **kwargs)
+        try:
+            invitation = Invitation.objects.get(public_id=self.kwargs['public_id'])
+        except ObjectDoesNotExist:
+            return HttpResponse(self.request, "Sorry, your invitation link is not valid", status=403)
+        if not invitation.is_active:
+            return HttpResponse(self.request,
+                                "Sorry, your invitation link is already been used and not valid anymore",
+                                status=403)
 
-        raise PermissionDenied
+        return super(SignUpView, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
 
         valid = super(SignUpView, self).form_valid(form)
         if valid:
-            invitation = Invitation.objects.get(uuid=self.kwargs['uuid'])
-            invitation.active = False
+            invitation = Invitation.objects.get(public_id=self.kwargs['public_id'])
+            invitation.is_active = False
             invitation.save()
 
         return valid
@@ -102,9 +106,6 @@ class CreateLabelView(CreateView):
         except IntegrityError:
             form.add_error('name', "You already have this label")
             return super().form_invalid(form)
-
-    def get_success_url(self):
-        pass
 
 
 class ListLabelView(ListView):

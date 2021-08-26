@@ -14,7 +14,7 @@ from .views import (
 )
 
 urlpatterns = [
-    path('signup/<str:uuid>/', SignUpView.as_view(), name='signup'),
+    path('signup/<str:public_id>/', SignUpView.as_view(), name='signup'),
     path('profile/edit/', EditProfileView.as_view(), name='profile_edit'),
     path('currencies/', ListProfileCurrencyView.as_view(), name='currencies_list'),
     path('currencies/new/', CreateProfileCurrencyView.as_view(), name='currency_create'),
