@@ -62,9 +62,8 @@ class Profile(models.Model):
         is_new = self._state.adding
         super(Profile, self).save(*args, **kwargs)
         if is_new:
-            profile = Profile.objects.get(user__email=self.user.email)
             for _ in range(3):
-                Invitation.objects.create(profile=profile)
+                Invitation.objects.create(profile=self.user.profile)
 
 
 class ProfileCurrency(models.Model):
