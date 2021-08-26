@@ -8,10 +8,8 @@ jobs:
       tag: "3.9"
     steps:
       - checkout
-      - python/install-packages:
-        pkg-manager: pipenv
-      - run:
-        command: print("My first CI is ready!")
+      - python/install-packages
+    
         
 workflows:
   main:
