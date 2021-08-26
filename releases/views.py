@@ -14,7 +14,7 @@ from django.utils import timezone
 
 class CreateReleaseView(LoginRequiredMixin, CreateView):
     model = Release
-    template_name = 'release_add.html'
+    template_name = 'release/release_add.html'
     form_class = CreateReleaseForm
     success_url = reverse_lazy('my_releases')
 

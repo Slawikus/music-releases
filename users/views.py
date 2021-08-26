@@ -11,7 +11,7 @@ from .models import Profile, ProfileCurrency, Label
 # Create your views here.
 class SignUpView(CreateView):
     form_class = CustomUserCreationForm
-    template_name = 'signup.html'
+    template_name = 'registration/signup.html'
     success_url = '/'
 
 
