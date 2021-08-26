@@ -23,8 +23,7 @@ jobs:
           POSTGRES_DB: music_release
     steps:
       - checkout
-      - run: sudo pip install pipenv
-      - run: pipenv install --system --deploy --ignore-pipfile
-      - run: python3 manage.py makemigrations
-      - run: python3 manage.py migrate
-      - run: python3 manage.py test
+      - run: python -m pip install --upgrade pipenv wheel
+      - run: pipenv install --dev
+      - run: pipenv run python manage.py migrate
+      - run: pipenv run python manage.py test
