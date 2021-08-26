@@ -7,7 +7,7 @@ from django.db import IntegrityError
 
 from .forms import CustomUserCreationForm, EditProfileForm, CreateCurrencyForm, LabelForm
 from .models import Profile, ProfileCurrency, Label
-from band_submission.models import BandSubmission
+from band_submissions.models import BandSubmission
 
 
 # Create your views here.
@@ -110,7 +110,7 @@ class DeleteLabelView(DeleteView):
 
 class BandSubmissionsView(LoginRequiredMixin, ListView):
     model = BandSubmission
-    template_name = "submission_list.html"
+    template_name = "band_submissions/submission_list.html"
     context_object_name = "submissions"
 
     def get_queryset(self):

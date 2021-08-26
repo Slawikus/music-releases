@@ -32,10 +32,11 @@ INSTALLED_APPS = [
     'django_countries',
     'pycountry',
     'django_filters',
+    'phonenumber_field',
 
     'users.apps.UsersConfig',
     'releases.apps.ReleasesConfig',
-    'band_submission.apps.BandSubmissionConfig'
+    'band_submissions.apps.BandSubmissionConfig'
 ]
 
 MIDDLEWARE = [
@@ -54,10 +55,7 @@ ROOT_URLCONF = 'configuration.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            str(BASE_DIR.joinpath('templates')),
-            str(BASE_DIR.joinpath('templates/band_submission')),
-                 ],
+        'DIRS': [str(BASE_DIR.joinpath('templates'))],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
