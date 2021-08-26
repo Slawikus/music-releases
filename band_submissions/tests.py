@@ -1,8 +1,7 @@
-from django.test import TestCase, Client, RequestFactory
+from django.test import TestCase, Client
 from django.urls import reverse
 
-from users.factories import UserWithProfileFactory, LabelFactory
-from users.views import BandSubmissionsView
+from users.factories import UserWithProfileFactory
 from .models import BandSubmission
 from configuration.settings import BASE_DIR
 import uuid
