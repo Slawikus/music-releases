@@ -47,9 +47,6 @@ class SubmitReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 class EditReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Release
     form_class = UpdateReleaseForm
-    template_name = "edit_release.html"
-
-    fields = ['band_name', 'album_title', 'cover_image', 'sample', 'limited_edition']
     template_name = "release/edit_release.html"
     success_url = reverse_lazy("my_releases")
 
