@@ -199,3 +199,14 @@ class ImportReleasesView(LoginRequiredMixin, FormView):
             )
         else:
             return super().form_valid(form)
+
+
+class PublicTradeListView(ListView):
+
+    template_name = "release_list.html"
+    model = Release
+    context_object_name = "releases"
+
+    def get_queryset(self):
+        labels = self.request.user.profile.label
+        return Release.objects.filter(label__in=labels)

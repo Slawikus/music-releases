@@ -1,9 +1,18 @@
 from django.urls import path
 from django.conf.urls import url
 
-from .views import (CreateReleaseView, AllReleaseView, MyReleasesView,
-                    UpcomingReleasesView, RecentlySubmittedView, EditReleaseView,
-                    UpdateWholesaleAndTradesView, CreateWholesalePriceView, SubmitReleaseView, ImportReleasesView)
+from .views import (CreateReleaseView,
+                    AllReleaseView,
+                    MyReleasesView,
+                    UpcomingReleasesView,
+                    RecentlySubmittedView,
+                    EditReleaseView,
+                    UpdateWholesaleAndTradesView,
+                    CreateWholesalePriceView,
+                    SubmitReleaseView,
+                    ImportReleasesView,
+                    PublicTradeListView
+                    )
 
 
 urlpatterns = [
@@ -17,4 +26,5 @@ urlpatterns = [
     path('<int:pk>/wholesale_and_trades', UpdateWholesaleAndTradesView.as_view(), name='wholesale_and_trades_edit'),
     path('<int:pk>/release_wholesale_price', CreateWholesalePriceView.as_view(), name='release_wholesale_price_add'),
     path("import-releases/", ImportReleasesView.as_view(), name="import_releases"),
+    path("tradelist/", PublicTradeListView.as_view(), name='public_tradelist')
 ]

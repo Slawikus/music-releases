@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django_countries.fields import CountryField
@@ -83,6 +85,11 @@ class ProfileCurrency(models.Model):
 
 
 class Label(models.Model):
+    public_id = models.UUIDField(
+        uuid=uuid.uuid4,
+        unique=True,
+        editable=False
+    )
     profile = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE,
