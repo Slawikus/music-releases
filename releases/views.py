@@ -4,8 +4,14 @@ from django.views.generic import CreateView, UpdateView, ListView, DeleteView, F
 from django.urls import reverse_lazy, reverse
 from django.contrib import messages
 
-from .forms import CreateReleaseForm, UpdateTradesAndWholesaleForm, CreateWholesalePriceForm, UpdateReleaseForm, ImportReleaseForm
+from .forms import (CreateReleaseForm,
+                    UpdateTradesAndWholesaleForm,
+                    CreateWholesalePriceForm,
+                    UpdateReleaseForm,
+                    ImportReleaseForm,
+                    RequestPurchaseForm)
 from .models import Release, WholesaleAndTrades, ReleaseWholesalePrice
+from users.models import Profile
 from .filters import ReleaseFilter
 from .excel import save_excel_file
 
@@ -199,12 +205,19 @@ class ImportReleasesView(LoginRequiredMixin, FormView):
             return super().form_valid(form)
 
 
-class PublicTradeListView(ListView):
-
-    template_name = "release_list.html"
+class PublicTradeListView(FormView):
+    template_name = "tradelist.html"
     model = Release
-    context_object_name = "releases"
+    form_class = RequestPurchaseForm
 
-    def get_queryset(self):
-        labels = self.request.user.profile.label
-        return Release.objects.filter(label__in=labels)
+    def get_context_data(self, **kwargs):
+        profile = get_object_or_404(Profile, public_id=self.kwargs['public_id'])
+        context = super(PublicTradeListView, self).get_context_data()
+        context["title"] = "Public Tradelist"
+        context["releases"] = Release.objects.filter(profile=profile). \
+            filter(wholesaleandtrades__available_for_trade=True). \
+            filter(wholesaleandtrades__available_for_wholesale=True). \
+            filter(is_submitted=True)
+
+        count = context["releases"].count()
+        return context

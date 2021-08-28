@@ -1,0 +1,49 @@
+{% extends '_base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+{% block content %}
+    <div class="row mt-2 mb-2">
+      <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-primary ml-4">Send</button>
+      </form>
+    {% for release in releases %}
+    <div class="p-4 shadow-4 rounded-3 mt-3" style="background-color: hsl(0, 0%, 94%);">
+      <div class="row">
+        <div class="col-2">
+            {# TODO еще не закончено #}
+            <input type="number">
+        </div>
+        <div class="col-4">
+          <p>{{ release.band_name }} ({{ release.country }})</p>
+          <p>{{ release.album_title }} - {{ release.format }} | {{ release.divide_media_format }}</p>
+          <p>{{ release.base_style }}</p>
+          <p>{{ release.submitted_at|date:"d.m.Y" }} {{ release.label }} ({{ release.label.profile.country }})</p>
+        </div>
+        <div class="col-4">
+            <p> Trades:
+                {% if release.wholesaleandtrades.available_for_trade %}
+                    {{ release.wholesaleandtrades.trade_points }}
+                {% else %}
+                    -
+                {% endif %}
+            </p>
+            <p> Wholesale:
+                {% if release.wholesaleandtrades.available_for_wholesale %}
+                    {% for wholesale_price in release.wholesale_prices.all %}
+                        {{ wholesale_price.price }} {{ wholesale_price.currency.currency }},
+                    {% endfor %}
+                {% endif %}
+            </p>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+  </div>
+
+
+{% endblock content %}

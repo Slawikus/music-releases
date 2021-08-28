@@ -2,7 +2,6 @@ from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator, MinValueValidator, MaxValueValidator
 from django.db import models
 from django_countries.fields import CountryField
-
 from users.models import Profile, Label, ProfileCurrency
 
 
@@ -163,3 +162,10 @@ class MarketingInfos(models.Model):
     youtube_url = models.URLField(null=True, blank=True)
     soundcloud_url = models.URLField(null=True, blank=True)
     press_feedback = models.TextField(null=True, blank=True)
+
+
+class RequestPurchase(models.Model):
+    # TODO дописать
+    name = models.CharField(max_length=255)
+    email = models.EmailField()
+    release = models.ManyToManyField(Release)

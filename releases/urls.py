@@ -26,5 +26,5 @@ urlpatterns = [
     path('<int:pk>/wholesale_and_trades', UpdateWholesaleAndTradesView.as_view(), name='wholesale_and_trades_edit'),
     path('<int:pk>/release_wholesale_price', CreateWholesalePriceView.as_view(), name='release_wholesale_price_add'),
     path("import-releases/", ImportReleasesView.as_view(), name="import_releases"),
-    path("tradelist/", PublicTradeListView.as_view(), name='public_tradelist')
+    path("tradelist/<str:public_id>", PublicTradeListView.as_view(), name='public_tradelist'),
 ]

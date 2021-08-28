@@ -55,6 +55,11 @@ class Profile(models.Model):
     label_name = models.CharField(max_length=250, blank=True, null=True)
     country = CountryField(blank=True, null=True)
     address = models.TextField(blank=True, null=True)
+    public_id = models.UUIDField(
+        default=uuid.uuid4,
+        unique=True,
+        editable=False
+    )
 
     def __str__(self):
         return self.user.email
@@ -85,11 +90,6 @@ class ProfileCurrency(models.Model):
 
 
 class Label(models.Model):
-    public_id = models.UUIDField(
-        uuid=uuid.uuid4,
-        unique=True,
-        editable=False
-    )
     profile = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE,

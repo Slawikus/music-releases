@@ -1,9 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-
-from configuration.settings import CURRENCY_CHOICES
-from users.models import ProfileCurrency
-from .models import Release, Label, WholesaleAndTrades, ReleaseWholesalePrice
+from .models import Release, Label, WholesaleAndTrades, ReleaseWholesalePrice, RequestPurchase
 
 
 class DateInput(forms.DateInput):
@@ -72,3 +69,9 @@ class ImportReleaseForm(forms.Form):
     file = forms.FileField(
         widget=forms.FileInput(attrs={"accept": ".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"})
     )
+
+
+class RequestPurchaseForm(forms.ModelForm):
+    class Meta:
+        model = RequestPurchase
+        exclude = ['release']
