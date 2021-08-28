@@ -1,10 +1,7 @@
 from django.core.exceptions import ValidationError
-from django.core.files.images import get_image_dimensions
 from django.core.validators import FileExtensionValidator, MinValueValidator, MaxValueValidator
 from django.db import models
-from django.urls import reverse
 from django_countries.fields import CountryField
-from django.utils import timezone
 
 from users.models import Profile, Label, ProfileCurrency
 
@@ -116,14 +113,6 @@ class Release(models.Model):
         currency_choices = profile_currencies.exclude(id__in=release_currencies)
 
         return currency_choices
-
-    def clean(self):
-        width, height = get_image_dimensions(self.cover_image)
-
-        if width != height:
-            raise ValidationError('The uploaded image must be square')
-        if width < 800 or height < 800:
-            raise ValidationError('The uploaded image should have minimal dimension of 800px')
 
 
 class WholesaleAndTrades(models.Model):
