@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import get_object_or_404
-from django.views.generic import CreateView, UpdateView, ListView, DeleteView, FormView
+from django.views.generic import CreateView, UpdateView, ListView, FormView
 from django.urls import reverse_lazy, reverse
 from django.contrib import messages
 
@@ -9,8 +9,8 @@ from .forms import (CreateReleaseForm,
                     CreateWholesalePriceForm,
                     UpdateReleaseForm,
                     ImportReleaseForm,
-                    RequestPurchaseForm)
-from .models import Release, WholesaleAndTrades, ReleaseWholesalePrice
+                    TradeListForm)
+from .models import Release, WholesaleAndTrades, ReleaseWholesalePrice, TradeRequestItem, TradeRequest
 from users.models import Profile
 from .filters import ReleaseFilter
 from .excel import save_excel_file
@@ -122,7 +122,7 @@ class MyReleasesView(BaseRelease):
 class UpdateWholesaleAndTradesView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = WholesaleAndTrades
     form_class = UpdateTradesAndWholesaleForm
-    template_name = 'release_trades_wholesale.html'
+    template_name = 'release/release_trades_wholesale.html'
     login_url = 'login'
     context_object_name = 'wholesale_and_trades'
 
@@ -156,7 +156,7 @@ class UpdateWholesaleAndTradesView(LoginRequiredMixin, UserPassesTestMixin, Upda
 
 class CreateWholesalePriceView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = ReleaseWholesalePrice
-    template_name = 'wholesale_price_add.html'
+    template_name = 'release/wholesale_price_add.html'
     form_class = CreateWholesalePriceForm
     login_url = 'login'
 
@@ -205,19 +205,34 @@ class ImportReleasesView(LoginRequiredMixin, FormView):
             return super().form_valid(form)
 
 
-class PublicTradeListView(FormView):
+class RequestPublicTradeListView(FormView):
     template_name = "tradelist.html"
     model = Release
-    form_class = RequestPurchaseForm
+    form_class = TradeListForm
+    success_url = "/"
+
+    def form_valid(self, form):
+        if form.is_valid():
+
+            data = form.cleaned_data
+            profile = get_object_or_404(Profile, public_id=self.kwargs["public_id"])
+            tr = TradeRequest(name=data["name"], email=data["email"], profile=profile)
+            tr.save()
+
+            for pair in form.cleaned_data["data"][:-1].split(","):
+                id, quantity = pair.split(":")
+                release = get_object_or_404(Release, id=id)
+                TradeRequestItem.objects.create(release=release, quantity=quantity, request=tr)
+
+        return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         profile = get_object_or_404(Profile, public_id=self.kwargs['public_id'])
-        context = super(PublicTradeListView, self).get_context_data()
+        context = super(RequestPublicTradeListView, self).get_context_data()
         context["title"] = "Public Tradelist"
         context["releases"] = Release.objects.filter(profile=profile). \
             filter(wholesaleandtrades__available_for_trade=True). \
             filter(wholesaleandtrades__available_for_wholesale=True). \
             filter(is_submitted=True)
 
-        count = context["releases"].count()
         return context

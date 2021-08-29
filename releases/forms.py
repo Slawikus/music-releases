@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Release, Label, WholesaleAndTrades, ReleaseWholesalePrice, RequestPurchase
+from .models import Release, Label, WholesaleAndTrades, ReleaseWholesalePrice, TradeRequest
 
 
 class DateInput(forms.DateInput):
@@ -71,7 +71,7 @@ class ImportReleaseForm(forms.Form):
     )
 
 
-class RequestPurchaseForm(forms.ModelForm):
-    class Meta:
-        model = RequestPurchase
-        exclude = ['release']
+class TradeListForm(forms.Form):
+    email = forms.EmailField()
+    name = forms.CharField(max_length=255)
+    data = forms.CharField(max_length=255)

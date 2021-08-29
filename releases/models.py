@@ -164,8 +164,13 @@ class MarketingInfos(models.Model):
     press_feedback = models.TextField(null=True, blank=True)
 
 
-class RequestPurchase(models.Model):
-    # TODO дописать
+class TradeRequest(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField()
-    release = models.ManyToManyField(Release)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+
+
+class TradeRequestItem(models.Model):
+    request = models.ForeignKey(TradeRequest, on_delete=models.CASCADE, related_name="trade_items")
+    release = models.ForeignKey(Release, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()

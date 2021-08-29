@@ -6,6 +6,7 @@ from django.db import IntegrityError
 
 from .forms import CustomUserCreationForm, EditProfileForm, CreateCurrencyForm, LabelForm
 from .models import Profile, ProfileCurrency, Label
+from releases.models import TradeRequest
 
 
 # Create your views here.
@@ -18,7 +19,7 @@ class SignUpView(CreateView):
 class EditProfileView(UpdateView):
     model = Profile
     form_class = EditProfileForm
-    template_name = 'profile_edit.html'
+    template_name = 'profile/profile_edit.html'
     success_url = reverse_lazy('profile_edit')
 
     def get_object(self, queryset=None):
@@ -44,7 +45,7 @@ class CreateProfileCurrencyView(CreateView):
 
 class ListProfileCurrencyView(ListView):
     model = ProfileCurrency
-    template_name = 'currencies_list.html'
+    template_name = 'profile/currencies_list.html'
 
     def get_queryset(self):
         return super().get_queryset().filter(profile=self.request.user.profile)
@@ -104,3 +105,12 @@ class DeleteLabelView(DeleteView):
     context_object_name = 'label'
     template_name = 'label/label_delete.html'
     success_url = reverse_lazy('labels_list')
+
+
+class ShowTradeListRequestsView(ListView):
+    model = TradeRequest
+    template_name = "profile/trade_requests.html"
+    context_object_name = "trade_requests"
+
+    def get_queryset(self):
+        return TradeRequest.objects.filter(profile=self.request.user.profile)
