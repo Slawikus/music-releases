@@ -3,7 +3,7 @@ from django.core.validators import FileExtensionValidator, MinValueValidator, Ma
 from django.db import models
 from django_countries.fields import CountryField
 from users.models import Profile, Label, ProfileCurrency
-
+from .managers import TradeItemManager
 
 def validate_file_size(value):
     filesize = value.size
@@ -93,6 +93,8 @@ class Release(models.Model):
 
     is_submitted = models.BooleanField(default=False)
 
+    trade_item_objects = TradeItemManager()
+
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
         is_new = self.id is None
@@ -171,6 +173,6 @@ class TradeRequest(models.Model):
 
 
 class TradeRequestItem(models.Model):
-    request = models.ForeignKey(TradeRequest, on_delete=models.CASCADE, related_name="trade_items")
+    trade_request = models.ForeignKey(TradeRequest, on_delete=models.CASCADE, related_name="trade_items")
     release = models.ForeignKey(Release, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()

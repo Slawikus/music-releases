@@ -49,7 +49,7 @@
 {% endblock content %}
 {% block js %}
     <script>
-        let data = $("#id_data");
+        let data = $("#id_items");
 
         function fill_data() {
             let quantities = $("body #quantity");
@@ -58,7 +58,9 @@
                     data.val(data.val() + quantities[i].getAttribute("release_id") + ":" + quantities[i].value + ",");
                 }
             }
-            console.log(data.val());
+            // delete last comma
+            data.val(data.val().slice(0, -1))
+            $("form").submit();
         }
     </script>
 {% endblock %}

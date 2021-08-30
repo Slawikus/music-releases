@@ -219,10 +219,13 @@ class RequestPublicTradeListView(FormView):
             tr = TradeRequest(name=data["name"], email=data["email"], profile=profile)
             tr.save()
 
-            for pair in form.cleaned_data["data"][:-1].split(","):
+            if data["items"] == "":
+                messages.error("No item has been chosen")
+
+            for pair in data["items"].split(","):
                 id, quantity = pair.split(":")
                 release = get_object_or_404(Release, id=id)
-                TradeRequestItem.objects.create(release=release, quantity=quantity, request=tr)
+                TradeRequestItem.objects.create(release=release, quantity=quantity, trade_request=tr)
 
         return super().form_valid(form)
 
@@ -230,9 +233,6 @@ class RequestPublicTradeListView(FormView):
         profile = get_object_or_404(Profile, public_id=self.kwargs['public_id'])
         context = super(RequestPublicTradeListView, self).get_context_data()
         context["title"] = "Public Tradelist"
-        context["releases"] = Release.objects.filter(profile=profile). \
-            filter(wholesaleandtrades__available_for_trade=True). \
-            filter(wholesaleandtrades__available_for_wholesale=True). \
-            filter(is_submitted=True)
+        context["releases"] = Release.trade_item_objects.filter(profile=profile)
 
         return context

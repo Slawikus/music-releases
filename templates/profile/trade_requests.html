@@ -4,6 +4,8 @@
 
 {% block content %}
 
+  {% include 'profile/profile_navbar.html' %}
+
   {% for trade_request in trade_requests %}
     <div class="p-4 shadow-4 rounded-3 mt-3" style="background-color: hsl(0, 0%, 94%);">
       <strong>Requested by</strong>

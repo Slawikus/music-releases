@@ -74,4 +74,4 @@ class ImportReleaseForm(forms.Form):
 class TradeListForm(forms.Form):
     email = forms.EmailField()
     name = forms.CharField(max_length=255)
-    data = forms.CharField(max_length=255)
+    items = forms.CharField(max_length=255)

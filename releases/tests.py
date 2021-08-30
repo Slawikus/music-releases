@@ -213,3 +213,26 @@ class EditReleaseViewTest(BaseClientTest):
 
         self.assertEqual(release.album_title, new_album_title)
         self.assertRedirects(response, reverse('my_releases'))
+
+
+class RequestPublicTradeListViewTest(TestCase):
+    def setUp(self):
+        self.user = UserWithProfileFactory.create()
+
+    def test_it_opens_by_link(self):
+        profile = self.user.profile
+        client = Client()
+        response = client.get(reverse("public_tradelist", args=[profile.public_id]))
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_it_does_not_pass_empty_data(self):
+        profile = self.user.profile
+        client = Client()
+        response = client.post(reverse("public_tradelist", args=[profile.public_id]), {
+            "email": "test@gmail.com",
+            "name": "test",
+            "items": ""
+        })
+
+        self.assertEqual(response)
