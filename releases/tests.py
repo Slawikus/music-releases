@@ -236,4 +236,4 @@ class RequestPublicTradeListViewTest(TestCase):
             "items": ""
         })
 
-        self.assertEqual()
+        self.assertEqual(True)
