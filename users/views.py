@@ -13,7 +13,7 @@ from band_submissions.models import BandSubmission
 # Create your views here.
 class SignUpView(CreateView):
     form_class = CustomUserCreationForm
-    template_name = 'signup.html'
+    template_name = 'registration/signup.html'
     success_url = '/'
 
 
@@ -65,7 +65,7 @@ class DeleteProfileCurrencyView(DeleteView):
 class CreateLabelView(CreateView):
     model = Label
     form_class = LabelForm
-    template_name = 'label_add.html'
+    template_name = 'label/label_add.html'
     success_url = reverse_lazy('labels_list')
 
     def form_valid(self, form):
@@ -80,7 +80,7 @@ class CreateLabelView(CreateView):
 class ListLabelView(ListView):
     model = Label
     context_object_name = 'labels'
-    template_name = 'labels_list.html'
+    template_name = 'label/labels_list.html'
 
     def get_queryset(self):
         return super().get_queryset().filter(profile=self.request.user.profile)
@@ -89,7 +89,7 @@ class ListLabelView(ListView):
 class UpdateLabelView(UpdateView):
     model = Label
     context_object_name = 'label'
-    template_name = 'label_update.html'
+    template_name = 'label/label_update.html'
     form_class = LabelForm
     success_url = reverse_lazy('labels_list')
 
@@ -104,7 +104,7 @@ class UpdateLabelView(UpdateView):
 class DeleteLabelView(DeleteView):
     model = Label
     context_object_name = 'label'
-    template_name = 'label_delete.html'
+    template_name = 'label/label_delete.html'
     success_url = reverse_lazy('labels_list')
 
 
