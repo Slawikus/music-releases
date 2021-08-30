@@ -55,9 +55,6 @@ class EditReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         obj = self.get_object()
         return obj.profile == self.request.user.profile
 
-    def get_success_url(self):
-        return reverse('edit_release', args=[self.object.pk])
-
 
 class BaseRelease(LoginRequiredMixin, ListView):
     context_object_name = "releases"
@@ -275,7 +272,6 @@ class UpdateMarketingInfosView(LoginRequiredMixin, UserPassesTestMixin, UpdateVi
     model = MarketingInfos
     form_class = UpdateMarketingInfosForm
     template_name = 'marketing_infos_edit.html'
-    login_url = 'login'
     success_url = reverse_lazy('home')
 
     def dispatch(self, request, *args, **kwargs):
