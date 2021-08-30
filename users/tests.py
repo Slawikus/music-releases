@@ -2,7 +2,7 @@ from django.test import TestCase, RequestFactory
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from .views import BandSubmissionsView
-from band_submissions.models import BandSubmission
+from band_submissions.factories import BandSubmissionFactory
 
 
 class SignupPageTests(TestCase):
@@ -32,17 +32,9 @@ class SignupPageTests(TestCase):
 
     def test_it_shows_submission_in_profile(self):
         new_user = get_user_model().objects.create_user(self.email, self.password)
-        BandSubmission.objects.create(profile=new_user.profile,
-                                      name="test",
-                                      album="test/path",
-                                      best_track="test/path",
-                                      email="test@gmail.com",
-                                      front_cover="test/path",
-                                      phone_number="+996222000000",
-                                      biography="Armin Van Buren - BLAH BLAH BLAH")
+        BandSubmissionFactory.create_batch(5, profile=new_user.profile)
         request = RequestFactory().get(reverse("submissions"))
         request.user = new_user
         view = BandSubmissionsView(request=request)
 
-        self.assertEqual(view.get_queryset().count(), 1)
-
+        self.assertEqual(view.get_queryset().count(), 5)
