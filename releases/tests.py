@@ -222,14 +222,14 @@ class RequestPublicTradeListViewTest(TestCase):
     def test_it_opens_by_link(self):
         profile = self.user.profile
         client = Client()
-        response = client.get(reverse("public_tradelist", args=[profile.public_id]))
+        response = client.get(reverse("public_tradelist", args=[profile.trade_id]))
 
         self.assertEqual(response.status_code, 200)
 
     def test_it_does_not_pass_empty_data(self):
         profile = self.user.profile
         client = Client()
-        response = client.post(reverse("public_tradelist", args=[profile.public_id]), {
+        response = client.post(reverse("public_tradelist", args=[profile.trade_id]), {
             "email": "test@gmail.com",
             "name": "test",
             "items": ""

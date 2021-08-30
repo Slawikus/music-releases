@@ -55,7 +55,7 @@ class Profile(models.Model):
     label_name = models.CharField(max_length=250, blank=True, null=True)
     country = CountryField(blank=True, null=True)
     address = models.TextField(blank=True, null=True)
-    public_id = models.UUIDField(
+    trade_id = models.UUIDField(
         default=uuid.uuid4,
         unique=True,
         editable=False
