@@ -1,7 +1,7 @@
 from django.views.generic import CreateView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import UserPassesTestMixin
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseNotFound
 
 from .forms import BandSubmissionForm
 from .models import BandSubmission
@@ -20,7 +20,7 @@ class BandSubmissionCreateView(UserPassesTestMixin, CreateView):
         return profile.exists()
 
     def handle_no_permission(self):
-        return HttpResponseForbidden(self.request)
+        return HttpResponseNotFound(self.request)
 
     def form_valid(self, form):
         form.instance.profile = Profile.objects.get(submission_uuid=self.kwargs['uuid'])
