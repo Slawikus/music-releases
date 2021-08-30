@@ -1,0 +1,29 @@
+version: 2.1
+
+orbs:
+  python: circleci/python@1.2
+
+workflows:
+  main:
+    jobs:
+      - test
+
+jobs:
+  test:
+    docker:
+      - image: cimg/python:3.9.6
+        environment:
+          PIPENV_VENV_IN_PROJECT: "true"
+          DATABASE_URL: postgresql://root@localhost/music_release
+          SECRET_KEY: secret
+          DEBUG_MODE: True
+      - image: circleci/postgres:9.6.9
+        environment:
+          POSTGRES_USER: root
+          POSTGRES_DB: music_release
+    steps:
+      - checkout
+      - run: python -m pip install --upgrade pipenv wheel
+      - run: pipenv install --dev
+      - run: pipenv run python manage.py migrate
+      - run: pipenv run python manage.py test
