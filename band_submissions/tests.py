@@ -22,7 +22,7 @@ class BandSubmissionTest(TestCase):
     def test_it_forbids_wrong_uuid_link(self):
         client = Client()
         response = client.get(reverse("band_submission", args=[uuid.uuid4()]))
-        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.status_code, 404)
 
     def test_it_saves_submission(self):
         client = Client()
