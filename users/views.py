@@ -20,7 +20,7 @@ class SignUpView(CreateView):
         try:
             invitation = Invitation.objects.get(public_id=self.kwargs['public_id'])
         except ObjectDoesNotExist:
-            return HttpResponse(self.request, "Sorry, your invitation link is not valid", status=403)
+            return HttpResponse(self.request, "Sorry, your invitation link is not valid", status=200)
         if not invitation.is_active:
             return HttpResponse(self.request,
                                 "Sorry, your invitation link is already been used and not valid anymore",
