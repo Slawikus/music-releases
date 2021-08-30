@@ -215,7 +215,7 @@ class RequestPublicTradeListView(FormView):
         if form.is_valid():
 
             data = form.cleaned_data
-            profile = get_object_or_404(Profile, public_id=self.kwargs["trade_id"])
+            profile = get_object_or_404(Profile, trade_id=self.kwargs["trade_id"])
             trade_request = TradeRequest(name=data["name"], email=data["email"], profile=profile)
             trade_request.save()
 
@@ -238,7 +238,7 @@ class RequestPublicTradeListView(FormView):
         return id_is_valid
 
     def get_context_data(self, **kwargs):
-        profile = get_object_or_404(Profile, public_id=self.kwargs['trade_id'])
+        profile = get_object_or_404(Profile, trade_id=self.kwargs['trade_id'])
         context = super().get_context_data()
         context["title"] = "Public Tradelist"
         context["releases"] = Release.trade_item_objects.filter(profile=profile)

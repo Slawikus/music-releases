@@ -10,6 +10,7 @@ from releases.factories import ReleaseFactory
 from users.factories import ProfileFactory, LabelFactory, UserWithProfileFactory
 from releases import views
 
+from django.contrib.messages import get_messages
 
 def get_view_context(user, view_class):
     request = RequestFactory().get("/")
@@ -214,7 +215,7 @@ class EditReleaseViewTest(BaseClientTest):
         self.assertEqual(release.album_title, new_album_title)
         self.assertRedirects(response, reverse('my_releases'))
 
-
+# TODO здесь пока тесты не готовы
 class RequestPublicTradeListViewTest(TestCase):
     def setUp(self):
         self.user = UserWithProfileFactory.create()
@@ -235,4 +236,4 @@ class RequestPublicTradeListViewTest(TestCase):
             "items": ""
         })
 
-        self.assertEqual(response)
+        self.assertEqual()
