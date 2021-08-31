@@ -15,8 +15,7 @@ class BandSubmissionTest(TestCase):
         self.uuid = self.user.profile.submission_uuid
 
     def test_it_opens_form_by_link(self):
-        client = Client()
-        response = client.get(reverse("band_submission", args=[self.uuid]))
+        response = self.client.get(reverse("band_submission", args=[self.uuid]))
         self.assertEqual(response.status_code, 200)
 
     def test_it_forbids_wrong_uuid_link(self):
