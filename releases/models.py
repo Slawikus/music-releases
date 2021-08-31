@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import FileExtensionValidator, MinValueValidator, MaxValueValidator
 from django.db import models
 from django_countries.fields import CountryField
+from django.utils import timezone
 
 from users.models import Profile, Label, ProfileCurrency
 
