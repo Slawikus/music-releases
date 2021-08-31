@@ -15,7 +15,7 @@ from .excel import save_excel_file
 
 class CreateReleaseView(LoginRequiredMixin, CreateView):
     model = Release
-    template_name = 'release_add.html'
+    template_name = 'release/release_add.html'
     form_class = CreateReleaseForm
     success_url = reverse_lazy('my_releases')
 
@@ -48,7 +48,7 @@ class SubmitReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 class EditReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Release
     form_class = UpdateReleaseForm
-    template_name = "edit_release.html"
+    template_name = "release/edit_release.html"
     success_url = reverse_lazy("my_releases")
 
     def test_func(self):
@@ -59,7 +59,7 @@ class EditReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 class BaseRelease(LoginRequiredMixin, ListView):
     context_object_name = "releases"
 
-    template_name = "release_list.html"
+    template_name = "release/release_list.html"
     model = Release
 
 
@@ -75,7 +75,7 @@ class AllReleaseView(BaseRelease):
 
 
 class UpcomingReleasesView(LoginRequiredMixin, ListView):
-    template_name = "upcoming.html"
+    template_name = "release/upcoming.html"
     model = Release
     context_object_name = "releases"
 
@@ -112,60 +112,6 @@ class MyReleasesView(BaseRelease):
 
     def get_queryset(self):
         return super().get_queryset().filter(profile=self.request.user.profile).order_by("-submitted_at")
-
-
-class UpdateWholesaleAndTradesView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = WholesaleAndTrades
-    form_class = UpdateTradesAndWholesaleForm
-    template_name = 'release_trades_wholesale.html'
-    login_url = 'login'
-    context_object_name = 'wholesale_and_trades'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        release_wholesale_prices = ReleaseWholesalePrice.objects.select_related('currency').filter(
-            release=Release.objects.get(wholesaleandtrades=self.kwargs.get('pk')))
-        context.update({'release_wholesale_prices': release_wholesale_prices})
-
-        return context
-
-    def get_success_url(self):
-        return reverse('wholesale_and_trades_edit', args=[self.object.pk])
-
-    def test_func(self):
-        obj = self.get_object()
-        return obj.release.profile == self.request.user.profile
-
-
-class CreateWholesalePriceView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
-    model = ReleaseWholesalePrice
-    template_name = 'wholesale_price_add.html'
-    form_class = CreateWholesalePriceForm
-    login_url = 'login'
-    success_url = reverse_lazy('home')
-
-    def form_valid(self, form):
-        form.instance.release = Release.objects.get(id=self.kwargs.get('pk'))
-        return super().form_valid(form)
-
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['release'] = Release.objects.get(id=self.kwargs.get('pk'))
-        return kwargs
-
-    def get_success_url(self):
-        wholesale_and_trades = WholesaleAndTrades.objects.get(release=self.kwargs.get('pk'))
-        return reverse('wholesale_and_trades_edit', args=[wholesale_and_trades.pk])
-
-    def test_func(self):
-        obj = Release.objects.get(id=self.kwargs.get('pk'))
-        return obj.profile == self.request.user.profile
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['release'] = Release.objects.get(id=self.kwargs.get('pk'))
-        context['release_wholesale_prices'] = ReleaseWholesalePrice.objects.filter(release=context['release'])
-        return context
 
 
 class DeleteWholesalePriceView(DeleteView):
@@ -250,7 +196,7 @@ class CreateWholesalePriceView(LoginRequiredMixin, UserPassesTestMixin, CreateVi
 
 
 class ImportReleasesView(LoginRequiredMixin, FormView):
-    template_name = "upload_release.html"
+    template_name = "release/upload_release.html"
     form_class = ImportReleaseForm
     success_url = reverse_lazy("my_releases")
 
