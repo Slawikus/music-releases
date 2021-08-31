@@ -36,4 +36,5 @@ class SignupPageTests(TestCase):
         invitation.save()
         client = Client()
         response = client.get(reverse("signup", args=[invitation.public_id]))
-        self.assertEqual(response.status_code, 403)
+        message = "Sorry, your invitation link is already been used and not valid anymore"
+        self.assertEqual(response.headers["Content-Type"], message)

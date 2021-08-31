@@ -24,7 +24,7 @@ class SignUpView(CreateView):
         if not invitation.is_active:
             return HttpResponse(self.request,
                                 "Sorry, your invitation link is already been used and not valid anymore",
-                                status=403)
+                                status=200)
 
         return super(SignUpView, self).dispatch(request, *args, **kwargs)
 
