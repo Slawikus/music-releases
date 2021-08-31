@@ -1,4 +1,4 @@
-from django.test import TestCase, RequestFactory
+from django.test import TestCase, RequestFactory, Client
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from .views import BandSubmissionsView
@@ -33,8 +33,8 @@ class SignupPageTests(TestCase):
     def test_it_shows_submission_in_profile(self):
         new_user = get_user_model().objects.create_user(self.email, self.password)
         BandSubmissionFactory.create_batch(5, profile=new_user.profile)
-        request = RequestFactory().get(reverse("submissions"))
-        request.user = new_user
-        view = BandSubmissionsView(request=request)
+        client = Client()
+        client.force_login(new_user)
+        response = client.get(reverse("submissions"))
 
-        self.assertEqual(view.get_queryset().count(), 5)
+        self.assertEqual(response.context["submissions"].count(), 5)
