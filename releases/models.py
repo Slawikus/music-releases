@@ -93,7 +93,8 @@ class Release(models.Model):
 
     is_submitted = models.BooleanField(default=False)
 
-    trade_item_objects = TradeItemManager()
+    objects = models.Manager()
+    trade_items = TradeItemManager()
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):

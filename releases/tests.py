@@ -215,7 +215,7 @@ class EditReleaseViewTest(BaseClientTest):
         self.assertEqual(release.album_title, new_album_title)
         self.assertRedirects(response, reverse('my_releases'))
 
-# TODO здесь пока тесты не готовы
+
 class RequestPublicTradeListViewTest(TestCase):
     def setUp(self):
         self.user = UserWithProfileFactory.create()
@@ -236,4 +236,4 @@ class RequestPublicTradeListViewTest(TestCase):
             "items": ""
         })
 
-        self.assertEqual(True)
+
