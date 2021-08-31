@@ -1,7 +1,6 @@
-from django.test import TestCase, RequestFactory, Client
+from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
 from django.urls import reverse
-from .views import BandSubmissionsView
 from band_submissions.factories import BandSubmissionFactory
 
 
