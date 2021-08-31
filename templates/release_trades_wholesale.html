@@ -5,7 +5,7 @@
 {% block title %}Trades and Wholesale{% endblock title %}
 
 {% block content %}
-  {% include 'releases_navbar.html' %}
+  {% include 'release/releases_navbar.html' %}
   <h6 class="mb-4 mt-3">Trades and Wholesale</h6>
   <div class="row mt-2 mb-2">
     <div class="col-4">
@@ -17,17 +17,20 @@
           <div class="card mb-2">
             <ul class="list-group list-group-flush">
               {% for price in release_wholesale_prices %}
-                <li class="list-group-item">{{ price.currency }}
-                  - {{ price.price }}</li>
+                <li class="list-group-item">
+                  <p class="m-0">
+                    <b>{{ price.currency }}:</b> {{ price.price }}
+                  </p>
+                </li>
               {% endfor %}
             </ul>
           </div>
         {% endif %}
         <a class="btn btn-outline-secondary mb-4"
-           href="{% url 'release_wholesale_price_add' release.pk %}">Add wholesale price</a>
+           href="{% url 'release_wholesale_price_add' release.pk %}">Edit wholesale prices</a>
         <br>
         <button type="submit" class="btn btn-primary ml-4">Save</button>
-        <a class="btn btn-outline-primary" href="{% url 'home' %}">Cancel</a>
+        <a class="btn btn-outline-primary" href="{% url 'my_releases' %}">Cancel</a>
       </form>
     </div>
   </div>

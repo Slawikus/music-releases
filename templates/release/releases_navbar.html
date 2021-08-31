@@ -12,9 +12,14 @@
       {% if request.resolver_match.view_name in "'wholesale_and_trades_edit','release_wholesale_price_add'" %}
         active
       {% endif %}"
-      href="{% url 'wholesale_and_trades_edit' release.pk %}">Trades & Wholesale</a>
+         href="{% url 'wholesale_and_trades_edit' release.pk %}">Trades & Wholesale</a>
+    </li>
     <li class="nav-item">
-      <a class="nav-link" href="#">Marketing</a>
+      <a class="nav-link
+      {% if request.resolver_match.view_name == 'marketing_infos_edit' %}
+        active
+      {% endif %}"
+         href="{% url 'marketing_infos_edit' release.pk %}">Marketing Infos</a>
     </li>
   </ul>
 {% endif %}

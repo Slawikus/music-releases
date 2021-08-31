@@ -4,7 +4,7 @@ import factory
 import pytz
 from factory.fuzzy import FuzzyDateTime
 from users.factories import LabelFactory, ProfileFactory
-from .models import Release
+from .models import Release, MarketingInfos
 from configuration.settings import BASE_DIR
 
 
@@ -26,3 +26,15 @@ class ReleaseFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = Release
+
+
+class MarketingInfosFactory(factory.django.DjangoModelFactory):
+    release = factory.SubFactory(ReleaseFactory)
+    style = factory.Faker("name")
+    release_overview = factory.Faker("text")
+    youtube_url = factory.Faker("url")
+    soundcloud_url = factory.Faker("url")
+    press_feedback = factory.Faker("text")
+
+    class Meta:
+        model = MarketingInfos
