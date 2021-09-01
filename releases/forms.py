@@ -82,13 +82,13 @@ class TradeListForm(forms.ModelForm):
         model = TradeRequest
         exclude = ["profile", "datetime"]
 
-    # def clean_items(self):
-    #     data = self.cleaned_data["items"]
-    #     # if data == "":
-    #     #     fuck = "True"
-    #     #     raise ValidationError("No item has been chosen")
-    #
-    #     # TODO сделать регулярку мощнее
-    #     if not re.match(r"\d+:\d+", data):
-    #         fuck = "True"
-    #         raise ValidationError("Wrong data format")
+    def clean(self):
+        data = self.cleaned_data["items"]
+        if data == "":
+            fuck = "True"
+            raise ValidationError("No item has been chosen")
+
+        # TODO сделать регулярку мощнее
+        if not re.match(r"\d+:\d+", data):
+            fuck = "True"
+            raise ValidationError("Wrong data format")
