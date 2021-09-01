@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.views.generic import CreateView, UpdateView, DeleteView, ListView
+from django.views.generic import CreateView, UpdateView, DeleteView, ListView, DetailView
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.db import IntegrityError
@@ -107,15 +107,18 @@ class DeleteLabelView(DeleteView):
     success_url = reverse_lazy('labels_list')
 
 
-class ShowTradeListRequestsView(ListView):
+class ShowTradeRequestsView(ListView):
     model = TradeRequest
     template_name = "profile/trade_requests.html"
     context_object_name = "trade_requests"
+
+
+class TradeRequestDetailView(DetailView):
+    model = TradeRequest
+    template_name = "profile/trade_request_detail.html"
+    context_object_name = "trade_request"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = "trade requests"
         return context
-
-    def get_queryset(self):
-        return TradeRequest.objects.filter(profile=self.request.user.profile)

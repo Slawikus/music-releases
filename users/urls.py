@@ -10,7 +10,8 @@ from .views import (
     ListLabelView,
     UpdateLabelView,
     DeleteLabelView,
-    ShowTradeListRequestsView
+    ShowTradeRequestsView,
+    TradeRequestDetailView
 )
 
 urlpatterns = [
@@ -23,5 +24,6 @@ urlpatterns = [
     path('labels/new/', CreateLabelView.as_view(), name='label_add'),
     path('labels/<int:pk>/edit/', UpdateLabelView.as_view(), name='label_update'),
     path('labels/<int:pk>/delete/', DeleteLabelView.as_view(), name='label_delete'),
-    path('trade-requests/', ShowTradeListRequestsView.as_view(), name='trade_requests')
+    path('trade-requests/', ShowTradeRequestsView.as_view(), name='trade_requests'),
+    path('trade-details/<int:pk>/', TradeRequestDetailView.as_view(), name='trade_details')
 ]
