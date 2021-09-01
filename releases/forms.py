@@ -76,7 +76,7 @@ class ImportReleaseForm(forms.Form):
 class TradeListForm(forms.ModelForm):
 
     items = forms.CharField(max_length=255)
-    # items.widget = forms.TextInput(attrs={"type": "hidden"})
+    items.widget = forms.TextInput(attrs={"type": "hidden"})
 
     class Meta:
         model = TradeRequest
