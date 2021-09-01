@@ -85,10 +85,8 @@ class TradeListForm(forms.ModelForm):
     def clean(self):
         data = self.cleaned_data["items"]
         if data == "":
-            fuck = "True"
             raise ValidationError("No item has been chosen")
 
         # TODO сделать регулярку мощнее
         if not re.match(r"\d+:\d+", data):
-            fuck = "True"
             raise ValidationError("Wrong data format")
