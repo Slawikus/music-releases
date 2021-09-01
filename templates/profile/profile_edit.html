@@ -9,7 +9,7 @@
   <div class="row mt-2 mb-2">
     <div class="col-4">
       <p>Public tradelist link</p>
-      {% url "public_tradelist" profile.public_id as url %}
+      {% url "public_tradelist" profile.trade_id as url %}
       <b>{{ request.get_host }}{{ url }}</b>
       <form method="post" autocomplete="off">
         {% csrf_token %}

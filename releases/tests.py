@@ -236,4 +236,5 @@ class RequestPublicTradeListViewTest(TestCase):
             "items": ""
         })
 
-
+        message = response.context["messages"]
+        self.assertTrue(True)

@@ -207,35 +207,34 @@ class ImportReleasesView(LoginRequiredMixin, FormView):
 
 class RequestPublicTradeListView(FormView):
     template_name = "tradelist.html"
-    model = Release
     form_class = TradeListForm
     success_url = "/"
 
     def form_valid(self, form):
+
+        form.instance.profile = get_object_or_404(Profile, trade_id=self.kwargs["trade_id"])
+        form.instance.datetime = timezone.now()
+
+        data = form.cleaned_data
+
         if form.is_valid():
 
-            data = form.cleaned_data
-            profile = get_object_or_404(Profile, trade_id=self.kwargs["trade_id"])
-            trade_request = TradeRequest(name=data["name"], email=data["email"], profile=profile)
-            trade_request.save()
+            trade_request = form.save(commit=True)
+            releases = Release.trade_items.tradelist_items_for_user(self.request.user.profile)
 
-            if data["items"] == "":
-                messages.error("No item has been chosen")
+            for pair in data['items'].split(","):
 
-            for pair in data["items"].split(","):
                 release_id, quantity = pair.split(":")
-                if not self.validate_id(release_id):
-                    return messages.error("You are trying to send invalid release(s)")
-                release = get_object_or_404(Release, id=release_id)
-                TradeRequestItem.objects.create(release=release, quantity=quantity, trade_request=trade_request)
+
+                if not releases.filter(id=release_id).exists():
+                    messages.error(self.request, "Do not try to use wrong release")
+
+                release = Release.objects.get(id=release_id)
+                TradeRequestItem.objects.create(trade_request=trade_request,
+                                                release=release,
+                                                quantity=quantity)
 
         return super().form_valid(form)
-
-    def validate_id(self, id):
-        context = super().get_context_data()
-        releases = context["releases"]
-        id_is_valid = releases.objects.filter(id=id).exists()
-        return id_is_valid
 
     def get_context_data(self, **kwargs):
         profile = get_object_or_404(Profile, trade_id=self.kwargs['trade_id'])

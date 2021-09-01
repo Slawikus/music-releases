@@ -112,5 +112,10 @@ class ShowTradeListRequestsView(ListView):
     template_name = "profile/trade_requests.html"
     context_object_name = "trade_requests"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = "trade requests"
+        return context
+
     def get_queryset(self):
         return TradeRequest.objects.filter(profile=self.request.user.profile)

@@ -9,9 +9,8 @@
       <form method="post">
         {% csrf_token %}
         {{ form|crispy }}
-          <input type="hidden" id="data">
-        <button onclick="fill_data()" id="submit" class="btn btn-primary ml-4">Send</button>
       </form>
+    <button onclick="fill_data()" id="submit" class="btn btn-primary ml-4 w-10">Send</button>
     {% for release in releases %}
     <div class="p-4 shadow-4 rounded-3 mt-3" style="background-color: hsl(0, 0%, 94%);">
       <div class="row">
@@ -52,6 +51,7 @@
         let data = $("#id_items");
 
         function fill_data() {
+            data.val(null);
             let quantities = $("body #quantity");
             for (let i = 0; i < quantities.length; i++) {
                 if (quantities[i].value > 0) {
@@ -59,7 +59,7 @@
                 }
             }
             // delete last comma
-            data.val(data.val().slice(0, -1))
+            data.val(data.val().slice(0, -1));
             $("form").submit();
         }
     </script>

@@ -171,6 +171,7 @@ class TradeRequest(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField()
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    datetime = models.DateTimeField(verbose_name="request datetime")
 
 
 class TradeRequestItem(models.Model):
