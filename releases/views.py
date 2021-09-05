@@ -220,7 +220,7 @@ class RequestPublicTradeListView(FormView):
         if form.is_valid():
 
             trade_request = form.save(commit=True)
-            releases = Release.trade_items.tradelist_items_for_user(self.request.user.profile)
+            releases = Release.trade_items.tradelist_items_for_profile(self.request.user.profile)
 
             for pair in data['items'].split(","):
 
@@ -240,6 +240,6 @@ class RequestPublicTradeListView(FormView):
         profile = get_object_or_404(Profile, trade_id=self.kwargs['trade_id'])
         context = super().get_context_data()
         context["title"] = "Public Tradelist"
-        context["releases"] = Release.trade_items.tradelist_items_for_user(profile)
+        context["releases"] = Release.trade_items.tradelist_items_for_profile(profile)
 
         return context

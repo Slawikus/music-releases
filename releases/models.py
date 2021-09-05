@@ -3,7 +3,7 @@ from django.core.validators import FileExtensionValidator, MinValueValidator, Ma
 from django.db import models
 from django_countries.fields import CountryField
 from users.models import Profile, Label, ProfileCurrency
-from .managers import TradeItemManager
+from .managers import ReleaseManager
 
 def validate_file_size(value):
     filesize = value.size
@@ -93,8 +93,7 @@ class Release(models.Model):
 
     is_submitted = models.BooleanField(default=False)
 
-    objects = models.Manager()
-    trade_items = TradeItemManager()
+    objects = ReleaseManager()
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):

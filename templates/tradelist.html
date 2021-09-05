@@ -15,7 +15,7 @@
     <div class="p-4 shadow-4 rounded-3 mt-3" style="background-color: hsl(0, 0%, 94%);">
       <div class="row">
         <div class="col-2">
-            <input type="number" id="quantity" release_id="{{ release.id }}">
+            <input type="number" class="quantity" release_id="{{ release.id }}">
         </div>
         <div class="col-4">
           <p>{{ release.band_name }} ({{ release.country }})</p>
@@ -24,19 +24,9 @@
           <p>{{ release.submitted_at|date:"d.m.Y" }} {{ release.label }} ({{ release.label.profile.country }})</p>
         </div>
         <div class="col-4">
-            <p> Trades:
-                {% if release.wholesaleandtrades.available_for_trade %}
-                    {{ release.wholesaleandtrades.trade_points }}
-                {% else %}
-                    -
-                {% endif %}
+            <p> Trades: {{ release.wholesaleandtrades.trade_points }}
             </p>
-            <p> Wholesale:
-                {% if release.wholesaleandtrades.available_for_wholesale %}
-                    {% for wholesale_price in release.wholesale_prices.all %}
-                        {{ wholesale_price.price }} {{ wholesale_price.currency.currency }},
-                    {% endfor %}
-                {% endif %}
+            <p> Wholesale: {{ wholesale_price.price }} {{ wholesale_price.currency.currency }},
             </p>
         </div>
       </div>
@@ -52,7 +42,7 @@
 
         function fill_data() {
             data.val(null);
-            let quantities = $("body #quantity");
+            let quantities = $("body .quantity");
             for (let i = 0; i < quantities.length; i++) {
                 if (quantities[i].value > 0) {
                     data.val(data.val() + quantities[i].getAttribute("release_id") + ":" + quantities[i].value + ",");
