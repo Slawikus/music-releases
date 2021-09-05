@@ -240,6 +240,6 @@ class RequestPublicTradeListView(FormView):
         profile = get_object_or_404(Profile, trade_id=self.kwargs['trade_id'])
         context = super().get_context_data()
         context["title"] = "Public Tradelist"
-        context["releases"] = Release.trade_items.tradelist_items_for_profile(profile)
+        context["releases"] = Release.objects.tradelist_items_for_profile(profile)
 
         return context
