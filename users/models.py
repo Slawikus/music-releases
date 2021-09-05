@@ -5,7 +5,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from configuration.settings import CURRENCY_CHOICES
-
+import uuid
 
 # Create your models here.
 class UserManager(BaseUserManager):
@@ -53,6 +53,7 @@ class Profile(models.Model):
     label_name = models.CharField(max_length=250, blank=True, null=True)
     country = CountryField(blank=True, null=True)
     address = models.TextField(blank=True, null=True)
+    submission_uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
 
     def __str__(self):
         return self.user.email
