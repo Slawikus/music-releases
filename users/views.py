@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.http import HttpResponse
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
@@ -6,7 +7,8 @@ from django.urls import reverse_lazy, reverse
 from django.db import IntegrityError
 
 from .forms import CustomUserCreationForm, EditProfileForm, CreateCurrencyForm, LabelForm
-from .models import Profile, ProfileCurrency, Label
+from .models import Profile, ProfileCurrency, Label, Invitation
+from django.core.exceptions import ObjectDoesNotExist
 from band_submissions.models import BandSubmission
 
 
@@ -15,6 +17,36 @@ class SignUpView(CreateView):
     form_class = CustomUserCreationForm
     template_name = 'registration/signup.html'
     success_url = '/'
+
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            invitation = Invitation.objects.get(public_id=self.kwargs['public_id'])
+        except ObjectDoesNotExist:
+            return HttpResponse(self.request, "Sorry, your invitation link is not valid", status=200)
+        if not invitation.is_active:
+            return HttpResponse(self.request,
+                                "Sorry, your invitation link is already been used and not valid anymore")
+
+        return super(SignUpView, self).dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+
+        valid = super(SignUpView, self).form_valid(form)
+        if valid:
+            invitation = Invitation.objects.get(public_id=self.kwargs['public_id'])
+            invitation.is_active = False
+            invitation.save()
+
+        return valid
+
+
+class ShowInvitationsView(ListView):
+    model = Invitation
+    template_name = "invitation.html"
+    context_object_name = "invitations"
+
+    def get_queryset(self):
+        return super().get_queryset().filter(profile=self.request.user.profile)
 
 
 class EditProfileView(UpdateView):

@@ -58,6 +58,13 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.email
 
+    def save(self, *args, **kwargs):
+        is_new = self._state.adding
+        super(Profile, self).save(*args, **kwargs)
+        if is_new:
+            for _ in range(3):
+                Invitation.objects.create(profile=self.user.profile)
+
 
 class ProfileCurrency(models.Model):
     currency = models.CharField(
@@ -117,6 +124,13 @@ class Label(models.Model):
                 name='unique_label_per_profile'
             ),
         ]
+
+
+class Invitation(models.Model):
+
+    public_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="invitations")
+    is_active = models.BooleanField(default=True)
 
 
 @receiver(post_save, sender=User)
