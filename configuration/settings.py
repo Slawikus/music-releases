@@ -32,9 +32,11 @@ INSTALLED_APPS = [
     'django_countries',
     'pycountry',
     'django_filters',
+    'phonenumber_field',
 
     'users.apps.UsersConfig',
     'releases.apps.ReleasesConfig',
+    'band_submissions.apps.BandSubmissionConfig'
 ]
 
 MIDDLEWARE = [

@@ -101,6 +101,7 @@ class Release(models.Model):
         super().save(force_insert, force_update)
         if is_new:
             WholesaleAndTrades.objects.create(release=self)
+            MarketingInfos.objects.create(release=self)
 
     def divide_media_format(self):
         if self.media_format_details is None:
@@ -159,8 +160,23 @@ class ReleaseWholesalePrice(models.Model):
 
 class MarketingInfos(models.Model):
     release = models.OneToOneField(Release, on_delete=models.CASCADE)
-    style = models.CharField(max_length=250, null=True, blank=True)
+    style = models.CharField(
+        max_length=250,
+        null=True,
+        blank=True,
+        help_text='“Marketing” style of the release, i.e. instead of Black Metal -> Ethnic Black Metal from Sri Lanka'
+    )
     release_overview = models.TextField(null=True, blank=True)
-    youtube_url = models.URLField(null=True, blank=True)
-    soundcloud_url = models.URLField(null=True, blank=True)
+    youtube_url = models.URLField(
+        null=True,
+        blank=True,
+        verbose_name='YouTube URL',
+        help_text='Link to video teaser or complete track from the release'
+    )
+    soundcloud_url = models.URLField(
+        null=True,
+        blank=True,
+        verbose_name='SoundCloud URL',
+        help_text='Link to audio teaser or complete track from the release'
+    )
     press_feedback = models.TextField(null=True, blank=True)
