@@ -69,6 +69,12 @@ class UpdateReleaseForm(ModelForm):
 
 
 class UpdateTradesAndWholesaleForm(ModelForm):
+
+    def clean(self):
+        data = super().clean()
+        if data["available_for_trade"] and data["trade_points"] is None:
+            raise ValidationError({"trade_points": "if available for trades trade points must have value"})
+
     class Meta:
         model = WholesaleAndTrades
         exclude = ['release']
