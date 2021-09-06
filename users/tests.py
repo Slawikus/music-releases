@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 from .models import Invitation, User
 from band_submissions.factories import BandSubmissionFactory
-
+from .factories import ProfileFactory
 
 class SignupPageTests(TestCase):
     def setUp(self):
@@ -39,14 +39,12 @@ class SignupPageTests(TestCase):
         response = client.get(reverse("signup", args=[invitation.public_id]))
         message = "Sorry, your invitation link is already been used and not valid anymore"
         self.assertEqual(response.headers["Content-Type"], message)
-        self.user = get_user_model().objects.get(email=self.email)
-        self.assertEquals(self.user.check_password("TestPassword1234"), True)
 
     def test_it_shows_submission_in_profile(self):
-        new_user = get_user_model().objects.create_user(self.email, self.password)
-        BandSubmissionFactory.create_batch(5, profile=new_user.profile)
+        profile = ProfileFactory.create()
+        BandSubmissionFactory.create_batch(5, profile=profile)
         client = Client()
-        client.force_login(new_user)
+        client.force_login(profile.user)
         response = client.get(reverse("submissions"))
 
         self.assertEqual(response.context["submissions"].count(), 5)
