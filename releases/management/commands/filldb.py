@@ -14,4 +14,5 @@ class Command(BaseCommand):
 								   is_superuser=True
 								   )
 
-		ReleaseFactory.create_batch(5, is_submitted=True, profile=user.profile)
+		ReleaseFactory.create_batch(3, is_submitted=True, profile=user.profile)
+		ReleaseFactory.create_batch(2, profile=user.profile)
