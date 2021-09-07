@@ -6,13 +6,13 @@ dockerize -wait "$POSTGRES_TCP" -timeout 20s
 
 if [[ "$1" = "test" ]]; then
     echo -e "Running tests\n"
-    ./manage.py test
+    python manage.py test
 else
     echo -e "Collecting static assets\n"
-    ./manage.py collectstatic --noinput --verbosity 0
+    python manage.py collectstatic --noinput --verbosity 0
 
     echo -e "Migrating database\n"
-    ./manage.py migrate
+    python manage.py migrate
 
     echo -e "Starting server\n"
     gunicorn configuration.wsgi
