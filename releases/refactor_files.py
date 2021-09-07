@@ -12,7 +12,7 @@ def refactor_files():
 		temporary delete all import and there is must not be any whitespace
 		on the top of file and double whitespace
 	"""
-	with open("tests/tests.py", "r") as views:
+	with open("models.py", "r") as views:
 		for cls in views.read().split("\n\n"):
 			lines = [i for i in cls.split("\n") if i != ""]
 			class_line = lines[0]
