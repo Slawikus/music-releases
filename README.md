@@ -12,7 +12,7 @@ DEBUG_MODE=True
 DATABASE_URL=postgres://username:password@localhost:5432/dbname
 ```
 
-Enter the pipenv shell and run pipenv intall to install dependencies from Pipfile.lock
+Enter the pipenv shell and install dependencies:
 ```sh
 pipenv install
 ```
@@ -26,5 +26,22 @@ After that, exit your pipenv with ```exit ``` command enter it again and run the
 ```sh
 exit
 pipenv shell
-python manage.py runserver
+./manage.py migrate
+./manage.py runserver
+```
+
+### Docker
+
+To run the app in the docker environment, run
+```
+docker compose up
+```
+and it will be available under `http:/localhost:8888`. To stop all containers and remove artifacts:
+```
+docker compose down --remove-orphans
+```
+
+To run tests suite:
+```
+docker compose run app test
 ```

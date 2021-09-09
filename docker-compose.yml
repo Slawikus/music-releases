@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  app:
+    build: ./
+    ports:
+      - "8888:8000"
+    depends_on:
+      - db
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=secret
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/postgres
+      - GUNICORN_CMD_ARGS=--bind=0.0.0.0:8000 --worker-tmp-dir=/dev/shm --workers=2 --threads=4 --worker-class=gthread --access-logfile=- --error-logfile=-
+
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=postgres

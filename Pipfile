@@ -18,8 +18,8 @@ django-crispy-forms = "*"
 crispy-bootstrap5 = "*"
 django-countries = "*"
 pillow = "*"
+phonenumbers = "*"
 django-phonenumber-field = "*"
-django-phonenumbers = "*"
 
 [dev-packages]
 
