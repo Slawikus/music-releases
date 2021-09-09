@@ -18,3 +18,4 @@ media/
 *.pid
 /clean_migs.sh
 /drop_db.sh
+/refactor_files.py

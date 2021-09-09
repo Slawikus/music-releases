@@ -9,7 +9,7 @@ class ProfileCurrency(models.Model):
         choices=CURRENCY_CHOICES,
     )
     profile = models.ForeignKey(
-        "Profile",
+        "users.Profile",
         on_delete=models.CASCADE,
         related_name='currencies',
     )

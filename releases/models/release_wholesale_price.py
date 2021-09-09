@@ -4,7 +4,7 @@ from users.models import ProfileCurrency
 
 class ReleaseWholesalePrice(models.Model):
     release = models.ForeignKey(
-        "Release",
+        "releases.Release",
         related_name='wholesale_prices',
         on_delete=models.CASCADE
     )

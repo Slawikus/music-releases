@@ -2,7 +2,7 @@ from django.db import models
 
 
 class MarketingInfos(models.Model):
-    release = models.OneToOneField("Release", on_delete=models.CASCADE)
+    release = models.OneToOneField("releases.Release", on_delete=models.CASCADE)
     style = models.CharField(
         max_length=250,
         null=True,

@@ -4,7 +4,7 @@ from django.db import models
 # Create your models here.
 class Label(models.Model):
     profile = models.ForeignKey(
-        "Profile",
+        "users.Profile",
         on_delete=models.CASCADE,
         related_name='label'
     )
