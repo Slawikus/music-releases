@@ -100,7 +100,8 @@ class Release(models.Model):
         is_new = self.id is None
         super().save(force_insert, force_update)
         if is_new:
-            WholesaleAndTrades.objects.create(release=self)
+            ReleaseTradesInformation.objects.create(release=self)
+            ReleaseWholesaleInformation.objects.create(release=self)
             MarketingInfos.objects.create(release=self)
 
     def divide_media_format(self):
@@ -117,12 +118,31 @@ class Release(models.Model):
         return currency_choices
 
 
-class WholesaleAndTrades(models.Model):
-    YES_NO_CHOICES = (
+# class WholesaleAndTrades(models.Model):
+#     YES_NO_CHOICES = (
+#         (True, 'Yes'),
+#         (False, 'No')
+#     )
+#
+#     release = models.OneToOneField(Release, on_delete=models.CASCADE)
+#     available_for_trade = models.BooleanField(default=False, choices=YES_NO_CHOICES)
+#     trade_points = models.DecimalField(
+#         decimal_places=1,
+#         max_digits=3,
+#         validators=[MinValueValidator(0), MaxValueValidator(30)],
+#         null=True,
+#         blank=True
+#     )
+#     trade_remarks = models.CharField(max_length=250, null=True, blank=True)
+#     available_for_wholesale = models.BooleanField(default=False, choices=YES_NO_CHOICES)
+
+YES_NO_CHOICES = (
         (True, 'Yes'),
         (False, 'No')
     )
 
+
+class ReleaseTradesInformation(models.Model):
     release = models.OneToOneField(Release, on_delete=models.CASCADE)
     available_for_trade = models.BooleanField(default=False, choices=YES_NO_CHOICES)
     trade_points = models.DecimalField(
@@ -132,7 +152,10 @@ class WholesaleAndTrades(models.Model):
         null=True,
         blank=True
     )
-    trade_remarks = models.CharField(max_length=250, null=True, blank=True)
+
+
+class ReleaseWholesaleInformation(models.Model):
+    release = models.OneToOneField(Release, on_delete=models.CASCADE)
     available_for_wholesale = models.BooleanField(default=False, choices=YES_NO_CHOICES)
 
 

@@ -3,7 +3,8 @@ from django.core.exceptions import ValidationError
 from django.core.files.images import get_image_dimensions
 from django.forms import ModelForm
 
-from .models import Release, Label, WholesaleAndTrades, ReleaseWholesalePrice, MarketingInfos
+from .models import Release, Label, ReleaseWholesalePrice, MarketingInfos, ReleaseWholesaleInformation, \
+    ReleaseTradesInformation
 
 
 class DateInput(forms.DateInput):
@@ -68,12 +69,20 @@ class UpdateReleaseForm(ModelForm):
         return self.cleaned_data["cover_image"]
 
 
-class UpdateTradesAndWholesaleForm(ModelForm):
+class UpdateReleaseTradesInformationForm(ModelForm):
     class Meta:
-        model = WholesaleAndTrades
+        model = ReleaseTradesInformation
         exclude = ['release']
         widgets = {
             'available_for_trade': forms.RadioSelect,
+        }
+
+
+class UpdateReleaseWholesaleInformationForm(ModelForm):
+    class Meta:
+        model = ReleaseWholesaleInformation
+        exclude = ['release']
+        widgets = {
             'available_for_wholesale': forms.RadioSelect,
         }
 

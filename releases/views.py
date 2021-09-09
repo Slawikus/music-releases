@@ -6,9 +6,10 @@ from django.urls import reverse_lazy, reverse
 from django.contrib import messages
 from django.utils import timezone
 
-from .forms import CreateReleaseForm, UpdateTradesAndWholesaleForm, CreateWholesalePriceForm, UpdateReleaseForm, \
-    ImportReleaseForm, UpdateMarketingInfosForm
-from .models import Release, WholesaleAndTrades, ReleaseWholesalePrice, MarketingInfos
+from .forms import CreateReleaseForm, CreateWholesalePriceForm, UpdateReleaseForm, ImportReleaseForm, \
+    UpdateMarketingInfosForm, UpdateReleaseTradesInformationForm, UpdateReleaseWholesaleInformationForm
+from .models import Release, ReleaseWholesalePrice, MarketingInfos, ReleaseTradesInformation, \
+    ReleaseWholesaleInformation
 from .filters import ReleaseFilter
 from .excel import save_excel_file
 
@@ -123,12 +124,44 @@ class DeleteWholesalePriceView(DeleteView):
         return HttpResponseRedirect(reverse('release_wholesale_price_add', args=[wholesale_price.release.pk]))
 
 
-class UpdateWholesaleAndTradesView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = WholesaleAndTrades
-    form_class = UpdateTradesAndWholesaleForm
-    template_name = 'release_trades_wholesale.html'
+class UpdateReleaseTradesInformationView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = ReleaseTradesInformation
+    form_class = UpdateReleaseTradesInformationForm
+    template_name = 'release_trades_info_edit.html'
+    context_object_name = 'release_trades_info'
+
+    def dispatch(self, request, *args, **kwargs):
+        self.release = get_object_or_404(Release, pk=self.kwargs.get("pk"))
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        release = self.release
+        context.update(
+            {
+                'release': release
+            }
+        )
+
+        return context
+
+    def get_success_url(self):
+        return reverse('release_trades_info_edit', args=[self.release.pk])
+
+    def test_func(self):
+        obj = self.get_object()
+        return obj.release.profile == self.request.user.profile
+
+    def get_object(self, queryset=None):
+        return self.release.releasetradesinformation
+
+
+class UpdateReleaseWholesaleInformationView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = ReleaseWholesaleInformation
+    form_class = UpdateReleaseWholesaleInformationForm
+    template_name = 'release_wholesale_info_edit.html'
     login_url = 'login'
-    context_object_name = 'wholesale_and_trades'
+    context_object_name = 'release_wholesale_info'
 
     def dispatch(self, request, *args, **kwargs):
         self.release = get_object_or_404(Release, pk=self.kwargs.get("pk"))
@@ -148,14 +181,14 @@ class UpdateWholesaleAndTradesView(LoginRequiredMixin, UserPassesTestMixin, Upda
         return context
 
     def get_success_url(self):
-        return reverse('wholesale_and_trades_edit', args=[self.release.pk])
+        return reverse('release_wholesale_info_edit', args=[self.release.pk])
 
     def test_func(self):
         obj = self.get_object()
         return obj.release.profile == self.request.user.profile
 
     def get_object(self, queryset=None):
-        return self.release.wholesaleandtrades
+        return self.release.releasewholesaleinformation
 
 
 class CreateWholesalePriceView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
