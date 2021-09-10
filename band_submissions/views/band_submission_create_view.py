@@ -3,8 +3,8 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.http import HttpResponseNotFound
 
-from .forms import BandSubmissionForm
-from .models import BandSubmission
+from band_submissions.forms import BandSubmissionForm
+from band_submissions.models import BandSubmission
 from users.models import Profile
 # Create your views here.
 

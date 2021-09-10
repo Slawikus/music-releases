@@ -1,10 +1,11 @@
-from django.core.exceptions import ValidationError
-from django.core.validators import FileExtensionValidator, MinValueValidator, MaxValueValidator
 from django.db import models
 from django_countries.fields import CountryField
-from django.utils import timezone
-
-from users.models import Profile, Label, ProfileCurrency
+from users.models import Profile, Label
+from django.core.validators import ValidationError, FileExtensionValidator
+from users.models import ProfileCurrency
+from .release_wholesale_price import ReleaseWholesalePrice
+from .wholesale_and_trades import WholesaleAndTrades
+from .marketing_infos import MarketingInfos
 
 
 def validate_file_size(value):
@@ -14,7 +15,6 @@ def validate_file_size(value):
         raise ValidationError("The maximum file size that can be uploaded is 1MB")
     else:
         return value
-
 
 class Release(models.Model):
     profile = models.ForeignKey(
@@ -115,68 +115,3 @@ class Release(models.Model):
         currency_choices = profile_currencies.exclude(id__in=release_currencies)
 
         return currency_choices
-
-
-class WholesaleAndTrades(models.Model):
-    YES_NO_CHOICES = (
-        (True, 'Yes'),
-        (False, 'No')
-    )
-
-    release = models.OneToOneField(Release, on_delete=models.CASCADE)
-    available_for_trade = models.BooleanField(default=False, choices=YES_NO_CHOICES)
-    trade_points = models.DecimalField(
-        decimal_places=1,
-        max_digits=3,
-        validators=[MinValueValidator(0), MaxValueValidator(30)],
-        null=True,
-        blank=True
-    )
-    trade_remarks = models.CharField(max_length=250, null=True, blank=True)
-    available_for_wholesale = models.BooleanField(default=False, choices=YES_NO_CHOICES)
-
-
-class ReleaseWholesalePrice(models.Model):
-    release = models.ForeignKey(
-        Release,
-        related_name='wholesale_prices',
-        on_delete=models.CASCADE
-    )
-    currency = models.ForeignKey(
-        ProfileCurrency,
-        related_name='wholesale_prices_for_currency',
-        on_delete=models.CASCADE,
-    )
-    price = models.DecimalField(decimal_places=2, max_digits=10)
-
-    class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['release', 'currency'],
-                name='unique_price_per_release_and_currency'
-            ),
-        ]
-
-
-class MarketingInfos(models.Model):
-    release = models.OneToOneField(Release, on_delete=models.CASCADE)
-    style = models.CharField(
-        max_length=250,
-        null=True,
-        blank=True,
-        help_text='“Marketing” style of the release, i.e. instead of Black Metal -> Ethnic Black Metal from Sri Lanka'
-    )
-    release_overview = models.TextField(null=True, blank=True)
-    youtube_url = models.URLField(
-        null=True,
-        blank=True,
-        verbose_name='YouTube URL',
-        help_text='Link to video teaser or complete track from the release'
-    )
-    soundcloud_url = models.URLField(
-        null=True,
-        blank=True,
-        verbose_name='SoundCloud URL',
-        help_text='Link to audio teaser or complete track from the release'
-    )
-    press_feedback = models.TextField(null=True, blank=True)
