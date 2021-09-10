@@ -5,33 +5,48 @@
 {% block title %}{{ title }}{% endblock title %}
 
 {% block content %}
-    <div class="row mt-2 mb-2">
-      <form method="post">
+  <div class="row mt-2 mb-2">
+    <div class="col-4">
+        <form method="post">
         {% csrf_token %}
         {{ form|crispy }}
       </form>
     <button onclick="fill_data()" id="submit" class="btn btn-primary ml-4 w-10">Send</button>
-    {% for release in releases %}
+    </div>
+
     <div class="p-4 shadow-4 rounded-3 mt-3" style="background-color: hsl(0, 0%, 94%);">
       <div class="row">
-        <div class="col-2">
-            <input type="number" class="quantity" release_id="{{ release.id }}">
-        </div>
-        <div class="col-4">
-          <p>{{ release.band_name }} ({{ release.country }})</p>
-          <p>{{ release.album_title }} - {{ release.format }} | {{ release.divide_media_format }}</p>
-          <p>{{ release.base_style }}</p>
-          <p>{{ release.submitted_at|date:"d.m.Y" }} {{ release.label }} ({{ release.label.profile.country }})</p>
-        </div>
-        <div class="col-4">
-            <p> Trades: {{ release.wholesaleandtrades.trade_points }}
-            </p>
-            <p> Wholesale: {{ wholesale_price.price }} {{ wholesale_price.currency.currency }},
-            </p>
-        </div>
+          <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">quantity</th>
+                    <th scope="col">band name</th>
+                    <th scope="col">trade points</th>
+                    <th scope="col">wholesale price</th>
+                    <th scope="col">album</th>
+                    <th scope="col">format</th>
+                </tr>
+            </thead>
+            <tbody>
+              {% for release in releases %}
+                <tr>
+                    <td><input type="number" class="quantity" release_id="{{ release.id }}"></td>
+                    <td>{{ release.band_name }} ({{ release.country }})</td>
+                    <td>{{ release.wholesaleandtrades.trade_points }}</td>
+                    <td>
+                        {% for wholesale_price in release.wholesale_prices.all %}
+                            {{ wholesale_price.price }} - {{ wholesale_price.currency }},
+                        {% endfor %}
+                    </td>
+                    <td>{{ release.album_title }}</td>
+                    <td>{{ release.format }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
       </div>
     </div>
-  {% endfor %}
+
   </div>
 
 
