@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import BandSubmission
+from band_submissions.models import BandSubmission
 
 
 class BandSubmissionForm(ModelForm):
