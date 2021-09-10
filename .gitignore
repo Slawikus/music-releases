@@ -16,6 +16,6 @@ media/
 *.pyc
 *.db
 *.pid
-/clean_migs.sh
+/dev-utils/clean_migs.sh
 /drop_db.sh
 /refactor_files.py
