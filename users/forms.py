@@ -52,6 +52,5 @@ class LabelForm(ModelForm):
         fields = ['name', 'logo', 'description']
 
     def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop('trade_request', None)
         super(LabelForm, self).__init__(*args, **kwargs)
         self.fields['logo'].widget.attrs.update({'class': 'form-control'})

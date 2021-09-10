@@ -1,7 +1,5 @@
 from django.contrib import admin
-from .models import Release, TradeRequest, TradeRequestItem
+from .models import Release
 
 # Register your models here.
 admin.site.register(Release)
-admin.site.register(TradeRequest)
-admin.site.register(TradeRequestItem)

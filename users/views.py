@@ -3,10 +3,11 @@ from django.views.generic import CreateView, UpdateView, DeleteView, ListView, D
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.db import IntegrityError
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import CustomUserCreationForm, EditProfileForm, CreateCurrencyForm, LabelForm
 from .models import Profile, ProfileCurrency, Label
-from releases.models import TradeRequest
+from public_tradelist.models import TradeRequest
 
 
 # Create your views here.
@@ -107,13 +108,16 @@ class DeleteLabelView(DeleteView):
     success_url = reverse_lazy('labels_list')
 
 
-class ShowTradeRequestsView(ListView):
+class TradeRequestListView(LoginRequiredMixin, ListView):
     model = TradeRequest
     template_name = "profile/trade_requests.html"
     context_object_name = "trade_requests"
 
+    def get_queryset(self):
+        return TradeRequest.objects.get(profile=self.request.user.profile)
 
-class TradeRequestDetailView(DetailView):
+
+class TradeRequestDetailView(LoginRequiredMixin, DetailView):
     model = TradeRequest
     template_name = "profile/trade_request_detail.html"
     context_object_name = "trade_request"

@@ -30,9 +30,7 @@
             </p>
             <p> Wholesale:
                 {% if release.wholesaleandtrades.available_for_wholesale %}
-                    {% for wholesale_price in release.wholesale_prices.all %}
-                        {{ wholesale_price.price }} {{ wholesale_price.currency.currency }},
-                    {% endfor %}
+                    {{ release.wholesale_prices_string }}
                 {% endif %}
             </p>
         </div>

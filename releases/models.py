@@ -115,6 +115,9 @@ class Release(models.Model):
 
         return currency_choices
 
+    def wholesale_prices_string(self):
+        return ", ".join([f"{wholesale.price} ({wholesale.currency.currency})"
+                   for wholesale in self.wholesale_prices.all()])
 
 class WholesaleAndTrades(models.Model):
     YES_NO_CHOICES = (
@@ -164,16 +167,3 @@ class MarketingInfos(models.Model):
     youtube_url = models.URLField(null=True, blank=True)
     soundcloud_url = models.URLField(null=True, blank=True)
     press_feedback = models.TextField(null=True, blank=True)
-
-
-class TradeRequest(models.Model):
-    name = models.CharField(max_length=255)
-    email = models.EmailField()
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    datetime = models.DateTimeField(verbose_name="request datetime")
-
-
-class TradeRequestItem(models.Model):
-    trade_request = models.ForeignKey(TradeRequest, on_delete=models.CASCADE, related_name="trade_items")
-    release = models.ForeignKey(Release, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField()

@@ -35,6 +35,7 @@ INSTALLED_APPS = [
 
     'users.apps.UsersConfig',
     'releases.apps.ReleasesConfig',
+    'public_tradelist.apps.PublicTradelistConfig'
 ]
 
 MIDDLEWARE = [
