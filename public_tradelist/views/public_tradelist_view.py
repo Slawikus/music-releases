@@ -17,12 +17,12 @@ class PublicTradeListView(FormView):
 
         form.instance.profile = get_object_or_404(Profile, trade_id=self.kwargs["trade_id"])
 
-        data = form.cleaned_data
+        items = form.cleaned_data["items"]
 
         trade_request = form.save(commit=True)
         releases = Release.trade_items.tradelist_items_for_profile(self.request.user.profile)
 
-        for pair in data['items'].split(","):
+        for pair in items.split(","):
 
             release_id, quantity = pair.split(":")
 
