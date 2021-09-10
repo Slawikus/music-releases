@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 touch dublicate_files.txt
 find -type f -name example_*.jpg > dublicate_files.txt
 find -type f -name dummy_*.jpg > dublicate_files.txt
