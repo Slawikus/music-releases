@@ -1,5 +1,7 @@
 from django.db import models
 from django_countries.fields import CountryField
+from users.models import Profile, Label, ProfileCurrency
+from .managers import ReleaseManager
 from users.models import Profile, Label
 from django.core.validators import ValidationError, FileExtensionValidator
 from users.models import ProfileCurrency
@@ -97,6 +99,8 @@ class Release(models.Model):
 
     is_submitted = models.BooleanField(default=False)
 
+    objects = ReleaseManager()
+
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
         is_new = self.id is None
@@ -118,3 +122,7 @@ class Release(models.Model):
         currency_choices = profile_currencies.exclude(id__in=release_currencies)
 
         return currency_choices
+
+    def wholesale_prices_string(self):
+        return ", ".join([f"{wholesale.price} ({wholesale.currency.currency})"
+                   for wholesale in self.wholesale_prices.all()])

@@ -1,0 +1,27 @@
+{% extends '_base.html' %}
+
+{% block title %}Trade requests{% endblock title %}
+
+{% block content %}
+
+  {% include 'profile/profile_navbar.html' %}
+
+  {% for trade_request in trade_requests %}
+      <a href="{% url 'trade_details' trade_request.pk %}">
+      <div class="p-4 shadow-4 rounded-3 mt-3" style="background-color: hsl(0, 0%, 94%);">
+          <div class="row">
+              <div class="col-4">
+                  <strong>Requested by</strong>
+                  <p>name: {{ trade_request.name }} email: {{ trade_request.email }}</p>
+              </div>
+              <div class="col-4">
+                  <strong>{{ trade_request.trade_items.count }} releases</strong> <br>
+              </div>
+          </div>
+      </div>
+      </a>
+  {% endfor %}
+
+
+
+{% endblock content %}

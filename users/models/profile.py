@@ -11,6 +11,11 @@ class Profile(models.Model):
     country = CountryField(blank=True, null=True)
     address = models.TextField(blank=True, null=True)
     submission_uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    trade_id = models.UUIDField(
+        default=uuid.uuid4,
+        unique=True,
+        editable=True
+    )
 
     def __str__(self):
         return self.user.email
