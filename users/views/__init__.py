@@ -9,6 +9,8 @@ from .list_profile_currency_view import ListProfileCurrencyView
 from .show_invitations_view import ShowInvitationsView
 from .sign_up_view import SignUpView
 from .update_label_view import UpdateLabelView
+from .trade_request_list_view import TradeRequestListView
+from .trade_request_detail_view import TradeRequestDetailView
 
 __all__ = [
 	BandSubmissionsView,
@@ -21,5 +23,7 @@ __all__ = [
 	ListProfileCurrencyView,
 	ShowInvitationsView,
 	SignUpView,
-	UpdateLabelView
+	UpdateLabelView,
+	TradeRequestListView,
+	TradeRequestDetailView
 ]

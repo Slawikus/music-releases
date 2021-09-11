@@ -1,7 +1,6 @@
 from django.db import models
 from django_countries.fields import CountryField
-from users.models import Profile, Label, ProfileCurrency
-from .managers import ReleaseManager
+from releases.managers import ReleaseManager
 from users.models import Profile, Label
 from django.core.validators import ValidationError, FileExtensionValidator
 from users.models import ProfileCurrency

@@ -11,7 +11,7 @@ from .views import (
     UpdateLabelView,
     DeleteLabelView,
     BandSubmissionsView,
-    ShowInvitationsView
+    ShowInvitationsView,
     TradeRequestDetailView,
     TradeRequestListView
 )
@@ -27,7 +27,7 @@ urlpatterns = [
     path('labels/<int:pk>/edit/', UpdateLabelView.as_view(), name='label_update'),
     path('labels/<int:pk>/delete/', DeleteLabelView.as_view(), name='label_delete'),
     path('invitations/', ShowInvitationsView.as_view(), name='invitations'),
-    path('submissions/', BandSubmissionsView.as_view(), name='submissions')
+    path('submissions/', BandSubmissionsView.as_view(), name='submissions'),
     path('trade-requests/', TradeRequestListView.as_view(), name='trade_requests'),
     path('trade-details/<int:pk>/', TradeRequestDetailView.as_view(), name='trade_details')
 ]
