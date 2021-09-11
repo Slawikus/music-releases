@@ -1,18 +1,18 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import get_object_or_404
 from django.views.generic import UpdateView
-from django.urls import  reverse
+from django.urls import reverse
 
-from releases.forms import UpdateTradesAndWholesaleForm
-from releases.models import Release, WholesaleAndTrades, ReleaseWholesalePrice
+from releases.forms import UpdateReleaseWholesaleInfoForm
+from releases.models import ReleaseWholesalePrice, ReleaseWholesaleInfo, Release
 
 
-class UpdateWholesaleAndTradesView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = WholesaleAndTrades
-    form_class = UpdateTradesAndWholesaleForm
-    template_name = 'release_trades_wholesale.html'
+class UpdateReleaseWholesaleInfoView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = ReleaseWholesaleInfo
+    form_class = UpdateReleaseWholesaleInfoForm
+    template_name = 'release_wholesale_info_edit.html'
     login_url = 'login'
-    context_object_name = 'wholesale_and_trades'
+    context_object_name = 'release_wholesale_info'
 
     def dispatch(self, request, *args, **kwargs):
         self.release = get_object_or_404(Release, pk=self.kwargs.get("pk"))
@@ -32,12 +32,12 @@ class UpdateWholesaleAndTradesView(LoginRequiredMixin, UserPassesTestMixin, Upda
         return context
 
     def get_success_url(self):
-        return reverse('wholesale_and_trades_edit', args=[self.release.pk])
+        return reverse('release_wholesale_info_edit', args=[self.release.pk])
 
     def test_func(self):
         obj = self.get_object()
         return obj.release.profile == self.request.user.profile
 
     def get_object(self, queryset=None):
-        return self.release.wholesaleandtrades
+        return self.release.releasewholesaleinfo
 

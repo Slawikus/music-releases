@@ -2,11 +2,13 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
 
-class WholesaleAndTrades(models.Model):
-    YES_NO_CHOICES = (
+YES_NO_CHOICES = (
         (True, 'Yes'),
         (False, 'No')
     )
+
+
+class ReleaseTradesInfo(models.Model):
     release = models.OneToOneField("Release", on_delete=models.CASCADE)
     available_for_trade = models.BooleanField(default=False, choices=YES_NO_CHOICES)
     trade_points = models.DecimalField(
@@ -16,5 +18,3 @@ class WholesaleAndTrades(models.Model):
         null=True,
         blank=True
     )
-    trade_remarks = models.CharField(max_length=250, null=True, blank=True)
-    available_for_wholesale = models.BooleanField(default=False, choices=YES_NO_CHOICES)
