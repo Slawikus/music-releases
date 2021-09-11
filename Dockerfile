@@ -22,6 +22,7 @@ RUN pipenv install --system --deploy
 
 COPY . ./
 
+EXPOSE 8000:8000
 ENTRYPOINT ["./docker-entrypoint.sh"]
 
 CMD ["run"]

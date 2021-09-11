@@ -1,6 +1,5 @@
 import factory
 from django.db.models.signals import post_save
-
 from users.models import User, Profile, Label
 
 

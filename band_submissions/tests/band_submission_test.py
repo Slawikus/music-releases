@@ -2,7 +2,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 
 from users.factories import UserWithProfileFactory
-from .models import BandSubmission
+from band_submissions.models import BandSubmission
 from configuration.settings import BASE_DIR
 import uuid
 
