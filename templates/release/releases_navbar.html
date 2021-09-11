@@ -9,10 +9,17 @@
     </li>
     <li class="nav-item">
       <a class="nav-link
-      {% if request.resolver_match.view_name in "'wholesale_and_trades_edit','release_wholesale_price_add'" %}
+      {% if request.resolver_match.view_name == 'release_trades_info_edit' %}
         active
       {% endif %}"
-         href="{% url 'wholesale_and_trades_edit' release.pk %}">Trades & Wholesale</a>
+         href="{% url 'release_trades_info_edit' release.pk %}">Trades Info</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link
+      {% if request.resolver_match.view_name in "'release_wholesale_info_edit','release_wholesale_price_add'" %}
+        active
+      {% endif %}"
+         href="{% url 'release_wholesale_info_edit' release.pk %}">Wholesale Info</a>
     </li>
     <li class="nav-item">
       <a class="nav-link

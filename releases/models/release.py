@@ -3,8 +3,9 @@ from django_countries.fields import CountryField
 from users.models import Profile, Label
 from django.core.validators import ValidationError, FileExtensionValidator
 from users.models import ProfileCurrency
+from .release_trades_info import ReleaseTradesInfo
+from .release_wholesale_info import ReleaseWholesaleInfo
 from .release_wholesale_price import ReleaseWholesalePrice
-from .wholesale_and_trades import WholesaleAndTrades
 from .marketing_infos import MarketingInfos
 
 
@@ -15,6 +16,7 @@ def validate_file_size(value):
         raise ValidationError("The maximum file size that can be uploaded is 1MB")
     else:
         return value
+
 
 class Release(models.Model):
     profile = models.ForeignKey(
@@ -100,7 +102,8 @@ class Release(models.Model):
         is_new = self.id is None
         super().save(force_insert, force_update)
         if is_new:
-            WholesaleAndTrades.objects.create(release=self)
+            ReleaseTradesInfo.objects.create(release=self)
+            ReleaseWholesaleInfo.objects.create(release=self)
             MarketingInfos.objects.create(release=self)
 
     def divide_media_format(self):

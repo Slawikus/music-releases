@@ -10,10 +10,10 @@ urlpatterns = [
     path("recently-submitted/", views.RecentlySubmittedView.as_view(), name='recently_submitted'),
     path("my-releases/", views.MyReleasesView.as_view(), name='my_releases'),
     path("<int:pk>/edit/", views.EditReleaseView.as_view(), name='edit_release'),
-    path('<int:pk>/wholesale_and_trades', views.UpdateWholesaleAndTradesView.as_view(), name='wholesale_and_trades_edit'),
+    path('<int:pk>/trades_info', views.UpdateReleaseTradesInfoView.as_view(), name='release_trades_info_edit'),
+    path('<int:pk>/wholesale_info', views.UpdateReleaseWholesaleInfoView.as_view(), name='release_wholesale_info_edit'),
     path('<int:pk>/release_wholesale_price', views.CreateWholesalePriceView.as_view(), name='release_wholesale_price_add'),
     path("import-releases/", views.ImportReleasesView.as_view(), name="import_releases"),
-    path('<int:pk>/release_wholesale_price', views.CreateWholesalePriceView.as_view(), name='release_wholesale_price_add'),
     path('<int:pk>/wholesale_price_delete', views.DeleteWholesalePriceView.as_view(), name='wholesale_price_delete'),
     path('<int:pk>/marketing_infos', views.UpdateMarketingInfosView.as_view(), name='marketing_infos_edit'),
 ]
