@@ -20,6 +20,7 @@ django-countries = "*"
 pillow = "*"
 phonenumbers = "*"
 django-phonenumber-field = "*"
+requests = "*"
 
 [dev-packages]
 
