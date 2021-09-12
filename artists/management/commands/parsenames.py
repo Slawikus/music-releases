@@ -18,9 +18,10 @@ class Command(BaseCommand):
 
 	def handle(self, *args, **options):
 		response = requests.get(options["url"])
-		xml = gzip.decompress(response.content)
+		xml = gzip.decompress(response.content).decode()
 		rooted_xml = "<root>" + xml + "</root>"
-		tree = ET.fromstring(rooted_xml)
+		parser = ET.XMLParser(encoding="utf-8")
+		tree = ET.fromstring(rooted_xml, parser=parser)
 
 		for path in PATH_TO_NAMES:
 			for name in tree.findall(path):
