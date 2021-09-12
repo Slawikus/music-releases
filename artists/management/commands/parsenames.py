@@ -1,7 +1,7 @@
 from django.core.management import BaseCommand
 import requests
-import xml.etree.ElementTree as ET
 import gzip
+from lxml import etree
 from artists.models import Artist
 
 PATH_TO_NAMES = [
@@ -19,9 +19,9 @@ class Command(BaseCommand):
 	def handle(self, *args, **options):
 		response = requests.get(options["url"])
 		xml = gzip.decompress(response.content).decode()
-		rooted_xml = "<root>" + xml + "</root>"
-		parser = ET.XMLParser(encoding="utf-8")
-		tree = ET.fromstring(rooted_xml, parser=parser)
+		rooted_xml = f"<root>{xml}</root>"
+		parser = etree.XMLParser(recover=True)
+		tree = etree.fromstring(rooted_xml, parser=parser)
 
 		for path in PATH_TO_NAMES:
 			for name in tree.findall(path):
