@@ -26,4 +26,4 @@ class Command(BaseCommand):
 		for path in PATH_TO_NAMES:
 			for name in tree.findall(path):
 				# Artist.objects.create(name=name)
-				print(name)
+				print(name.text)
