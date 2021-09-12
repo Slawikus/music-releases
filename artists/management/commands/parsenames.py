@@ -1,29 +1,28 @@
 from django.core.management import BaseCommand
-import requests
-import gzip
 from lxml import etree
 from artists.models import Artist
 
-PATH_TO_NAMES = [
-	'artist/name',
-	'artist/aliases/name',
-	'artist/members/name',
-	'artist/namevariations/name',
-	'artist/groups/name'
-]
 
 class Command(BaseCommand):
 	def add_arguments(self, parser):
-		parser.add_argument("url", type=str)
+		parser.add_argument("path", type=str)
+
+	def lazy_read(self, file):
+		while True:
+			data = file.read(1024)
+			if not data:
+				break
+			yield data
 
 	def handle(self, *args, **options):
-		response = requests.get(options["url"])
-		xml = gzip.decompress(response.content).decode()
-		rooted_xml = f"<root>{xml}</root>"
-		parser = etree.XMLParser(recover=True)
-		tree = etree.fromstring(rooted_xml, parser=parser)
 
-		for path in PATH_TO_NAMES:
-			for name in tree.findall(path):
-				# Artist.objects.create(name=name)
+		file = open(options["path"], "r")
+		parser = etree.XMLParser(recover=True)
+
+		for xml in self.lazy_read(file):
+
+			tree = etree.fromstring(xml, parser=parser)
+
+			for name in tree.findall(".//name"):
+				# Artist.objects.get_or_create(name=name.text)
 				print(name.text)
