@@ -9,5 +9,5 @@ class TradeRequestListView(LoginRequiredMixin, ListView):
     context_object_name = "trade_requests"
 
     def get_queryset(self):
-        return TradeRequest.objects.get(profile=self.request.user.profile)
+        return TradeRequest.objects.filter(profile=self.request.user.profile)
 
