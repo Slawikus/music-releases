@@ -16,5 +16,4 @@ urlpatterns = [
     path('submissions/', views.BandSubmissionsView.as_view(), name='submissions'),
     path('trade-requests/', views.TradeRequestListView.as_view(), name='trade_requests'),
     path('trade-details/<int:pk>/', views.TradeRequestDetailView.as_view(), name='trade_details'),
-    path('notifications/', views.NotificationsListView.as_view(), name='notifications')
 ]
