@@ -4,6 +4,7 @@ from django.urls import reverse
 from users.factories import UserWithProfileFactory
 from band_submissions.models import BandSubmission
 from configuration.settings import BASE_DIR
+from band_submissions.factories import BandSubmissionFactory
 import uuid
 
 
@@ -40,3 +41,11 @@ class BandSubmissionTest(TestCase):
 
         self.assertEqual(BandSubmission.objects.last().profile, self.user.profile)
         self.assertEqual(BandSubmission.objects.count(), 1)
+
+    def test_it_shows_submissions(self):
+        BandSubmissionFactory.create_batch(3, profile=self.user.profile)
+        client = Client()
+        client.force_login(self.user)
+        response = client.get(reverse("submissions"))
+        submission_amount = response.context['object_list'].count()
+        self.assertEqual(submission_amount, 3)
