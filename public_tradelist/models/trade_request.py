@@ -13,9 +13,13 @@ class TradeRequest(models.Model):
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
+
+        is_new = self.id is None
         super().save(force_insert, force_update)
-        Notification.objects.create(
-            profile=self.profile,
-            message=f"trade request from {self.name}",
-            url=reverse("trade_details", args=[self.id])
-        )
+
+        if is_new:
+            Notification.objects.create(
+                profile=self.profile,
+                message=f"trade request from {self.name}",
+                url=reverse("trade_details", args=[self.id])
+            )

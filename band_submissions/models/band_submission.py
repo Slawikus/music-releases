@@ -35,9 +35,12 @@ class BandSubmission(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='submissions')
 
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        is_new = self.id is None
         super().save(force_insert, force_update)
-        Notification.objects.create(
-            profile=self.profile,
-            message=f"new band submission from {self.name}",
-            url=reverse("trade_details", args=[self.id])
-        )
+
+        if is_new:
+            Notification.objects.create(
+                profile=self.profile,
+                message=f"new band submission from {self.name}",
+                url=reverse("submissions")
+            )
