@@ -12,6 +12,7 @@ class Command(BaseCommand):
 		while True:
 			string = file.read(1024 * 10)
 			if string is None:
+				file.close()
 				break
 			res = re.findall(r"<name>[a-zA-Z0-9 ]+</name>", string)
 			for name in res:
