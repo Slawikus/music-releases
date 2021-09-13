@@ -11,6 +11,8 @@ from .sign_up_view import SignUpView
 from .update_label_view import UpdateLabelView
 from .trade_request_list_view import TradeRequestListView
 from .trade_request_detail_view import TradeRequestDetailView
+from .band_submission_detail_view import BandSubmissionDetailView
+
 
 __all__ = [
 	BandSubmissionsView,
@@ -26,4 +28,5 @@ __all__ = [
 	UpdateLabelView,
 	TradeRequestListView,
 	TradeRequestDetailView,
+	BandSubmissionDetailView
 ]

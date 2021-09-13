@@ -3,7 +3,7 @@ from django.core.validators import FileExtensionValidator
 from phonenumber_field.modelfields import PhoneNumberField
 from users.models import Profile
 from notifications.models import Notification
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 # Create your models here.
 
 

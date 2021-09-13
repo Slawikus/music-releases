@@ -14,6 +14,7 @@ urlpatterns = [
     path('labels/<int:pk>/delete/', views.DeleteLabelView.as_view(), name='label_delete'),
     path('invitations/', views.ShowInvitationsView.as_view(), name='invitations'),
     path('submissions/', views.BandSubmissionsView.as_view(), name='submissions'),
+    path('submission-details/<int:pk>', views.BandSubmissionDetailView.as_view(), name='submission_details'),
     path('trade-requests/', views.TradeRequestListView.as_view(), name='trade_requests'),
     path('trade-details/<int:pk>/', views.TradeRequestDetailView.as_view(), name='trade_details'),
 ]
