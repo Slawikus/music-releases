@@ -1,7 +1,7 @@
 from django.views.generic import CreateView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import UserPassesTestMixin
-from django.http import HttpResponseNotFound, HttpResponseRedirect
+from django.http import HttpResponseNotFound
 
 from band_submissions.forms import BandSubmissionForm
 from band_submissions.models import BandSubmission

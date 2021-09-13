@@ -7,4 +7,3 @@ class BandSubmissionDetailView(LoginRequiredMixin, DetailView):
 	model = BandSubmission
 	context_object_name = "submission"
 	template_name = "band_submissions/submission_detail.html"
-
