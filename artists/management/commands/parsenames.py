@@ -7,22 +7,22 @@ class Command(BaseCommand):
 	def add_arguments(self, parser):
 		parser.add_argument("path", type=str)
 
-	def lazy_read(self, file):
-		while True:
-			data = file.read(1024)
-			if not data:
-				break
-			yield data
-
 	def handle(self, *args, **options):
 
 		file = open(options["path"], "r")
 		parser = etree.XMLParser(recover=True)
 
-		for xml in self.lazy_read(file):
-
-			tree = etree.fromstring(xml, parser=parser)
-
-			for name in tree.findall(".//name"):
-				# Artist.objects.get_or_create(name=name.text)
-				print(name.text)
+		artist = ""
+		while True:
+			string = file.read(1)
+			if string is None:
+				break
+			artist += string
+			if "</artist>" in artist and "<artist>" in artist:
+				tree = etree.fromstring(artist, parser=parser)
+				artist = ""
+				if tree is None:
+					print("parse failed")
+				else:
+					for name in tree.findall(".//name"):
+						Artist.objects.get_or_create(name=name.text)
