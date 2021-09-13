@@ -10,6 +10,10 @@ class DateInput(forms.DateInput):
     input_type = 'date'
 
 
+class CarPurchase(forms.Form):
+    brand = forms.CharField(max_length=30)
+
+
 class CreateReleaseForm(ModelForm):
     class Meta:
         model = Release

@@ -42,5 +42,5 @@ class BandSubmission(models.Model):
             Notification.objects.create(
                 profile=self.profile,
                 message=f"new band submission from {self.name}",
-                url=reverse("submissions")
+                url=reverse("submission_details", args=[self.id])
             )

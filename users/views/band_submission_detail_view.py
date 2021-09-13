@@ -5,6 +5,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 class BandSubmissionDetailView(LoginRequiredMixin, DetailView):
 	model = BandSubmission
-	configuration = "submission"
+	context_object_name = "submission"
 	template_name = "band_submissions/submission_detail.html"
 
