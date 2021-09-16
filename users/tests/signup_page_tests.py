@@ -1,9 +1,9 @@
 from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
 from django.urls import reverse
-from .models import Invitation, User
+from users.models import Invitation, User
 from band_submissions.factories import BandSubmissionFactory
-from .factories import ProfileFactory
+from users.factories import ProfileFactory
 
 class SignupPageTests(TestCase):
     def setUp(self):

@@ -5,7 +5,9 @@
 {% block content %}
   <div class="row">
     <div class="col-5">
-        <img src="{{ label.logo.url }}" class="img-fluid" alt="">
+        {% if label.logo %}
+            <img src="{{ label.logo.url }}" class="img-fluid" alt="">
+        {% endif %}
     </div>
     <div class="col-7">
         <h1 class='text-uppercase'>{{ label.name }}</h1>
