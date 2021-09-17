@@ -24,10 +24,10 @@
 
           <p>
             Trade points:
-            {% if release.wholesaleandtrades.trade_points is None %}
+            {% if release.releasetradesinfo.trade_points is None %}
               -
             {% else %}
-              {{ release.wholesaleandtrades.trade_points }}
+              {{ release.releasetradesinfo.trade_points }}
             {% endif %}
           </p>
           <p>Wholesale prices: </p>
