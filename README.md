@@ -45,3 +45,5 @@ To run tests suite:
 ```
 docker compose run app test
 ```
+
+### Some stupid change here to be removed
