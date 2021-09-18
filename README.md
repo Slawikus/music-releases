@@ -48,6 +48,6 @@ docker compose run app test
 ### Test coverage
 to check test coverage run:
 ```
-coverage run --source="." manage.py test
+coverage run manage.py test
 coverage report
 ```
