@@ -8,4 +8,4 @@ class NotificationListView(ListView):
 	template_name = "notifications_list.html"
 
 	def get_queryset(self):
-		return Notification.objects.filter(profile=self.request.user.profile)
+		return Notification.objects.filter(profile=self.request.user.profile).order_by("-created")

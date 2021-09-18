@@ -21,5 +21,5 @@ class TradeRequest(models.Model):
             Notification.objects.create(
                 profile=self.profile,
                 message=f"trade request from {self.name}",
-                url=reverse("trade_details", args=[self.id])
+                target_url=reverse("trade_details", args=[self.id])
             )

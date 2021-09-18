@@ -6,12 +6,11 @@ from notifications.models import Notification
 from django.urls import reverse
 
 
-class NotificationTest(TestCase):
+class NotificationListViewTest(TestCase):
 	def setUp(self):
 		self.user = UserWithProfileFactory.create()
 		self.client = Client()
 		self.client.force_login(self.user)
-
 
 	def test_it_creates_notifications(self):
 		TradeRequestFactory.create_batch(2)
@@ -27,6 +26,14 @@ class NotificationTest(TestCase):
 		notif_amount = response.context["object_list"].count()
 
 		self.assertEqual(notif_amount, 5)
+
+
+
+class NotificationRedirectViewTest(TestCase):
+	def setUp(self):
+		self.user = UserWithProfileFactory.create()
+		self.client = Client()
+		self.client.force_login(self.user)
 
 	def test_it_redirects_and_closes_notification(self):
 
