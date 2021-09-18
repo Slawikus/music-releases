@@ -14,6 +14,6 @@ class LabelDetailViewTest(TestCase):
 		releases = ReleaseFactory.create_batch(3, profile=user.profile, label=label)
 
 		response = client.get(reverse("label_detail", args=[label.id]))
-		release_amount = response.context['label'].release.count()
+		release_amount = response.context['label'].releases.count()
 
 		self.assertEqual(release_amount, 3)
