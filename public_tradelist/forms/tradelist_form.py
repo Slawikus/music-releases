@@ -11,7 +11,7 @@ class TradeListForm(forms.ModelForm):
 
     class Meta:
         model = TradeRequest
-        exclude = ["profile", "created"]
+        exclude = ["profile", "created", "profile_requester"]
 
     def clean_items(self):
         data = self.cleaned_data["items"]

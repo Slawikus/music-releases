@@ -8,7 +8,7 @@ from releases.models import Release, ReleaseWholesalePrice
 
 class CreateWholesalePriceView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = ReleaseWholesalePrice
-    template_name = 'wholesale_price_add.html'
+    template_name = 'release/wholesale_price_add.html'
     form_class = CreateWholesalePriceForm
     login_url = 'login'
 
