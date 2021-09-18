@@ -47,7 +47,7 @@
           {% if request.path == my_releases %}
             <a href="{% url 'edit_release' release.pk %}" class="btn btn-secondary mt-3">Edit</a>
           {% endif %}
-          {% if release.profile != user.profile and release.releasetradesinfo.available_for_trade %}
+          {% if release.profile != user.profile %}
             <a href="{% url 'create_trade_request' release.profile.id %}" class="btn btn-primary">View tradelist</a>
           {% endif %}
         </div>

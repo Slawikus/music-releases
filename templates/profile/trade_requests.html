@@ -7,19 +7,26 @@
   {% include 'profile/profile_navbar.html' %}
 
   {% for trade_request in trade_requests %}
-      <a href="{% url 'trade_details' trade_request.pk %}">
+    <a href="{% url 'trade_details' trade_request.pk %}">
       <div class="p-4 shadow-4 rounded-3 mt-3" style="background-color: hsl(0, 0%, 94%);">
-          <div class="row">
-              <div class="col-4">
-                  <strong>Requested by</strong>
-                  <p>name: {{ trade_request.name }} email: {{ trade_request.email }}</p>
-              </div>
-              <div class="col-4">
-                  <strong>{{ trade_request.trade_items.count }} releases</strong> <br>
-              </div>
+        <div class="row">
+          <div class="col-4">
+            <strong>Requested by</strong>
+            <p class="mb-0">name: {{ trade_request.name }}</p>
+            {% if trade_request.email %}
+              <p>email: {{ trade_request.email }}</p>
+            {% else %}
+              <object>
+                <p><a href="{% url 'public_tradelist' trade_request.profile_requester.trade_id %}">Public Tradelist</a></p>
+              </object>
+            {% endif %}
           </div>
+          <div class="col-4">
+            <strong>{{ trade_request.trade_items.count }} releases</strong> <br>
+          </div>
+        </div>
       </div>
-      </a>
+    </a>
   {% endfor %}
 
 

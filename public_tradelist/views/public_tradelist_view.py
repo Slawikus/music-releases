@@ -14,8 +14,8 @@ class PublicTradeListView(FormView):
     success_url = "/"
 
     def form_valid(self, form):
-        if 'trade_id' in self.kwargs:
-            form.instance.profile = get_object_or_404(Profile, trade_id=self.kwargs["trade_id"])
+
+        form.instance.profile = get_object_or_404(Profile, trade_id=self.kwargs["trade_id"])
 
         items = form.cleaned_data["items"]
 
@@ -37,12 +37,9 @@ class PublicTradeListView(FormView):
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
-
+        profile = get_object_or_404(Profile, trade_id=self.kwargs['trade_id'])
         context = super().get_context_data()
         context["title"] = "Public Tradelist"
-
-        if 'trade_id' in kwargs:
-            profile = get_object_or_404(Profile, trade_id=self.kwargs['trade_id'])
-            context["releases"] = Release.objects.tradelist_items_for_profile(profile)
+        context["releases"] = Release.objects.tradelist_items_for_profile(profile)
 
         return context
