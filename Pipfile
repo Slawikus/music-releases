@@ -21,7 +21,6 @@ pillow = "*"
 phonenumbers = "*"
 django-phonenumber-field = "*"
 requests = "*"
-lxml = "*"
 
 [dev-packages]
 
