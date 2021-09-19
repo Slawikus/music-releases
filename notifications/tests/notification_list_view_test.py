@@ -26,22 +26,3 @@ class NotificationListViewTest(TestCase):
 		notif_amount = response.context["object_list"].count()
 
 		self.assertEqual(notif_amount, 5)
-
-
-
-class NotificationRedirectViewTest(TestCase):
-	def setUp(self):
-		self.user = UserWithProfileFactory.create()
-		self.client = Client()
-		self.client.force_login(self.user)
-
-	def test_it_redirects_and_closes_notification(self):
-
-		trade_request = TradeRequestFactory.create(profile=self.user.profile)
-		notification = Notification.objects.last()
-		response = self.client.get(reverse("notif_redirect", args=[notification.id]))
-		expected_url = reverse("trade_details", args=[trade_request.id])
-
-		self.assertRedirects(response, expected_url=expected_url)
-
-		self.assertEqual(notification.is_viewed, False)

@@ -15,9 +15,10 @@ class NotificationRedirectViewTest(TestCase):
 
 		trade_request = TradeRequestFactory.create(profile=self.user.profile)
 		notification = Notification.objects.last()
-		response = self.client.get(reverse("notif_redirect", args=[notification.id]))
+		response = self.client.get(reverse("notif_redirect", args=[notification.pk]))
 		expected_url = reverse("trade_details", args=[trade_request.id])
 
 		self.assertRedirects(response, expected_url=expected_url)
 
-		self.assertEqual(notification.is_viewed, False)
+		notification.refresh_from_db()
+		self.assertEqual(notification.is_viewed, True)

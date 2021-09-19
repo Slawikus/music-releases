@@ -6,8 +6,8 @@ from django.shortcuts import get_object_or_404
 
 
 class NotificationRedirectView(LoginRequiredMixin, View):
-	def get(self, request, id):
-		notification = get_object_or_404(Notification, id=id)
+	def get(self, request, pk):
+		notification = get_object_or_404(Notification, id=pk)
 		notification.is_viewed = True
 		notification.save()
 
