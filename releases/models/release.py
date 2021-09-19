@@ -8,6 +8,7 @@ from .release_trades_info import ReleaseTradesInfo
 from .release_wholesale_info import ReleaseWholesaleInfo
 from .release_wholesale_price import ReleaseWholesalePrice
 from .marketing_infos import MarketingInfos
+from configuration.storage import MediaFileSystemStorage
 
 
 def validate_file_size(value):
@@ -66,7 +67,8 @@ class Release(models.Model):
     cover_image = models.ImageField(
         upload_to='images/covers/',
         verbose_name='Front cover image',
-        help_text='Select image with minimum size of 800x800 pixel'
+        help_text='Select image with minimum size of 800x800 pixel',
+        storage=MediaFileSystemStorage()
     )
 
     class Formats(models.TextChoices):
@@ -83,7 +85,8 @@ class Release(models.Model):
     sample = models.FileField(
         upload_to='audios/releases/',
         validators=[validate_file_size, FileExtensionValidator(['mp3'])],
-        help_text='Upload up to 1 minute sample of the album to give fellow label owners a taste of this release'
+        help_text='Upload up to 1 minute sample of the album to give fellow label owners a taste of this release',
+        storage=MediaFileSystemStorage()
     )
     media_format_details = models.CharField(
         max_length=250,
