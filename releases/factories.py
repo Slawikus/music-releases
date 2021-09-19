@@ -18,7 +18,9 @@ class ReleaseFactory(factory.django.DjangoModelFactory):
         datetime(2034, 1, 1, 1, 1, 1, 1, pytz.utc)
     )
     release_date = factory.Faker("date_time")
-    label = factory.SubFactory(LabelFactory, profile=profile)
+    label = factory.SubFactory(
+        LabelFactory, profile=factory.SelfAttribute('..profile')
+    )
     base_style = random.choices(Release.BaseStyle.values)
     cover_image = factory.django.ImageField(color=factory.Faker("color"))
     format = "CD"
