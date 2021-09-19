@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand
+from django.contrib.auth.hashers import make_password
 from releases.factories import ReleaseFactory
 from users.factories import UserWithProfileFactory
 
@@ -11,7 +12,7 @@ class Command(BaseCommand):
 	def handle(self, *args, **options):
 		user = UserWithProfileFactory.create(
 			email=DEFAULT_EMAIL,
-			password=DEFAULT_PASSWORD,
+			password=make_password(DEFAULT_PASSWORD),
 			is_superuser=True
 		)
 
