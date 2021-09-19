@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     'artists.apps.ArtistsConfig'
 ]
 
+if DEBUG:
+    INSTALLED_APPS += ['django_extensions']
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
