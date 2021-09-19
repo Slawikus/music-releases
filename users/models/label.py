@@ -1,5 +1,5 @@
 from django.db import models
-
+from configuration.file_storage import DuplicationFixFileSystemStorage
 
 # Create your models here.
 class Label(models.Model):
@@ -19,6 +19,7 @@ class Label(models.Model):
         null=True,
         verbose_name='Label logo',
         help_text='For best result - black logo on white or transparent background',
+        storage=DuplicationFixFileSystemStorage()
     )
     description = models.TextField(
         blank=True,
