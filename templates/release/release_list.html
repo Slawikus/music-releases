@@ -22,7 +22,7 @@
           <p>{{ release.submitted_at|date:"d.m.Y" }} {{ release.label }} ({{ release.label.profile.country }})</p>
         </div>
         <div class="col-4">
-<a href="{% url 'postman:write' 'me@gmail.com' %}" class="btn btn-primary">message</a>
+<a href="{% url 'postman:write' release.profile.user.email %}" class="btn btn-primary">message</a>
           <p>
             Trade points:
             {% if release.releasetradesinfo.trade_points is None %}
