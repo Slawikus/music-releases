@@ -1,4 +1,4 @@
-{% extends '_base.html' %}
+{% extends 'base.html' %}
 
 {% block title %}{{ title }}{% endblock title %}
 
@@ -9,6 +9,7 @@
   {% endif %}
 
   {% for release in releases %}
+
     <div class="p-4 shadow-4 rounded-3 mt-3" style="background-color: hsl(0, 0%, 94%);">
       <div class="row">
         <div class="col-2">
@@ -21,7 +22,7 @@
           <p>{{ release.submitted_at|date:"d.m.Y" }} {{ release.label }} ({{ release.label.profile.country }})</p>
         </div>
         <div class="col-4">
-
+<a href="{% url 'postman:sent' 'me@gmail.com' %}" class="btn btn-primary">message</a>
           <p>
             Trade points:
             {% if release.releasetradesinfo.trade_points is None %}

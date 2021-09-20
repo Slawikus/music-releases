@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'pycountry',
     'django_filters',
     'phonenumber_field',
+    'postman',
 
     'users.apps.UsersConfig',
     'releases.apps.ReleasesConfig',
