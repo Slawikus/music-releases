@@ -44,6 +44,7 @@ class Label(models.Model):
                 name='unique_main_label_per_profile'
             ),
         ]
+        ordering = ['-is_main']
 
     def __str__(self):
         return self.name
