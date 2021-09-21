@@ -26,3 +26,15 @@ class NotificationListViewTest(TestCase):
 		notif_amount = response.context["object_list"].count()
 
 		self.assertEqual(notif_amount, 5)
+
+	def test_it_does_not_show_not_own_notifications(self):
+		TradeRequestFactory.create_batch(3, profile=self.user.profile)
+
+		other_user = UserWithProfileFactory.create()
+		client = Client()
+		client.force_login(other_user)
+
+		response = client.get(reverse("notifications"))
+		notif_amount = response.context["object_list"].count()
+
+		self.assertEqual(notif_amount, 0)

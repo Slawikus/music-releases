@@ -22,3 +22,15 @@ class NotificationRedirectViewTest(TestCase):
 
 		notification.refresh_from_db()
 		self.assertEqual(notification.is_viewed, True)
+
+	def test_it_forbids_redirect_to_others_notification(self):
+		TradeRequestFactory.create(profile=self.user.profile)
+		notification = Notification.objects.last()
+
+		other_user = UserWithProfileFactory.create()
+		client = Client()
+		client.force_login(other_user)
+
+		response = client.get(reverse("notif_redirect", args=[notification.pk]))
+
+		self.assertEqual(response.status_code, 403)
