@@ -154,6 +154,13 @@
             "index": "pypi",
             "version": "==5.2.0"
         },
+        "django-postman": {
+            "hashes": [
+                "sha256:bc351c261325eba78ac70f2a8236482d74fca5e2ca5172311cf9a67f32f6fc32"
+            ],
+            "index": "pypi",
+            "version": "==4.2"
+        },
         "et-xmlfile": {
             "hashes": [
                 "sha256:8eb9e2bc2f8c97e37a2dc85a09ecdcdec9d8a396530a6d5a33b30b9a92da0c5c",
