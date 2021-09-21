@@ -19,7 +19,8 @@
           <p>{{ release.band_name }} ({{ release.country }})</p>
           <p>{{ release.album_title }} - {{ release.format }} | {{ release.divide_media_format }}</p>
           <p>{{ release.base_style }}</p>
-          <p>{{ release.submitted_at|date:"d.m.Y" }} {{ release.label }} ({{ release.label.profile.country }})</p>
+          <p>{{ release.submitted_at|date:"d.m.Y" }} <a href="{% url 'label_detail'  release.label.pk %}">{{ release.label.name }}</a>
+              ({{ release.label.profile.country }})</p>
         </div>
         <div class="col-4">
 
