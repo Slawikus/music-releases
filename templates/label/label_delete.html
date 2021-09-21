@@ -5,9 +5,15 @@
 {% block content %}
   {% include 'profile/profile_navbar.html' %}
   <h1 class="mt-3">Delete label</h1>
-  <form action="" method="post">
-    {% csrf_token %}
-    <p>Are you sure you want to delete the label <b>{{ label.name }}</b>?</p>
-    <input type="submit" class="btn btn-danger" value="Confirm"/>
-  </form>
+
+  {% if label.is_main %}
+    <p>The main label cannot be deleted!</p>
+    <a class="btn btn-primary" href="{% url 'labels_list' %}">Back to labels</a>
+  {% else %}
+    <form action="" method="post">
+      {% csrf_token %}
+      <p>Are you sure you want to delete the label <b>{{ label.name }}</b>?</p>
+      <input type="submit" class="btn btn-danger" value="Confirm"/>
+    </form>
+  {% endif %}
 {% endblock content %}
