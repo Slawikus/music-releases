@@ -1,7 +1,7 @@
 from django.db import models
 from configuration.file_storage import DuplicationFixFileSystemStorage
 
-# Create your models here.
+
 class Label(models.Model):
     profile = models.ForeignKey(
         "users.Profile",
@@ -26,8 +26,7 @@ class Label(models.Model):
         null=True,
         verbose_name='Short label description',
     )
-    def __str__(self):
-        return self.name
+
     class Meta:
         constraints = [
             models.UniqueConstraint(
@@ -35,3 +34,6 @@ class Label(models.Model):
                 name='unique_label_per_profile'
             ),
         ]
+
+    def __str__(self):
+        return self.name
