@@ -52,7 +52,7 @@ class Release(models.Model):
     label = models.ForeignKey(
         Label,
         on_delete=models.CASCADE,
-        related_name='release',
+        related_name='releases',
     )
 
     class BaseStyle(models.TextChoices):

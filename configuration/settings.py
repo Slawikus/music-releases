@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'pycountry',
     'django_filters',
     'phonenumber_field',
+    'postman',
 
     'users.apps.UsersConfig',
     'releases.apps.ReleasesConfig',
@@ -113,6 +114,8 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+POSTMAN_AUTO_MODERATE_AS = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
