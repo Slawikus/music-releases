@@ -3,13 +3,14 @@ from django.http import HttpResponseRedirect
 from notifications.models import Notification
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseForbidden
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from public_tradelist.models import TradeRequest
 from band_submissions.models import BandSubmission
 import re
 
 
-class NotificationRedirectView(View):
+class NotificationRedirectView(LoginRequiredMixin, View):
 	def get(self, request, pk):
 		notification = get_object_or_404(Notification, id=pk)
 		# parse primary key from url
