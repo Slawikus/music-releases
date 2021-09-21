@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models import Q
+
 from configuration.file_storage import DuplicationFixFileSystemStorage
 
 
@@ -35,6 +37,11 @@ class Label(models.Model):
             models.UniqueConstraint(
                 fields=['name', 'profile'],
                 name='unique_label_per_profile'
+            ),
+            models.UniqueConstraint(
+                fields=['profile'],
+                condition=Q(is_main=True),
+                name='unique_main_label_per_profile'
             ),
         ]
 

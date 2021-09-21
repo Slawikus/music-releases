@@ -1,4 +1,4 @@
-from django.db import IntegrityError
+from django.db.utils import IntegrityError
 from django.test import TestCase
 
 from users.factories import LabelFactory, ProfileFactory
@@ -50,8 +50,19 @@ class LabelTest(TestCase):
     # Meta
 
     def test_one_profile_cannot_have_two_labels_with_the_same_name(self):
-        with self.assertRaises(IntegrityError):
+        with self.assertRaises(IntegrityError) as error:
             LabelFactory(profile=self.profile, name=self.name)
+
+        self.assertIn('unique_label_per_profile', error.exception.args[0])
+
+    def test_one_profile_cannot_have_two_main_labels(self):
+        self.label.is_main = True
+        self.label.save()
+
+        with self.assertRaises(IntegrityError) as error:
+            LabelFactory.create(profile=self.profile, is_main=True)
+
+        self.assertIn('unique_main_label_per_profile', error.exception.args[0])
 
     # Methods
 
