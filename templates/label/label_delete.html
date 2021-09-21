@@ -13,10 +13,10 @@
     <form action="" method="post">
       {% csrf_token %}
       <p>Are you sure you want to delete the label <b>{{ label.name }}</b>?</p>
-      {% if label.release.exists %}
+      {% if label.releases.exists %}
         <p>It will delete not only the label, but also the following releases:</p>
         <ul class="list-unstyled">
-          {% for release in label.release.all %}
+          {% for release in label.releases.all %}
             <li>{{ release.band_name }} "{{ release.album_title }}"</li>
           {% endfor %}
         </ul>
