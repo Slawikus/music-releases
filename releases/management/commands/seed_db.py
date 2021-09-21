@@ -1,8 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.hashers import make_password
 from releases.factories import ReleaseFactory
-from users.factories import UserWithProfileFactory
-
+from users.factories import UserWithProfileFactory, LabelFactory
 
 DEFAULT_EMAIL = 'admin@gmail.com'
 DEFAULT_PASSWORD = 'admin'
@@ -16,5 +15,7 @@ class Command(BaseCommand):
 			is_superuser=True
 		)
 
-		ReleaseFactory.create_batch(3, is_submitted=True, profile=user.profile)
-		ReleaseFactory.create_batch(2, profile=user.profile)
+		label = LabelFactory.create(name='Metal Blade Records', profile=user.profile)
+
+		ReleaseFactory.create_batch(3, is_submitted=True, profile=user.profile, label=label)
+		ReleaseFactory.create_batch(2, profile=user.profile, label=label)
