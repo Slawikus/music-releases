@@ -11,7 +11,7 @@ class LabelDetailViewTest(TestCase):
 		client.force_login(user)
 
 		label = LabelFactory.create(profile=user.profile)
-		releases = ReleaseFactory.create_batch(3, profile=user.profile, label=label)
+		ReleaseFactory.create_batch(3, profile=user.profile, label=label)
 
 		response = client.get(reverse("label_detail", args=[label.id]))
 		release_amount = response.context['label'].releases.count()

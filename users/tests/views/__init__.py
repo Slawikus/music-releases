@@ -1,1 +1,3 @@
 from .sign_up_view_test import SignUpViewTest
+from .set_as_main_label_view_test import SetAsMainLabelViewTest
+from .label_detail_view_test import LabelDetailViewTest
