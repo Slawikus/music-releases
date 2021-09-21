@@ -39,6 +39,9 @@ class LabelTest(TestCase):
     def test_it_has_logo(self):
         pass  # TODO: add test later
 
+    def test_it_has_is_main(self):
+        self.assertFalse(self.label.is_main)
+
     # Relations
 
     def test_it_defines_backward_relation_on_profile(self):

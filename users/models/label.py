@@ -26,6 +26,9 @@ class Label(models.Model):
         null=True,
         verbose_name='Short label description',
     )
+    is_main = models.BooleanField(
+        default=False
+    )
 
     class Meta:
         constraints = [
