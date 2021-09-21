@@ -13,7 +13,17 @@
     <form action="" method="post">
       {% csrf_token %}
       <p>Are you sure you want to delete the label <b>{{ label.name }}</b>?</p>
-      <input type="submit" class="btn btn-danger" value="Confirm"/>
+      {% if label.release.exists %}
+        <p>It will delete not only the label, but also the following releases:</p>
+        <ul class="list-unstyled">
+          {% for release in label.release.all %}
+            <li>{{ release.band_name }} "{{ release.album_title }}"</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      <a class="btn btn-primary" href="{% url 'labels_list' %}">Cancel</a>
+      <button class="btn btn-outline-danger" type="submit">Delete label</button>
     </form>
   {% endif %}
 {% endblock content %}
