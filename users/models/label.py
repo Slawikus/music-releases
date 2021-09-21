@@ -6,7 +6,7 @@ class Label(models.Model):
     profile = models.ForeignKey(
         "users.Profile",
         on_delete=models.CASCADE,
-        related_name='label'
+        related_name='labels'
     )
     name = models.CharField(
         max_length=250,
