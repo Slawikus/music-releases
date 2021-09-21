@@ -31,7 +31,10 @@
               </div>
               <div class="col-2 my-auto">
                 {% if not label.is_main %}
-                  <a href="{% url 'label_update' label.pk %}" class="card-link m-0">set as main</a>
+                  <form method="post" action="{% url 'label_set_as_main' label.pk %}">
+                    {% csrf_token %}
+                    <button class="btn btn-link" type="submit">set as main</button>
+                  </form>
                 {% endif %}
                 <a href="{% url 'label_update' label.pk %}" class="card-link m-0">edit</a>
                 <a href="{% url 'label_delete' label.pk %}" class="card-link m-0">remove</a>

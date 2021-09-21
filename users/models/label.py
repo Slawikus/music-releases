@@ -47,3 +47,6 @@ class Label(models.Model):
 
     def __str__(self):
         return self.name
+
+    def belongs_to_user(self, user):
+        return self.profile == user.profile

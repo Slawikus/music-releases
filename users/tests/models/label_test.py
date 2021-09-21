@@ -1,7 +1,7 @@
 from django.db.utils import IntegrityError
 from django.test import TestCase
 
-from users.factories import LabelFactory, ProfileFactory
+from users.factories import LabelFactory, ProfileFactory, UserWithProfileFactory
 
 
 class LabelTest(TestCase):
@@ -68,3 +68,10 @@ class LabelTest(TestCase):
 
     def test_string_representation(self):
         self.assertEqual(self.name, str(self.label))
+
+    def test_belongs_to_user(self):
+        self.assertTrue(self.label.belongs_to_user(self.profile.user))
+
+        another_user = UserWithProfileFactory.create()
+
+        self.assertFalse(self.label.belongs_to_user(another_user))
