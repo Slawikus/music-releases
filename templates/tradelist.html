@@ -6,6 +6,9 @@
 
 {% block content %}
   <div class="row mt-2 mb-2">
+
+    {% if releases.count > 0 %}
+
     <div class="col-4">
         <form method="post">
         {% csrf_token %}
@@ -46,7 +49,9 @@
           </table>
       </div>
     </div>
-
+    {% else %}
+        <h1>There is no trade list yet</h1>
+    {% endif %}
   </div>
 
 
