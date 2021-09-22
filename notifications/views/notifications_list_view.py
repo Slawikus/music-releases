@@ -1,8 +1,9 @@
 from django.views.generic import ListView
 from notifications.models import Notification
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class NotificationListView(ListView):
+class NotificationListView(LoginRequiredMixin, ListView):
 	model = Notification
 	context_object_name = "notifications"
 	template_name = "notifications_list.html"

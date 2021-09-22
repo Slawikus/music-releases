@@ -1,8 +1,8 @@
-from .public_tradelist_view_test import PublicTradeListViewTest
-from .traderequest_model_test import TradeRequestModelTest
+from public_tradelist.tests.views.public_tradelist_view_test import PublicTradeListViewTest
+from public_tradelist.tests.models.traderequest_test import TradeRequestTest
 
 
 __all__ = [
 	PublicTradeListViewTest,
-	TradeRequestModelTest
+	TradeRequestTest
 ]
