@@ -10,7 +10,7 @@ from releases.models import ReleaseTradesInfo, Release
 class UpdateReleaseTradesInfoView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = ReleaseTradesInfo
     form_class = UpdateReleaseTradesInfoForm
-    template_name = 'release_trades_info_edit.html'
+    template_name = 'release/release_trades_info_edit.html'
     context_object_name = 'release_trades_info'
 
     def dispatch(self, request, *args, **kwargs):

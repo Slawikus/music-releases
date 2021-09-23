@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'releases.apps.ReleasesConfig',
     'public_tradelist.apps.PublicTradelistConfig',
     'band_submissions.apps.BandSubmissionConfig',
+    'notifications.apps.NotificationsConfig',
     'artists.apps.ArtistsConfig'
 ]
 

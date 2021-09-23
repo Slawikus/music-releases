@@ -10,7 +10,7 @@ from releases.models import ReleaseWholesalePrice, ReleaseWholesaleInfo, Release
 class UpdateReleaseWholesaleInfoView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = ReleaseWholesaleInfo
     form_class = UpdateReleaseWholesaleInfoForm
-    template_name = 'release_wholesale_info_edit.html'
+    template_name = 'release/release_wholesale_info_edit.html'
     login_url = 'login'
     context_object_name = 'release_wholesale_info'
 

@@ -9,14 +9,14 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('public_tradelist', '0002_initial'),
+        ('notifications', '0001_initial'),
         ('users', '0001_initial'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='traderequest',
+            model_name='notification',
             name='profile',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='trade_requests', to='users.profile'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='notifications', to='users.profile'),
         ),
     ]

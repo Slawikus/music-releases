@@ -20,7 +20,7 @@ class PublicTradeListView(FormView):
         items = form.cleaned_data["items"]
 
         trade_request = form.save(commit=True)
-        releases = Release.objects  .tradelist_items_for_profile(self.request.user.profile)
+        releases = Release.objects.tradelist_items_for_profile(self.request.user.profile)
 
         for pair in items.split(","):
 

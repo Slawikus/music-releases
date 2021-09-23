@@ -10,7 +10,7 @@ from releases.models import Release, MarketingInfos
 class UpdateMarketingInfosView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = MarketingInfos
     form_class = UpdateMarketingInfosForm
-    template_name = 'marketing_infos_edit.html'
+    template_name = 'release/marketing_infos_edit.html'
     success_url = reverse_lazy('home')
 
     def dispatch(self, request, *args, **kwargs):

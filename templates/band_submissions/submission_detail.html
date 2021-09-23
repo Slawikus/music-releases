@@ -1,0 +1,20 @@
+{% extends '_base.html' %}
+
+{% block title %}Submission details{% endblock title %}
+
+{% block content %}
+  {% include 'profile/profile_navbar.html' %}
+  <div class="card col-md-6">
+    <p>name: {{ submission.name }}</p>
+    <p>album: <a href="{{ submission.album.url }}" class="btn btn-primary">download</a></p>
+     biography:
+      <br>{{ submission.biography }}
+    <p>Best track</p>
+    <audio controls="controls">
+      <source src="{{ submission.best_track.url }}" type="audio/mpeg" />
+    </audio>
+    <p>email: {{ submission.email }}</p>
+    <p>phone: {{ submission.phone_number }}</p>
+
+  </div>
+{% endblock content %}
