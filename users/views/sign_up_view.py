@@ -10,6 +10,7 @@ class SignUpView(CreateView):
     form_class = CustomUserCreationForm
     template_name = 'registration/signup.html'
     success_url = '/'
+
     def dispatch(self, request, *args, **kwargs):
         try:
             invitation = Invitation.objects.get(public_id=self.kwargs['public_id'])
@@ -19,6 +20,7 @@ class SignUpView(CreateView):
             return HttpResponse(self.request,
                                 "Sorry, your invitation link is already been used and not valid anymore")
         return super(SignUpView, self).dispatch(request, *args, **kwargs)
+
     def form_valid(self, form):
         valid = super(SignUpView, self).form_valid(form)
         if valid:

@@ -55,12 +55,11 @@
 </nav>
 <div class="container">
   {% if messages %}
-    {% for message in messages %}
-      <div class="alert alert-danger mt-2" role="alert">
-        {{ message|safe }}
-      </div>
-    {% endfor %}
+    <div class="mt-2">
+      {% include 'partials/_notification_message.html'%}
+    </div>
   {% endif %}
+
   {% block content %}
   {% endblock content %}
 </div>

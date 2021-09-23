@@ -1,6 +1,6 @@
 from django.urls import path
 
-from . import views
+from users import views
 
 urlpatterns = [
     path('signup/<str:public_id>/', views.SignUpView.as_view(), name='signup'),
@@ -12,6 +12,7 @@ urlpatterns = [
     path('labels/new/', views.CreateLabelView.as_view(), name='label_add'),
     path('labels/<int:pk>/edit/', views.UpdateLabelView.as_view(), name='label_update'),
     path('labels/<int:pk>/delete/', views.DeleteLabelView.as_view(), name='label_delete'),
+path('labels/<int:pk>/set-as-main/', views.SetAsMainLabelView.as_view(), name='label_set_as_main'),
     path('labels/<int:pk>/detail/', views.LabelDetailView.as_view(), name='label_detail'),
     path('invitations/', views.ShowInvitationsView.as_view(), name='invitations'),
     path('submissions/', views.BandSubmissionsView.as_view(), name='submissions'),
