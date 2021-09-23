@@ -12,6 +12,7 @@ urlpatterns = [
     path('labels/new/', views.CreateLabelView.as_view(), name='label_add'),
     path('labels/<int:pk>/edit/', views.UpdateLabelView.as_view(), name='label_update'),
     path('labels/<int:pk>/delete/', views.DeleteLabelView.as_view(), name='label_delete'),
+    path('labels/<int:pk>/detail/', views.LabelDetailView.as_view(), name='label_detail'),
     path('invitations/', views.ShowInvitationsView.as_view(), name='invitations'),
     path('submissions/', views.BandSubmissionsView.as_view(), name='submissions'),
     path('submission-details/<int:pk>', views.BandSubmissionDetailView.as_view(), name='submission_details'),
