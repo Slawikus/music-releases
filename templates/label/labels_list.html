@@ -22,12 +22,26 @@
                 {% endif %}
               </div>
               <div class="col-9 my-auto">
-                <h5 class="card-title">{{ label.name }}</h5>
+                <h5 class="card-title">{{ label.name }}
+                  {% if label.is_main %}
+                    <span class="badge bg-secondary">Main</span>
+                  {% endif %}
+                </h5>
                 <p class="card-text">{{ label.description }}</p>
               </div>
               <div class="col-2 my-auto">
+                {% if not label.is_main %}
+                  <form method="post" action="{% url 'label_set_as_main' label.pk %}">
+                    {% csrf_token %}
+                    <button class="btn btn-link" type="submit">set as main</button>
+                  </form>
+                {% endif %}
+
                 <a href="{% url 'label_update' label.pk %}" class="card-link m-0">edit</a>
-                <a href="{% url 'label_delete' label.pk %}" class="card-link m-0">remove</a>
+
+                {% if not label.is_main %}
+                  <a href="{% url 'label_delete' label.pk %}" class="card-link m-0">remove</a>
+                {% endif %}
               </div>
             </div>
           </div>

@@ -5,7 +5,8 @@ from users.models import Invitation, User
 from band_submissions.factories import BandSubmissionFactory
 from users.factories import ProfileFactory
 
-class SignupPageTests(TestCase):
+
+class SignUpViewTest(TestCase):
     def setUp(self):
         self.email = 'newuser@email.com'
         self.password = 'TestPassword1234'
