@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'django_filters',
     'phonenumber_field',
     'postman',
+    'widget_tweaks',
 
     'users.apps.UsersConfig',
     'releases.apps.ReleasesConfig',

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% load crispy_forms_tags %}
+{% load widget_tweaks %}
 
 {% block title %}Band Submission{% endblock title %}
 
@@ -10,9 +10,23 @@
     <div class="col-4">
       <form method="post" autocomplete="off" enctype='multipart/form-data'>
         {% csrf_token %}
-        {{ form|crispy }}
+        {% render_field form.name class+="circle-border" placeholder='name' %}
+          <p>album</p>
+        {% render_field form.album class+="circle-border" %}
+          <p>best track</p>
+        {% render_field form.best_track class+="circle-border" %}
+          <p>front cover</p>
+        {% render_field form.front_cover class+="circle-border" %}
+        {% render_field form.email class+="circle-border" placeholder='email' %}
+        {% render_field form.phone_number class+="circle-border" placeholder='phone_number' %}
+        {% render_field form.biography class+="circle-border" placeholder='biography'  %}
         <button type="submit" class="btn btn-primary ml-4">Submit</button>
       </form>
     </div>
   </div>
+    <style>
+        .circle-border{
+            border-radius: 30px;
+        }
+    </style>
 {% endblock content %}
