@@ -1,13 +1,13 @@
 from django.http import HttpResponse
 from django.views.generic import CreateView
 
-from users.forms import CustomUserCreationForm
+from users.forms import CombinedUserProfileCreationForm
 from users.models import Invitation
 from django.core.exceptions import ObjectDoesNotExist
 
 
 class SignUpView(CreateView):
-    form_class = CustomUserCreationForm
+    form_class = CombinedUserProfileCreationForm
     template_name = 'registration/signup.html'
     success_url = '/'
 
