@@ -31,11 +31,7 @@ class Release(models.Model):
         verbose_name='Band name(s)',
         help_text='Enter band name here. If split release - add band names with“/“ i.e. Nokturnal Mortum / Drudkh',
     )
-    country = CountryField(
-        verbose_name='Band country',
-        blank=True,
-        null=True,
-    )
+    country = CountryField(verbose_name='Band country')
     album_title = models.CharField(
         max_length=250,
         verbose_name='Album title'
@@ -44,23 +40,17 @@ class Release(models.Model):
         verbose_name='Release date',
         help_text='For past/old releases exact date is not important, feel free just to select January 1st, but with '
                   'correct year. For recent/upcoming releases - please try to set the date exactly. This release will '
-                  'be shown in Upcoming Releases section.',
-        blank=True,
-        null=True,
+                  'be shown in Upcoming Releases section.'
     )
 
     submitted_at = models.DateTimeField(
-        verbose_name="submitted date",
-        blank=True,
-        null=True
+        verbose_name="submitted date"
     )
 
     label = models.ForeignKey(
         Label,
         on_delete=models.CASCADE,
-        related_name='releases',
-        blank=True,
-        null=True,
+        related_name='releases'
     )
 
     class BaseStyle(models.TextChoices):
@@ -70,17 +60,13 @@ class Release(models.Model):
 
     base_style = models.CharField(
         max_length=250,
-        choices=BaseStyle.choices,
-        blank=True,
-        null=True,
+        choices=BaseStyle.choices
     )
     cover_image = models.ImageField(
         upload_to='images/covers/',
         verbose_name='Front cover image',
         help_text='Select image with minimum size of 800x800 pixel',
-        storage=DuplicationFixFileSystemStorage(),
-        blank=True,
-        null=True,
+        storage=DuplicationFixFileSystemStorage()
     )
 
     class Formats(models.TextChoices):
@@ -92,17 +78,13 @@ class Release(models.Model):
     format = models.CharField(
         max_length=5,
         choices=Formats.choices,
-        default='CD',
-        blank = True,
-        null = True,
+        default='CD'
     )
     sample = models.FileField(
         upload_to='audios/releases/',
         validators=[validate_file_size, FileExtensionValidator(['mp3'])],
         help_text='Upload up to 1 minute sample of the album to give fellow label owners a taste of this release',
-        storage=DuplicationFixFileSystemStorage(),
-        blank=True,
-        null=True,
+        storage=DuplicationFixFileSystemStorage()
     )
     media_format_details = models.CharField(
         max_length=250,
