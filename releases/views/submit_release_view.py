@@ -20,7 +20,11 @@ class SubmitReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def post(self, request, *args, **kwargs):
         release = Release.objects.get(pk=kwargs['pk'])
         _fields_dict = release.__dict__
+
+        # exclude fields that may be empty
         del _fields_dict['submitted_at']
+        del _fields_dict['media_format_details']
+        del _fields_dict['limited_edition']
 
         fields = list(_fields_dict.values())
 
