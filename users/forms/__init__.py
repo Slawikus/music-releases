@@ -4,7 +4,7 @@ from .custom_user_change_form import CustomUserChangeForm
 from .custom_user_creation_form import CustomUserCreationForm
 from .edit_profile_form import EditProfileForm
 from .label_form import LabelForm
-from .combined_user_profile_creation_form import CombinedUserProfileCreationForm
+from .user_profile_creation_form import UserProfileCreationForm
 
 
 __all__ = [
@@ -14,5 +14,5 @@ __all__ = [
 	CustomUserCreationForm,
 	EditProfileForm,
 	LabelForm,
-	CombinedUserProfileCreationForm
+	UserProfileCreationForm
 ]

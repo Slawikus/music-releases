@@ -1,13 +1,15 @@
 from django.http import HttpResponse
-from django.views.generic import CreateView
+from django.views.generic import FormView
 
-from users.forms import CombinedUserProfileCreationForm
+from users.forms import UserProfileCreationForm
 from users.models import Invitation
 from django.core.exceptions import ObjectDoesNotExist
+from users.models import User, Profile
+from django.contrib.auth import login
 
 
-class SignUpView(CreateView):
-    form_class = CombinedUserProfileCreationForm
+class SignUpView(FormView):
+    form_class = UserProfileCreationForm
     template_name = 'registration/signup.html'
     success_url = '/'
 
@@ -19,12 +21,25 @@ class SignUpView(CreateView):
         if not invitation.is_active:
             return HttpResponse(self.request,
                                 "Sorry, your invitation link is already been used and not valid anymore")
-        return super(SignUpView, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
-        valid = super(SignUpView, self).form_valid(form)
-        if valid:
-            invitation = Invitation.objects.get(public_id=self.kwargs['public_id'])
-            invitation.is_active = False
-            invitation.save()
-        return valid
+
+        user = User.objects.create(
+            email=form.cleaned_data['email'],
+            password=form.cleaned_data['password1']
+        )
+
+        profile = Profile.objects.get(user=user)
+        profile.label_name = form.cleaned_data['label_name']
+        profile.country = form.cleaned_data['country']
+        profile.save()
+
+        login(self.request, user)
+
+        invitation = Invitation.objects.get(public_id=self.kwargs['public_id'])
+        invitation.is_active = False
+        invitation.save()
+
+
+        return super().form_valid(form)

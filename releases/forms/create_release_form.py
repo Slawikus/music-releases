@@ -6,6 +6,8 @@ from django.forms import ModelForm
 from releases.models import Release
 from users.models import Label
 
+from configuration.settings import BASE_DIR
+
 class DateInput(forms.DateInput):
     input_type = 'date'
 
@@ -32,6 +34,11 @@ class CreateReleaseForm(ModelForm):
 
     def clean_cover_image(self):
         cover_image = self.cleaned_data['cover_image']
+
+        if not cover_image:
+            with open(f"{BASE_DIR}/releases/test_files/dummy.jpg", 'rb') as dummy_jpg:
+                cover_image = dummy_jpg
+
         width, height = get_image_dimensions(cover_image)
 
         if width != height:
