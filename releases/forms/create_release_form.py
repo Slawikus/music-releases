@@ -32,6 +32,8 @@ class CreateReleaseForm(ModelForm):
 
     def clean_cover_image(self):
         cover_image = self.cleaned_data['cover_image']
+        if cover_image is None:
+            return self.cleaned_data['cover_image']
         width, height = get_image_dimensions(cover_image)
 
         if width != height:

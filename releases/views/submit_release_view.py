@@ -3,6 +3,7 @@ from django.views.generic import  UpdateView
 from django.urls import reverse_lazy
 from django.utils import timezone
 from releases.models import Release
+from django.contrib import messages
 
 
 class SubmitReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -18,5 +19,9 @@ class SubmitReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         obj = self.get_object()
-        return obj.profile == self.request.user.profile
 
+        if None in list(obj.__dict__.values()):
+            messages.error(self.request, "Please fill all fields")
+            return False
+
+        return obj.profile == self.request.user.profile
