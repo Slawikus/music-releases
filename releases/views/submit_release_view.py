@@ -4,6 +4,7 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 from releases.models import Release
 from django.contrib import messages
+from django.http import HttpResponseRedirect
 
 
 class SubmitReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -19,9 +20,10 @@ class SubmitReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         obj = self.get_object()
-
-        if None in list(obj.__dict__.values()):
-            messages.error(self.request, "Please fill all fields")
-            return False
-
         return obj.profile == self.request.user.profile
+
+    def post(self, request, *args, **kwargs):
+        release = Release.objects.get(pk=kwargs['pk'])
+        if None in list(release.__dict__.values()):
+            messages.error(request, "all fields must filled")
+            return HttpResponseRedirect(reverse_lazy('my_releases'))
