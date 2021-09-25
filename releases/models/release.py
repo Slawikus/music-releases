@@ -44,7 +44,9 @@ class Release(models.Model):
     )
 
     submitted_at = models.DateTimeField(
-        verbose_name="submitted date"
+        verbose_name="submitted date",
+        null=True,
+        blank=True
     )
 
     label = models.ForeignKey(
