@@ -23,10 +23,10 @@
           <p>{{ release.base_style }}</p>
           <p>{{ release.submitted_at|date:"d.m.Y" }}
               {% if release.label %}
-                <a href="{% url 'label_detail' release.label.pk %}">{{ release.label.name }}</a>
+                <a href="{% url 'label_detail' release.label.pk %}">
+                    {{ release.label.name }}({{ release.label.profile.country }})
+                </a>
               {% endif %}
-
-              ({{ release.label.profile.country }})</p>
         </div>
         <div class="col-4">
 
