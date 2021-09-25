@@ -33,7 +33,7 @@ class CreateReleaseForm(ModelForm):
     def clean_cover_image(self):
         cover_image = self.cleaned_data['cover_image']
         if cover_image is None:
-            return self.cleaned_data['cover_image']
+            return None
         width, height = get_image_dimensions(cover_image)
 
         if width != height:
@@ -41,4 +41,4 @@ class CreateReleaseForm(ModelForm):
         if width < 800:
             raise ValidationError('The uploaded image should have minimal dimension of 800px')
 
-        return self.cleaned_data["cover_image"]
+        return cover_image
