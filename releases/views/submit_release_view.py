@@ -26,10 +26,11 @@ class SubmitReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         del _fields_dict['media_format_details']
         del _fields_dict['limited_edition']
 
-        fields = list(_fields_dict.values())
+        fields_values = list(_fields_dict.values())
 
-        if None in fields:
-            messages.error(request, "all fields must filled")
+        if None in fields_values:
+            empty_fields = [i for i in _fields_dict.keys() if _fields_dict[i] is None]
+            messages.error(request, "%s fields must filled" % ", ".join(empty_fields))
             return HttpResponseRedirect(reverse_lazy('my_releases'))
 
         else:
@@ -38,5 +39,5 @@ class SubmitReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             release.submitted_at = timezone.datetime.now()
             release.save()
 
-            messages.success(request, "successfully submitted")
+            messages.success(request, "successfully submitted!")
             return HttpResponseRedirect(reverse_lazy('my_releases'))
