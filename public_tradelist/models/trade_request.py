@@ -8,9 +8,9 @@ class TradeRequest(models.Model):
     email = models.EmailField(null=True)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="trade_requests")
     created = models.DateTimeField(auto_now_add=True)
-    profile_requester = models.ForeignKey(
+    from_profile = models.ForeignKey(
         Profile,
         on_delete=models.CASCADE,
-        related_name="profile_requester",
+        related_name="sent_trade_requests",
         null=True
     )
