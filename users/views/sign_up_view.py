@@ -4,7 +4,7 @@ from django.views.generic import FormView
 from users.forms import UserProfileCreationForm
 from users.models import Invitation
 from django.core.exceptions import ObjectDoesNotExist
-from users.models import User, Profile
+from users.models import User, Profile, Label
 from django.contrib.auth import login
 
 
@@ -31,9 +31,14 @@ class SignUpView(FormView):
         )
 
         profile = Profile.objects.get(user=user)
-        profile.label_name = form.cleaned_data['label_name']
         profile.country = form.cleaned_data['country']
         profile.save()
+
+        Label.objects.create(
+            profile=profile,
+            name=form.cleaned_data['label_name'],
+            is_main=True
+        )
 
         login(self.request, user)
 
