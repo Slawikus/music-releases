@@ -46,7 +46,7 @@ class EditReleaseViewTest(BaseClientTest):
                     "band_name": release.band_name,
                     "country": release.country,
                     "album_title": new_album_title,
-                    "release_date": release.release_date,
+                    "release_date": "2021-01-01",
                     "label": release.label.id,
                     "base_style": release.base_style,
                     "cover_image": dummy_jpg,
