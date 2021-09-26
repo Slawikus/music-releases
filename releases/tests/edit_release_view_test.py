@@ -47,12 +47,13 @@ class EditReleaseViewTest(BaseClientTest):
                     "country": release.country,
                     "album_title": new_album_title,
                     "release_date": release.release_date,
-                    "submitted_at": release.submitted_at,
                     "label": release.label.id,
                     "base_style": release.base_style,
                     "cover_image": dummy_jpg,
                     "format": release.format,
-                    "sample": dummy_mp3
+                    "sample": dummy_mp3,
+                    "media_format_details": "digipack, b2b",
+                    "limited_edition": 1112
                 })
 
         release.refresh_from_db()
