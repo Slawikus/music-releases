@@ -58,7 +58,5 @@ class EditReleaseViewTest(BaseClientTest):
 
         release.refresh_from_db()
 
-        mg = response.context
-
         self.assertEqual(release.album_title, new_album_title)
         self.assertRedirects(response, reverse('my_releases'))
