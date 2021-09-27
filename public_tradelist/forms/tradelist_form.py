@@ -5,13 +5,12 @@ import re
 
 
 class TradeListForm(forms.ModelForm):
-
     items = forms.CharField(max_length=255)
     items.widget = forms.TextInput(attrs={"type": "hidden"})
 
     class Meta:
         model = TradeRequest
-        exclude = ["profile", "created", "profile_requester"]
+        exclude = ["profile", "created", "from_profile"]
 
     def clean_items(self):
         data = self.cleaned_data["items"]

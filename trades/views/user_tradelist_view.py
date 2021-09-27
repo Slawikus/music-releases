@@ -22,7 +22,8 @@ class CreateTradeRequestView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.profile = self.other_profile
-        form.instance.profile_requester = self.request.user.profile
+        form.instance.from_profile = self.request.user.profile
+        form.instance.name = self.request.user.profile.label
 
         items = form.cleaned_data["items"]
 
@@ -47,7 +48,7 @@ class CreateTradeRequestView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         profile = self.other_profile
         context = super().get_context_data()
-        context["title"] = "Public Tradelist"
+        context["title"] = "Tradelist"
         context["releases"] = Release.objects.tradelist_items_for_profile(profile)
 
         return context

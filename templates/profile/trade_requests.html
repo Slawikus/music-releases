@@ -17,7 +17,7 @@
               <p>email: {{ trade_request.email }}</p>
             {% else %}
               <object>
-                <p><a href="{% url 'public_tradelist' trade_request.profile_requester.trade_id %}">Public Tradelist</a></p>
+                <p><a href="{% url 'public_tradelist' trade_request.from_profile.trade_id %}">Public Tradelist</a></p>
               </object>
             {% endif %}
           </div>

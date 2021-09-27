@@ -5,13 +5,12 @@ import re
 
 
 class UserTradeListForm(forms.ModelForm):
-
     items = forms.CharField(max_length=255)
     items.widget = forms.TextInput(attrs={"type": "hidden"})
 
     class Meta:
         model = TradeRequest
-        fields = ["name"]
+        exclude = '__all__'
 
     def clean_items(self):
         data = self.cleaned_data["items"]
