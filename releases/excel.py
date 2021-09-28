@@ -4,9 +4,11 @@ from django_countries.data import COUNTRIES
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
+from releases.models.release import BASE_STYLE_CHOICES
+
 
 FORMATS = Release.Formats.values
-STYLES = Release.BaseStyle.values
+STYLES = BASE_STYLE_CHOICES
 
 COUNTRIES_DICT = {full_name: short_name for short_name, full_name in COUNTRIES.items()}
 

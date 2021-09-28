@@ -26,7 +26,7 @@ class CreateReleaseTest(BaseClientTest):
                     "release_date": "2021-01-01",
                     "submitted_at": "2021-08-18",
                     "label": label.id,
-                    "base_style": "black_metal",
+                    "base_style": "Classical",
                     "cover_image": dummy_jpg,
                     "format": "CD",
                     "sample": dummy_mp3,
