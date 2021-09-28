@@ -39,7 +39,7 @@ def save_excel_file(file, profile):
 
         try:
             label_name = sheet.cell(row, 9).value
-            label = profile.label.get(name=label_name)
+            label = profile.labels.get(name=label_name)
         except ObjectDoesNotExist:
             return f"You haven't label named {label_name}. Error at {row} row, 9 column"
 
