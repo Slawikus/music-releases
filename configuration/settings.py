@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'releases.apps.ReleasesConfig',
     'public_tradelist.apps.PublicTradelistConfig',
-    'band_submissions.apps.BandSubmissionConfig'
+    'band_submissions.apps.BandSubmissionConfig',
+    'trades.apps.TradesConfig',
 ]
 
 MIDDLEWARE = [

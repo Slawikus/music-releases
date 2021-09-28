@@ -13,7 +13,8 @@ from .views import (
     BandSubmissionsView,
     ShowInvitationsView,
     TradeRequestDetailView,
-    TradeRequestListView
+    TradeRequestListView,
+    UsersTradeRequestDetailView
 )
 
 urlpatterns = [
@@ -29,5 +30,6 @@ urlpatterns = [
     path('invitations/', ShowInvitationsView.as_view(), name='invitations'),
     path('submissions/', BandSubmissionsView.as_view(), name='submissions'),
     path('trade-requests/', TradeRequestListView.as_view(), name='trade_requests'),
-    path('trade-details/<int:pk>/', TradeRequestDetailView.as_view(), name='trade_details')
+    path('trade-details/<int:pk>/', TradeRequestDetailView.as_view(), name='trade_details'),
+    path('user-trade-details/<int:pk>/', UsersTradeRequestDetailView.as_view(), name='user_trade_details')
 ]

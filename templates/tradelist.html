@@ -5,7 +5,12 @@
 {% block title %}{{ title }}{% endblock title %}
 
 {% block content %}
-  <div class="row mt-2 mb-2">
+  <div class="row mt-3 mb-3">
+  {% if request.resolver_match.view_name == 'create_trade_request' %}
+    <h5 class="mb-2">
+      Send a trade request to <b>{{ label_name }}</b>:
+    </h5>
+  {% endif %}
     <div class="col-4">
         <form method="post">
         {% csrf_token %}

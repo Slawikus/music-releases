@@ -3,14 +3,16 @@ from public_tradelist.models import TradeRequest
 from django.core.validators import ValidationError
 import re
 
+from trades.models import UserTradeRequest
+
 
 class UserTradeListForm(forms.ModelForm):
     items = forms.CharField(max_length=255)
     items.widget = forms.TextInput(attrs={"type": "hidden"})
 
     class Meta:
-        model = TradeRequest
-        exclude = '__all__'
+        model = UserTradeRequest
+        exclude = ['name', 'profile', 'from_profile']
 
     def clean_items(self):
         data = self.cleaned_data["items"]
