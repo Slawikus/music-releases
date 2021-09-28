@@ -12,6 +12,7 @@ from .delete_wholesale_price_view import DeleteWholesalePriceView
 from .base_release import BaseRelease
 from .update_trades_info_view import UpdateReleaseTradesInfoView
 from .update_wholesale_info_view import UpdateReleaseWholesaleInfoView
+from .search_list_view import SearchListView
 
 __all__ = [
     BaseRelease,
@@ -27,5 +28,6 @@ __all__ = [
     MyReleasesView,
     UpcomingReleasesView,
     UpdateMarketingInfosView,
+    SearchListView
 
 ]
