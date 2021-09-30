@@ -40,12 +40,21 @@
         </div>
 
         <div class="col-2">
+
           {% if not release.is_submitted %}
             <form action="{% url 'release_submit' release.pk %}" method="post">
               {% csrf_token %}
               <button type="submit" class="btn btn-primary">Submit</button>
             </form>
           {% endif %}
+
+          {% if release.favourite_object.profile %}
+            <form action="{% url 'do_favourite' release.pk %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-primary">favourite</button>
+            </form>
+          {% endif %}
+
           {% if request.path == my_releases %}
             <a href="{% url 'edit_release' release.pk %}" class="btn btn-secondary mt-3">Edit</a>
           {% else %}

@@ -19,4 +19,3 @@ class SubmitReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def test_func(self):
         obj = self.get_object()
         return obj.profile == self.request.user.profile
-
