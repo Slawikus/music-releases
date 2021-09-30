@@ -17,7 +17,7 @@ class SubmitReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         obj = self.get_object()
         return obj.profile == self.request.user.profile
 
-    def check_fields(self, release):
+    def check_if_empty_fields_exists(self, release):
         _fields_dict = release.__dict__
 
         # exclude fields that may be empty
@@ -27,16 +27,14 @@ class SubmitReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
         fields_values = list(_fields_dict.values())
 
-        if None in fields_values:
-            empty_fields = [i for i in _fields_dict.keys() if _fields_dict[i] is None]
-            return "%s fields must filled" % ", ".join(empty_fields)
+        return None in fields_values
 
 
     def post(self, request, *args, **kwargs):
         release = Release.objects.get(pk=kwargs['pk'])
-        errors = self.check_fields(release)
+        empty_fields_exists = self.check_if_empty_fields_exists(release)
 
-        if not errors:
+        if not empty_fields_exists:
 
             release.is_submitted = True
             release.submitted_at = timezone.datetime.now()
@@ -45,6 +43,6 @@ class SubmitReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             messages.success(request, "successfully submitted!")
 
         else:
-            messages.error(request, errors)
+            messages.error(request, "please fill all fields before submit")
 
         return HttpResponseRedirect(reverse_lazy("my_releases"))

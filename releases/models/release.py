@@ -4,7 +4,6 @@ from releases.managers import ReleaseManager
 from users.models import Profile, Label
 from django.core.validators import ValidationError, FileExtensionValidator
 from users.models import ProfileCurrency
-from configuration.file_storage import DuplicationFixFileSystemStorage
 from .release_trades_info import ReleaseTradesInfo
 from .release_wholesale_info import ReleaseWholesaleInfo
 from .release_wholesale_price import ReleaseWholesalePrice
@@ -78,7 +77,6 @@ class Release(models.Model):
         upload_to='images/covers/',
         verbose_name='Front cover image',
         help_text='Select image with minimum size of 800x800 pixel',
-        storage=DuplicationFixFileSystemStorage(),
         blank=True,
         null=True
     )
@@ -92,15 +90,12 @@ class Release(models.Model):
     format = models.CharField(
         max_length=5,
         choices=Formats.choices,
-        default='CD',
-        blank=True,
-        null=True
+        default='CD'
     )
     sample = models.FileField(
         upload_to='audios/releases/',
         validators=[validate_file_size, FileExtensionValidator(['mp3'])],
         help_text='Upload up to 1 minute sample of the album to give fellow label owners a taste of this release',
-        storage=DuplicationFixFileSystemStorage(),
         blank=True,
         null=True
     )
