@@ -48,7 +48,7 @@
             </form>
           {% endif %}
 
-          {% if release.favourite_object.profile %}
+          {% if release.id not in fav_releases %}
             <form action="{% url 'do_favourite' release.pk %}" method="post">
               {% csrf_token %}
               <button type="submit" class="btn btn-primary">favourite</button>
