@@ -48,7 +48,8 @@ class CreateReleaseTest(BaseClientTest):
         band_name = 'test_band'
         response = self.client.post(reverse_lazy('release_add'), {
             'band_name': band_name,
-            'album_title': 'test_title'
+            'album_title': 'test_title',
+            'format': 'CD'
         })
 
         self.assertTrue(Release.objects.filter(band_name=band_name).exists())
