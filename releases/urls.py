@@ -15,6 +15,5 @@ urlpatterns = [
     path('<int:pk>/release_wholesale_price', views.CreateWholesalePriceView.as_view(), name='release_wholesale_price_add'),
     path("import-releases/", views.ImportReleasesView.as_view(), name="import_releases"),
     path('<int:pk>/wholesale_price_delete', views.DeleteWholesalePriceView.as_view(), name='wholesale_price_delete'),
-    path('<int:pk>/marketing_infos', views.UpdateMarketingInfosView.as_view(), name='marketing_infos_edit'),
-    path('search/?q=<str:q>', views.SearchListView.as_view(), name='search')
+    path('<int:pk>/marketing_infos', views.UpdateMarketingInfosView.as_view(), name='marketing_infos_edit')
 ]
