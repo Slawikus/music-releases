@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.views.generic import FormView
 
-from users.forms import UserProfileCreationForm
+from users.forms import SignUpForm
 from users.models import Invitation
 from django.core.exceptions import ObjectDoesNotExist
 from users.models import User, Profile, Label
@@ -9,7 +9,7 @@ from django.contrib.auth import login
 
 
 class SignUpView(FormView):
-    form_class = UserProfileCreationForm
+    form_class = SignUpForm
     template_name = 'registration/signup.html'
     success_url = '/'
 
@@ -30,7 +30,7 @@ class SignUpView(FormView):
             password=form.cleaned_data['password1']
         )
 
-        profile = Profile.objects.get(user=user)
+        profile = user.profile
         profile.country = form.cleaned_data['country']
         profile.save()
 

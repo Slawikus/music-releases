@@ -1,29 +1,13 @@
 from django import forms
-from django.contrib.auth import password_validation
 from django_countries.data import COUNTRIES
-from django.core.validators import ValidationError
+from django.contrib.auth.forms import UserCreationForm
+from users.models import User
 
 
-class UserProfileCreationForm(forms.Form):
-	email = forms.EmailField()
-	password1 = forms.CharField(
-		label="Password",
-		strip=False,
-		widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
-		help_text=password_validation.password_validators_help_text_html(),
-	)
-	password2 = forms.CharField(
-		label="Password confirmation",
-		widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
-		strip=False,
-		help_text="Enter the same password as before, for verification.",
-	)
+class SignUpForm(UserCreationForm):
 	label_name = forms.CharField(max_length=250)
 	country = forms.ChoiceField(choices=COUNTRIES.items())
 
-	def clean_password2(self):
-		password1 = self.cleaned_data.get("password1")
-		password2 = self.cleaned_data.get("password2")
-		if password1 and password2 and password1 != password2:
-			raise ValidationError("password confirmation missmatch")
-		return password2
+	class Meta:
+		model = User
+		fields = ("username", "email")
