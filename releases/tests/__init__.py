@@ -7,6 +7,9 @@ from .edit_release_view_test import EditReleaseViewTest
 from .my_releases_view_test import MyReleasesViewTest
 from .recently_submitted_view_test import RecentlySubmittedViewTest
 from .upcoming_view_test import UpcomingViewTest
+from .add_to_wishlist_view_test import AddToWishlistViewTest
+from .wishlist_view_test import WishlistViewTest
+
 
 __all__ = [
 	BaseClientTest,
@@ -17,5 +20,7 @@ __all__ = [
 	EditReleaseViewTest,
 	MyReleasesViewTest,
 	RecentlySubmittedViewTest,
-	UpcomingViewTest
+	UpcomingViewTest,
+	AddToWishlistViewTest,
+	WishlistViewTest
 ]

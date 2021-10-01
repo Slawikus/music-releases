@@ -17,7 +17,7 @@ class ReleaseFactory(factory.django.DjangoModelFactory):
         datetime(2010, 1, 1, 1, 1, 1, 1, pytz.utc),
         datetime(2034, 1, 1, 1, 1, 1, 1, pytz.utc)
     )
-    release_date = factory.Faker("date_time")
+    release_date = factory.Faker("date")
     label = factory.SubFactory(
         LabelFactory, profile=factory.SelfAttribute('..profile')
     )
