@@ -8,6 +8,11 @@ from .release_trades_info import ReleaseTradesInfo
 from .release_wholesale_info import ReleaseWholesaleInfo
 from .release_wholesale_price import ReleaseWholesalePrice
 from .marketing_infos import MarketingInfos
+import json
+from configuration.settings import BASE_DIR
+
+with open(f"{BASE_DIR}/music_genres.json", "r") as file:
+    BASE_STYLE_CHOICES = [(i, i) for i in json.loads(file.read())['all']]
 
 
 def validate_file_size(value):
@@ -54,14 +59,10 @@ class Release(models.Model):
         related_name='releases',
     )
 
-    class BaseStyle(models.TextChoices):
-        BLACK_METAL = 'black_metal', 'Black Metal'
-        DEATH_METAL = 'death_metal', 'Death Metal'
-        TRASH_METAL = 'trash_metal', 'Thrash Metal'
 
     base_style = models.CharField(
         max_length=250,
-        choices=BaseStyle.choices,
+        choices=BASE_STYLE_CHOICES,
     )
     cover_image = models.ImageField(
         upload_to='images/covers/',
