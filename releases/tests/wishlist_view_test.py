@@ -1,6 +1,7 @@
 from django.test import TestCase, Client
 from releases.factories import ReleaseFactory
 from users.factories import UserWithProfileFactory
+from django.urls import reverse_lazy
 
 
 class WishlistViewTest(TestCase):
@@ -16,5 +17,5 @@ class WishlistViewTest(TestCase):
 		wishlist.add(rel1)
 		wishlist.add(rel2)
 
-		self.assertEqual(wishlist.count(), 2)
-
+		response = self.client.get(reverse_lazy('wishlist'))
+		self.assertEqual(response.context['object_list'].count(), 2)
