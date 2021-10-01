@@ -12,7 +12,7 @@ import json
 from configuration.settings import BASE_DIR
 
 with open(f"{BASE_DIR}/music_genres.json", "r") as file:
-    BASE_STYLE_CHOICES = [(i, i) for i in json.loads(file.read())['all']]
+    BASE_STYLE_CHOICES = list(json.loads(file.read())['all'].items())
 
 
 def validate_file_size(value):

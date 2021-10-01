@@ -26,7 +26,7 @@ class CreateReleaseTest(BaseClientTest):
                     "release_date": "2021-01-01",
                     "submitted_at": "2021-08-18",
                     "label": label.id,
-                    "base_style": "Classical",
+                    "base_style": "classical",
                     "cover_image": dummy_jpg,
                     "format": "CD",
                     "sample": dummy_mp3,
@@ -49,7 +49,8 @@ class CreateReleaseTest(BaseClientTest):
         response = self.client.post(reverse_lazy('release_add'), {
             'band_name': band_name,
             'album_title': 'test_title',
-            'format': 'CD'
+            'format': 'CD',
+            'base_style': 'classical'
         })
 
         self.assertTrue(Release.objects.filter(band_name=band_name).exists())
