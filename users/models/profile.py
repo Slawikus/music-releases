@@ -16,6 +16,7 @@ class Profile(models.Model):
         unique=True,
         editable=True
     )
+    wishlist = models.ManyToManyField("releases.Release", related_name="wished_by_profiles")
 
     def __str__(self):
         return self.user.email

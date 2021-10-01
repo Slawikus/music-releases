@@ -12,8 +12,8 @@ from .delete_wholesale_price_view import DeleteWholesalePriceView
 from .base_release import BaseRelease
 from .update_trades_info_view import UpdateReleaseTradesInfoView
 from .update_wholesale_info_view import UpdateReleaseWholesaleInfoView
-from .create_favourite_release_view import CreateFavouriteReleaseView
-from .favourite_releases_view import FavouriteReleasesView
+from .add_to_wishlist_view import AddToWishlistView
+from .wishlist_view import WishlistView
 
 __all__ = [
     BaseRelease,
@@ -29,6 +29,6 @@ __all__ = [
     MyReleasesView,
     UpcomingReleasesView,
     UpdateMarketingInfosView,
-    CreateFavouriteReleaseView,
-    FavouriteReleasesView
+    AddToWishlistView,
+    WishlistView
 ]

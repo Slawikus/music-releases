@@ -48,12 +48,10 @@
             </form>
           {% endif %}
 
-          {% if release.id not in fav_releases %}
-            <form action="{% url 'do_favourite' release.pk %}" method="post">
-              {% csrf_token %}
-              <button type="submit" class="btn btn-primary">favourite</button>
-            </form>
-          {% endif %}
+        <form action="{% url 'add_to_wishlist' release.pk %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-primary">wish</button>
+        </form>
 
           {% if request.path == my_releases %}
             <a href="{% url 'edit_release' release.pk %}" class="btn btn-secondary mt-3">Edit</a>
