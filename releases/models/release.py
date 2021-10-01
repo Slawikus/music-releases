@@ -44,19 +44,19 @@ class Release(models.Model):
         verbose_name='Release date',
         help_text='For past/old releases exact date is not important, feel free just to select January 1st, but with '
                   'correct year. For recent/upcoming releases - please try to set the date exactly. This release will '
-                  'be shown in Upcoming Releases section.',
+                  'be shown in Upcoming Releases section.'
     )
 
     submitted_at = models.DateTimeField(
         verbose_name="submitted date",
-        blank=True,
-        null=True
+        null=True,
+        blank=True
     )
 
     label = models.ForeignKey(
         Label,
         on_delete=models.CASCADE,
-        related_name='releases',
+        related_name='releases'
     )
 
 

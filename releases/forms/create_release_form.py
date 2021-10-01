@@ -6,6 +6,7 @@ from django.forms import ModelForm
 from releases.models import Release
 from users.models import Label
 
+
 class DateInput(forms.DateInput):
     input_type = 'date'
 
