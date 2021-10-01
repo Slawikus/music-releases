@@ -8,4 +8,3 @@ class BaseRelease(LoginRequiredMixin, ListView):
     paginate_by = 20
     template_name = "release/release_list.html"
     model = Release
-
