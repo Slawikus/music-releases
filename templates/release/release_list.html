@@ -47,11 +47,12 @@
               <button type="submit" class="btn btn-primary">Submit</button>
             </form>
           {% endif %}
-
-        <form action="{% url 'add_to_wishlist' release.pk %}" method="post">
-          {% csrf_token %}
-          <button type="submit" class="btn btn-primary">wish</button>
-        </form>
+        {% if release.id not in wished_ids %}
+            <form action="{% url 'add_to_wishlist' release.pk %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-primary">add to wishlist</button>
+            </form>
+        {% endif %}
 
           {% if request.path == my_releases %}
             <a href="{% url 'edit_release' release.pk %}" class="btn btn-secondary mt-3">Edit</a>

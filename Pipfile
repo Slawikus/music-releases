@@ -21,6 +21,7 @@ pillow = "*"
 phonenumbers = "*"
 django-phonenumber-field = "*"
 django-postman = "*"
+ipython = "*"
 
 [dev-packages]
 ptpython = "*"
