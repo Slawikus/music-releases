@@ -2,7 +2,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import UpdateView
 from django.urls import reverse_lazy
 
-
 from releases.forms import UpdateReleaseForm
 from releases.models import Release
 
@@ -15,4 +14,3 @@ class EditReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     def test_func(self):
         obj = self.get_object()
         return obj.profile == self.request.user.profile
-
