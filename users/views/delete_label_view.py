@@ -15,7 +15,6 @@ class DeleteLabelView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         label = self.get_object()
-
         return label.belongs_to_user(self.request.user)
 
     def post(self, request, *args, **kwargs):
