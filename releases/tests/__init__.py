@@ -9,4 +9,6 @@ from .recently_submitted_view_test import RecentlySubmittedViewTest
 from .upcoming_view_test import UpcomingViewTest
 from .import_release_view_test import ImportReleasesViewTest
 from .update_trades_info_view_test import UpdateTradesInfoViewTest
+from .update_wholesale_view_test import UpdateWholesaleInfoViewTest
 from .create_wholesale_price_view_test import CreateWholesalePriceViewTest
+

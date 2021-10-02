@@ -4,17 +4,17 @@ from django.urls import reverse
 from releases.factories import ReleaseFactory
 
 
-class UpdateTradesInfoViewTest(TestCase):
+class UpdateWholesaleInfoViewTest(TestCase):
 	def setUp(self):
 		self.client = Client()
 		self.user = UserWithProfileFactory()
 		self.client.force_login(self.user)
 
-	def test_it_updates_trade_info(self):
+	def test_it_updates_wholesale(self):
 		release = ReleaseFactory.create(profile=self.user.profile)
-		self.client.post(reverse('release_trades_info_edit', args=[release.id]), {
-			'available_for_trade': True,
-			'trade_points': 1
+		response = self.client.post(reverse('release_wholesale_info_edit', args=[release.id]), {
+			'available_for_wholesale': True
 		})
 		release.refresh_from_db()
-		self.assertTrue(release.releasetradesinfo.available_for_trade)
+
+		self.assertTrue(release.releasewholesaleinfo.available_for_wholesale)
