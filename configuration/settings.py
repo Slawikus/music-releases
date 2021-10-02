@@ -142,14 +142,13 @@ LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
-
 CURRENCY_CHOICES = [
     (currency.alpha_3, f'{currency.alpha_3} - {currency.name}')
     for currency in pycountry.currencies
     if
-    currency.alpha_3 not in ['XXX', 'XTS', 'XAG', 'XAU', 'XBA', 'XBB', 'XBC', 'XBD', 'XDR', 'XPD', 'XPT', 'XSU', 'XUA', 'USD', 'EUR']
+    currency.alpha_3 not in ['XXX', 'XTS', 'XAG', 'XAU', 'XBA', 'XBB', 'XBC', 'XBD', 'XDR', 'XPD', 'XPT', 'XSU', 'XUA',
+                             'USD', 'EUR']
 ]
 
 CURRENCY_CHOICES.insert(0, ('EUR', 'EUR - Euro'))
 CURRENCY_CHOICES.insert(0, ('USD', 'USD - US Dollar'))
-
