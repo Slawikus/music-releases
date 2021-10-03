@@ -13,13 +13,15 @@
   <div class="row justify-content-center mt-2 mb-2">
     <div class="col-4">
       <form method="post" autocomplete="off">
-        <p>{{ form.non_field_errors }}</p>
+        {% if form.non_field_errors %}
+          <p>{{ form.non_field_errors }}</p>
+        {% endif %}
 
         <div class="mb-3">
-          <label for="id_{{ form.main_label_name.html_name }}" class="form-label">
+          <label for="{{ form.main_label_name.auto_id }}" class="form-label">
             {{ form.main_label_name.label }}
           </label>
-          {% render_field form.main_label_name|attr:"autofocus"|add_error_class:"is-invalid" class="form-control" %}
+          {{ form.main_label_name|attr:"autofocus"|add_error_class:"is-invalid"|add_class:"form-control" }}
           <div class="form-text">{{ form.main_label_name.help_text }}</div>
           <div class="invalid-feedback">
             {% for error in form.main_label_name.errors %}
@@ -29,10 +31,10 @@
         </div>
 
         <div class="mb-3">
-          <label for="id_{{ form.country.html_name }}" class="form-label">
+          <label for="{{ form.country.auto_id }}" class="form-label">
             {{ form.country.label }}
           </label>
-          {% render_field form.country|add_error_class:"is-invalid" class="form-select" %}
+          {{ form.country|add_error_class:"is-invalid"|add_class:"form-select" }}
           <div class="form-text">{{ form.country.help_text }}</div>
           <div class="invalid-feedback">
             {% for error in form.country.errors %}
@@ -42,10 +44,10 @@
         </div>
 
         <div class="mb-3">
-          <label for="id_{{ form.name.html_name }}" class="form-label">
+          <label for="{{ form.name.auto_id }}" class="form-label">
             {{ form.name.label }}
           </label>
-          {% render_field form.name|add_error_class:"is-invalid" class="form-control" %}
+          {{ form.name|add_error_class:"is-invalid"|add_class:"form-control" }}
           <div class="form-text">{{ form.name.help_text }}</div>
           <div class="invalid-feedback">
             {% for error in form.name.errors %}
@@ -55,10 +57,10 @@
         </div>
 
         <div class="mb-3">
-          <label for="id_{{ form.email.html_name }}" class="form-label">
+          <label for="{{ form.email.auto_id }}" class="form-label">
             {{ form.email.label }}
           </label>
-          {% render_field form.email|remove_attr:"autofocus"|add_error_class:"is-invalid" class="form-control" %}
+          {{ form.email|remove_attr:"autofocus"|add_error_class:"is-invalid"|add_class:"form-control" }}
           <div class="form-text">{{ form.email.help_text }}</div>
           <div class="invalid-feedback">
             {% for error in form.email.errors %}
@@ -68,27 +70,27 @@
         </div>
 
         <div class="mb-3">
-          <label for="id_{{ form.password1.html_name }}" class="form-label">
+          <label for="{{ form.password1.auto_id }}" class="form-label">
             {{ form.password1.label }}
           </label>
           {% if form.password2.errors %}
-            {% render_field form.password1|add_class:"is-invalid" class="form-control" %}
+            {{ form.password1|add_class:"is-invalid"|add_class:"form-control" }}
             <div class="invalid-feedback">
               {% for error in form.password2.errors %}
                 {{ error|escape }}
               {% endfor %}
             </div>
           {% else %}
-            {% render_field form.password1 class="form-control" %}
+            {{ form.password1|add_class:"form-control" }}
             <div class="form-text">{{ form.password1.help_text }}</div>
           {% endif %}
         </div>
 
         <div class="mb-3">
-          <label for="id_{{ form.password2.html_name }}" class="form-label">
+          <label for="{{ form.password2.auto_id }}" class="form-label">
             {{ form.password2.label }}
           </label>
-          {% render_field form.password2|add_error_class:"is-invalid" class="form-control" %}
+          {{ form.password2|add_error_class:"is-invalid"|add_class:"form-control" }}
           {% if form.password2.errors %}
             <div class="invalid-feedback">
               {% for error in form.password2.errors %}
