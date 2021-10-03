@@ -2,12 +2,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.shortcuts import get_object_or_404
+from django.core.validators import ValidationError
 
 from releases.models import Release
 from trades.forms.user_tradelist_form import UserTradeListForm
-from trades.models import UserTradeRequest, create_trade_request_item
+from trades.models import UserTradeRequest, UserTradeRequestItem
 from users.models import Profile
-from django.contrib import messages
+from public_tradelist.models import create_trade_request
 
 
 class CreateTradeRequestView(LoginRequiredMixin, CreateView):
@@ -24,11 +25,17 @@ class CreateTradeRequestView(LoginRequiredMixin, CreateView):
         form.instance.profile = self.other_profile
         form.instance.from_profile = self.request.user.profile
         form.instance.name = self.request.user.profile.label_name
+        trade_owner_profile = get_object_or_404(Profile, pk=self.kwargs['pk'])
 
-        create_trade_request_item(self, form)
-
-        messages.success(self.request, 'The trade request has been sent')
-        return super().form_valid(form)
+        try:
+            create_trade_request(
+                form=form,
+                trade_item_model=UserTradeRequestItem,
+                profile=trade_owner_profile
+            )
+            return super().form_valid(form)
+        except ValidationError:
+            return super().form_invalid(form)
 
     def get_context_data(self, **kwargs):
         profile = self.other_profile
