@@ -13,7 +13,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 DEBUG = os.getenv('DEBUG_MODE') == 'True'
 
-# TODO: change later for a read domain
+# TODO: change later for a real domain
 ALLOWED_HOSTS = ['*']
 
 # Application definition
@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'django_filters',
     'phonenumber_field',
     'postman',
+    'widget_tweaks',
 
     'users.apps.UsersConfig',
     'releases.apps.ReleasesConfig',
