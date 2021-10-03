@@ -20,6 +20,10 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.email
 
+    @property
+    def main_label_name(self):
+        return self.labels.get(is_main=True).name
+
     def save(self, *args, **kwargs):
         is_new = self._state.adding
         super(Profile, self).save(*args, **kwargs)
