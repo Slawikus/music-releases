@@ -1,4 +1,5 @@
 from .band_submissions_view import BandSubmissionsView
+from .band_submission_detail_view import BandSubmissionDetailView
 from .create_label_view import CreateLabelView
 from .create_profile_currency_view import CreateProfileCurrencyView
 from .delete_label_view import DeleteLabelView
@@ -12,20 +13,24 @@ from .update_label_view import UpdateLabelView
 from .trade_request_list_view import TradeRequestListView
 from .trade_request_detail_view import TradeRequestDetailView
 from .users_trade_request_detail_view import UsersTradeRequestDetailView
+from .label_detail_view import LabelDetailView
+from .set_as_main_label_view import SetAsMainLabelView
 
 __all__ = [
-    BandSubmissionsView,
-    CreateLabelView,
-    CreateProfileCurrencyView,
-    DeleteLabelView,
-    DeleteProfileCurrencyView,
-    EditProfileView,
-    ListLabelView,
-    ListProfileCurrencyView,
-    ShowInvitationsView,
-    SignUpView,
-    UpdateLabelView,
-    TradeRequestListView,
-    TradeRequestDetailView,
-    UsersTradeRequestDetailView
+	BandSubmissionDetailView,
+	BandSubmissionsView,
+	CreateLabelView,
+	CreateProfileCurrencyView,
+	DeleteLabelView,
+	LabelDetailView,
+	DeleteProfileCurrencyView,
+	EditProfileView,
+	ListLabelView,
+	ListProfileCurrencyView,
+	ShowInvitationsView,
+	SignUpView,
+	UpdateLabelView,
+	TradeRequestListView,
+	TradeRequestDetailView,
+	SetAsMainLabelView,
 ]

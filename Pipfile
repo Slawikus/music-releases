@@ -20,8 +20,11 @@ django-countries = "*"
 pillow = "*"
 phonenumbers = "*"
 django-phonenumber-field = "*"
+django-postman = "*"
 
 [dev-packages]
+ptpython = "*"
+coverage = "*"
 
 [requires]
 python_version = "3.9"

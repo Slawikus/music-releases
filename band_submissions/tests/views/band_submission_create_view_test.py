@@ -4,11 +4,12 @@ from django.urls import reverse
 from users.factories import UserWithProfileFactory
 from band_submissions.models import BandSubmission
 from configuration.settings import BASE_DIR
+from band_submissions.factories import BandSubmissionFactory
 import uuid
 
 
 # Create your tests here.
-class BandSubmissionTest(TestCase):
+class BandSubmissionCreateViewTest(TestCase):
     def setUp(self):
         self.client = Client()
         self.user = UserWithProfileFactory.create()

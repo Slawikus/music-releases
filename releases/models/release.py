@@ -8,6 +8,11 @@ from .release_trades_info import ReleaseTradesInfo
 from .release_wholesale_info import ReleaseWholesaleInfo
 from .release_wholesale_price import ReleaseWholesalePrice
 from .marketing_infos import MarketingInfos
+import json
+from configuration.settings import BASE_DIR
+
+with open(f"{BASE_DIR}/music_genres.json", "r") as file:
+    BASE_STYLE_CHOICES = list(json.loads(file.read())['all'].items())
 
 
 def validate_file_size(value):
@@ -30,7 +35,11 @@ class Release(models.Model):
         verbose_name='Band name(s)',
         help_text='Enter band name here. If split release - add band names with“/“ i.e. Nokturnal Mortum / Drudkh',
     )
-    country = CountryField(verbose_name='Band country')
+    country = CountryField(
+        verbose_name='Band country',
+        blank=True,
+        null=True
+    )
     album_title = models.CharField(
         max_length=250,
         verbose_name='Album title'
@@ -40,33 +49,35 @@ class Release(models.Model):
         help_text='For past/old releases exact date is not important, feel free just to select January 1st, but with '
                   'correct year. For recent/upcoming releases - please try to set the date exactly. This release will '
                   'be shown in Upcoming Releases section.',
+        blank=True,
+        null=True
     )
 
     submitted_at = models.DateTimeField(
         verbose_name="submitted date",
-        blank=True,
-        null=True
+        null=True,
+        blank=True
     )
 
     label = models.ForeignKey(
         Label,
         on_delete=models.CASCADE,
-        related_name='release',
+        related_name='releases',
+        blank=True,
+        null=True
     )
 
-    class BaseStyle(models.TextChoices):
-        BLACK_METAL = 'black_metal', 'Black Metal'
-        DEATH_METAL = 'death_metal', 'Death Metal'
-        TRASH_METAL = 'trash_metal', 'Thrash Metal'
 
     base_style = models.CharField(
         max_length=250,
-        choices=BaseStyle.choices,
+        choices=BASE_STYLE_CHOICES
     )
     cover_image = models.ImageField(
         upload_to='images/covers/',
         verbose_name='Front cover image',
-        help_text='Select image with minimum size of 800x800 pixel'
+        help_text='Select image with minimum size of 800x800 pixel',
+        blank=True,
+        null=True
     )
 
     class Formats(models.TextChoices):
@@ -83,17 +94,19 @@ class Release(models.Model):
     sample = models.FileField(
         upload_to='audios/releases/',
         validators=[validate_file_size, FileExtensionValidator(['mp3'])],
-        help_text='Upload up to 1 minute sample of the album to give fellow label owners a taste of this release'
+        help_text='Upload up to 1 minute sample of the album to give fellow label owners a taste of this release',
+        blank=True,
+        null=True
     )
     media_format_details = models.CharField(
         max_length=250,
         help_text='E.g. Digipak, 2xGatefold etc.',
         blank=True,
-        null=True,
+        null=True
     )
     limited_edition = models.PositiveIntegerField(
         blank=True,
-        null=True,
+        null=True
     )
 
     is_submitted = models.BooleanField(default=False)

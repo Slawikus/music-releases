@@ -6,6 +6,7 @@ from factory.fuzzy import FuzzyDateTime
 from users.factories import LabelFactory, ProfileFactory
 from .models import Release, MarketingInfos
 from configuration.settings import BASE_DIR
+from releases.models.release import BASE_STYLE_CHOICES
 
 
 class ReleaseFactory(factory.django.DjangoModelFactory):
@@ -17,9 +18,11 @@ class ReleaseFactory(factory.django.DjangoModelFactory):
         datetime(2010, 1, 1, 1, 1, 1, 1, pytz.utc),
         datetime(2034, 1, 1, 1, 1, 1, 1, pytz.utc)
     )
-    release_date = factory.Faker("date_time")
-    label = factory.SubFactory(LabelFactory, profile=profile)
-    base_style = random.choices(Release.BaseStyle.values)
+    release_date = factory.Faker("date")
+    label = factory.SubFactory(
+        LabelFactory, profile=factory.SelfAttribute('..profile')
+    )
+    base_style = random.choices([i[0] for i in BASE_STYLE_CHOICES])
     cover_image = factory.django.ImageField(color=factory.Faker("color"))
     format = "CD"
     sample = f"{BASE_DIR}/releases/test_files/dummy.mp3"

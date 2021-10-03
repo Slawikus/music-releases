@@ -1,11 +1,12 @@
 from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
 from django.urls import reverse
-from .models import Invitation, User
+from users.models import Invitation, User
 from band_submissions.factories import BandSubmissionFactory
-from .factories import ProfileFactory
+from users.factories import ProfileFactory
 
-class SignupPageTests(TestCase):
+
+class SignUpViewTest(TestCase):
     def setUp(self):
         self.email = 'newuser@email.com'
         self.password = 'TestPassword1234'
@@ -24,10 +25,12 @@ class SignupPageTests(TestCase):
         response = client.post(reverse("signup", args=[invitation.public_id]), {
             "email": email,
             "password1": "test123456",
-            "password2": "test123456"
+            "password2": "test123456",
+            "label_name": "test_label",
+            "country": "AF"
         })
 
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, expected_url='/')
         self.assertTrue(User.objects.filter(email=email).exists())
         self.assertEqual(Invitation.objects.filter(profile__user__email=email).count(), 3)
 
