@@ -8,9 +8,10 @@ from users.factories import ProfileFactory
 
 class SignUpViewTest(TestCase):
     def setUp(self):
+        self.name = "John Doe"
         self.email = 'newuser@email.com'
         self.password = 'TestPassword1234'
-        self.user = get_user_model().objects.create(email=self.email, password=self.password)
+        self.user = get_user_model().objects.create(name=self.name, email=self.email, password=self.password)
 
     def test_it_can_use_invitation(self):
         invitation = Invitation.objects.last()
@@ -21,12 +22,14 @@ class SignUpViewTest(TestCase):
     def test_it_registers_new_user(self):
         invitation = Invitation.objects.last()
         client = Client()
+
         email = "test@gmail.com"
         response = client.post(reverse("signup", args=[invitation.public_id]), {
+            "name": "Lord Demogorgon",
             "email": email,
             "password1": "test123456",
             "password2": "test123456",
-            "label_name": "test_label",
+            "main_label_name": "Metal Blade GmbH",
             "country": "AF"
         })
 
