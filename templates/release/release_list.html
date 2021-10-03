@@ -2,15 +2,18 @@
 
 {% block title %}{{ title }}{% endblock title %}
 
+{% load static %}
+
 {% block content %}
+
   {% url 'my_releases' as my_releases %}
   {% if request.path == my_releases %}
-      <a class="btn btn-secondary" href="{% url 'import_releases' %}">Import</a>
+      <a class="btn btn-outline-success" href="{% url 'import_releases' %}">Import</a>
   {% endif %}
 
   {% for release in releases %}
 
-    <div class="p-4 shadow-4 rounded-3 mt-3" style="background-color: #283046">
+    <div class="p-2 shadow-4 rounded-3 mt-1" style="background-color: #283046">
       <div class="row">
         <div class="col-2">
           <img src="{{ release.cover_image.url }}" alt="" srcset="" class="img-thumbnail">
@@ -47,19 +50,32 @@
             </form>
           {% endif %}
           {% if request.path == my_releases %}
-            <a href="{% url 'edit_release' release.pk %}" class="btn btn-secondary mt-3">Edit</a>
+            <a href="{% url 'edit_release' release.pk %}" class="btn btn-outline-primary mt-3">Edit</a>
+            <button class="btn btn-outline-primary">Play</button>
           {% else %}
             <a href="{% url 'postman:write' release.profile.user.email %}" class="btn btn-success">Contact label</a>
           {% endif %}
+
         </div>
 
     </div>
-    <audio controls="controls">
-      <source src="{{ release.sample.url }}" type="audio/mpeg" />
-    </audio>
 
 
   </div>
-  {% endfor %}
 
+  {% endfor %}
+  <div class="bg-light fixed-bottom">
+    <div style="margin-right: 20%; margin-left: 20%">
+        <audio id="audio-player" controls>
+          <source id="audio-src" src="/media/dummy/dummy.mp3" type="audio/mp3"/>
+        </audio>
+    </div>
+
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/plyr/3.6.8/plyr.min.js" integrity="sha512-8Tq/SKkeNKeVYZCkk0esWn+r00nNMcfZhsdszg9GN7BZSGgV1v9AJ8qHDI/PqFqRYZVOe8Afbph7OFb7SWwaPA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/plyr/3.6.8/plyr.polyfilled.min.js" integrity="sha512-tu8A6GEb3W7Pe1a1LLCMM/UtTjJv3GaH653Nm+GaW/gHFTPFX5ZJIsDMULPVXsi8T448DcRELMSVRc1PDECTNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+    let player = new Plyr('audio');
+
+  </script>
 {% endblock content %}
