@@ -8,7 +8,7 @@ from releases.models import Release
 from trades.forms.user_tradelist_form import UserTradeListForm
 from trades.models import UserTradeRequest, UserTradeRequestItem
 from users.models import Profile
-from public_tradelist.models import create_trade_request_item
+from public_tradelist.models import create_trade_request
 
 
 class CreateTradeRequestView(LoginRequiredMixin, CreateView):
@@ -28,7 +28,7 @@ class CreateTradeRequestView(LoginRequiredMixin, CreateView):
         trade_owner_profile = get_object_or_404(Profile, pk=self.kwargs['pk'])
 
         try:
-            create_trade_request_item(
+            create_trade_request(
                 form=form,
                 trade_item_model=UserTradeRequestItem,
                 profile=trade_owner_profile

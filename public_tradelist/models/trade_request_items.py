@@ -1,13 +1,10 @@
-from django.contrib import messages
 from django.db import models
 from .trade_request import TradeRequest
 from releases.models import Release
 from django.core.validators import ValidationError
-from users.models import Profile
-from django.shortcuts import get_object_or_404
 
 
-def create_trade_request_item(form, trade_item_model, profile):
+def create_trade_request(form, trade_item_model, profile):
     items = form.cleaned_data["items"]
 
     trade_request = form.save(commit=True)
