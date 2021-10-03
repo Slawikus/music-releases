@@ -7,8 +7,7 @@ from .invitation import Invitation
 # Create your models here.
 class Profile(models.Model):
     user = models.OneToOneField("User", on_delete=models.CASCADE)
-    label_name = models.CharField(max_length=250, blank=True, null=True)
-    country = CountryField(blank=True, null=True)
+    country = CountryField()
     address = models.TextField(blank=True, null=True)
     submission_uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     trade_id = models.UUIDField(
