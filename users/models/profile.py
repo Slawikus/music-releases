@@ -4,7 +4,6 @@ import uuid
 from .invitation import Invitation
 
 
-# Create your models here.
 class Profile(models.Model):
     user = models.OneToOneField("User", on_delete=models.CASCADE)
     country = CountryField()
@@ -13,7 +12,7 @@ class Profile(models.Model):
     trade_id = models.UUIDField(
         default=uuid.uuid4,
         unique=True,
-        editable=True
+        editable=True  # TODO: make this False
     )
 
     def __str__(self):
