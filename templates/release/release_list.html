@@ -51,7 +51,7 @@
           {% endif %}
           {% if request.path == my_releases %}
             <a href="{% url 'edit_release' release.pk %}" class="btn btn-outline-primary mt-3">Edit</a>
-            <button class="btn btn-outline-primary">Play</button>
+            <button class="btn btn-outline-primary aud" value="{{ release.sample.url }}">Play</button>
           {% else %}
             <a href="{% url 'postman:write' release.profile.user.email %}" class="btn btn-success">Contact label</a>
           {% endif %}
@@ -67,7 +67,7 @@
   <div class="bg-light fixed-bottom">
     <div style="margin-right: 20%; margin-left: 20%">
         <audio id="audio-player" controls>
-          <source id="audio-src" src="/media/dummy/dummy.mp3" type="audio/mp3"/>
+          <source id="audio-src" src="" type="audio/mp3"/>
         </audio>
     </div>
 
@@ -76,6 +76,20 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/plyr/3.6.8/plyr.polyfilled.min.js" integrity="sha512-tu8A6GEb3W7Pe1a1LLCMM/UtTjJv3GaH653Nm+GaW/gHFTPFX5ZJIsDMULPVXsi8T448DcRELMSVRc1PDECTNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script>
     let player = new Plyr('audio');
+
+    function play_music(path){
+        player.src = path;
+        player.play();
+    }
+
+    let buttons = document.getElementsByClassName('aud');
+    for (let i = 0; i < buttons.length; ++i) {
+        let item = buttons[i];
+        let path = item.value;
+        item.onclick = function () {
+            play_music(path);
+        }
+    }
 
   </script>
 {% endblock content %}
