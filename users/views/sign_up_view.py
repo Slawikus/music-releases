@@ -4,7 +4,7 @@ from django.views.generic import FormView
 from users.forms import SignUpForm
 from users.models import Invitation
 from django.core.exceptions import ObjectDoesNotExist
-from users.models import User, Profile, Label
+from users.models import User, Label
 from django.contrib.auth import login
 
 
@@ -26,6 +26,7 @@ class SignUpView(FormView):
     def form_valid(self, form):
 
         user = User.objects.create(
+            name=form.cleaned_data['name'],
             email=form.cleaned_data['email'],
             password=form.cleaned_data['password1']
         )
@@ -36,7 +37,7 @@ class SignUpView(FormView):
 
         Label.objects.create(
             profile=profile,
-            name=form.cleaned_data['label_name'],
+            name=form.cleaned_data['main_label_name'],
             is_main=True
         )
 
@@ -45,6 +46,5 @@ class SignUpView(FormView):
         invitation = Invitation.objects.get(public_id=self.kwargs['public_id'])
         invitation.is_active = False
         invitation.save()
-
 
         return super().form_valid(form)

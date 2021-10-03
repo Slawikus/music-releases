@@ -5,9 +5,15 @@ from users.models import User
 
 
 class SignUpForm(UserCreationForm):
-	label_name = forms.CharField(max_length=250)
-	country = forms.ChoiceField(choices=COUNTRIES.items())
+	main_label_name = forms.CharField(
+		max_length=250,
+		help_text="Additional labels and/or sub-labels can be added later."
+	)
+	country = forms.ChoiceField(
+		choices=COUNTRIES.items(),
+		help_text="Location of the main label."
+	)
 
 	class Meta:
 		model = User
-		fields = ("username", "email")
+		fields = ("name", "email")

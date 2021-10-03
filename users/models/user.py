@@ -4,10 +4,24 @@ from .user_manager import UserManager
 
 
 class User(AbstractUser):
-    username = models.CharField(max_length=50, blank=True, null=True)
-    email = models.EmailField(unique=True)
+    name = models.CharField(
+        "Name",
+        max_length=255,
+        help_text="Full name/alias/nickname as you would usually sign your emails, "
+                  "e.g. John Johnson or Lord Demogorgon."
+    )
+    email = models.EmailField(
+        unique=True,
+        help_text="The email address of the main label. It will be needed for logging in."
+    )
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['name']
+
+    username = None
+    first_name = None
+    last_name = None
+
     objects = UserManager()
+
     def __str__(self):
-        return self.email
+        return f"{self.name} ({self.email}"
