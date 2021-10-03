@@ -71,13 +71,17 @@
           <label for="id_{{ form.password1.html_name }}" class="form-label">
             {{ form.password1.label }}
           </label>
-          {% render_field form.password1|add_error_class:"is-invalid" class="form-control" %}
-          <div class="form-text">{{ form.password1.help_text }}</div>
-          <div class="invalid-feedback">
-            {% for error in form.password1.errors %}
-              {{ error|escape }}
-            {% endfor %}
-          </div>
+          {% if form.password2.errors %}
+            {% render_field form.password1|add_class:"is-invalid" class="form-control" %}
+            <div class="invalid-feedback">
+              {% for error in form.password2.errors %}
+                {{ error|escape }}
+              {% endfor %}
+            </div>
+          {% else %}
+            {% render_field form.password1 class="form-control" %}
+            <div class="form-text">{{ form.password1.help_text }}</div>
+          {% endif %}
         </div>
 
         <div class="mb-3">
@@ -85,12 +89,15 @@
             {{ form.password2.label }}
           </label>
           {% render_field form.password2|add_error_class:"is-invalid" class="form-control" %}
-          <div class="form-text">{{ form.password2.help_text }}</div>
-          <div class="invalid-feedback">
-            {% for error in form.password2.errors %}
-              {{ error|escape }}
-            {% endfor %}
-          </div>
+          {% if form.password2.errors %}
+            <div class="invalid-feedback">
+              {% for error in form.password2.errors %}
+                {{ error|escape }}
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="form-text">{{ form.password2.help_text }}</div>
+          {% endif %}
         </div>
 
         {% csrf_token %}
