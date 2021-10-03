@@ -18,55 +18,19 @@
         {% endif %}
 
         <div class="mb-3">
-          <label for="{{ form.main_label_name.auto_id }}" class="form-label">
-            {{ form.main_label_name.label }}
-          </label>
-          {{ form.main_label_name|attr:"autofocus"|add_error_class:"is-invalid"|add_class:"form-control" }}
-          <div class="form-text">{{ form.main_label_name.help_text }}</div>
-          <div class="invalid-feedback">
-            {% for error in form.main_label_name.errors %}
-              {{ error|escape }}
-            {% endfor %}
-          </div>
+          {% include 'common/_form_field.html' with field=form.main_label_name|attr:"autofocus" only %}
         </div>
 
         <div class="mb-3">
-          <label for="{{ form.country.auto_id }}" class="form-label">
-            {{ form.country.label }}
-          </label>
-          {{ form.country|add_error_class:"is-invalid"|add_class:"form-select" }}
-          <div class="form-text">{{ form.country.help_text }}</div>
-          <div class="invalid-feedback">
-            {% for error in form.country.errors %}
-              {{ error|escape }}
-            {% endfor %}
-          </div>
+          {% include 'common/_form_field.html' with field=form.country|attr:"class:form-select" only %}
         </div>
 
         <div class="mb-3">
-          <label for="{{ form.name.auto_id }}" class="form-label">
-            {{ form.name.label }}
-          </label>
-          {{ form.name|add_error_class:"is-invalid"|add_class:"form-control" }}
-          <div class="form-text">{{ form.name.help_text }}</div>
-          <div class="invalid-feedback">
-            {% for error in form.name.errors %}
-              {{ error|escape }}
-            {% endfor %}
-          </div>
+          {% include 'common/_form_field.html' with field=form.name only %}
         </div>
 
         <div class="mb-3">
-          <label for="{{ form.email.auto_id }}" class="form-label">
-            {{ form.email.label }}
-          </label>
-          {{ form.email|remove_attr:"autofocus"|add_error_class:"is-invalid"|add_class:"form-control" }}
-          <div class="form-text">{{ form.email.help_text }}</div>
-          <div class="invalid-feedback">
-            {% for error in form.email.errors %}
-              {{ error|escape }}
-            {% endfor %}
-          </div>
+          {% include 'common/_form_field.html' with field=form.email|remove_attr:"autofocus" only %}
         </div>
 
         <div class="mb-3">
