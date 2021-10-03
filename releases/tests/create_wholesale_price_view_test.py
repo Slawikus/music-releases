@@ -19,6 +19,7 @@ class CreateWholesalePriceViewTest(TestCase):
 			'price': 200
 		})
 
+
 		price_items = release.wholesale_prices.filter(currency=profile_currency.id)
 		self.assertTrue(price_items.exists)
 		self.assertEqual(price_items[0].price, 200)
