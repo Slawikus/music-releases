@@ -1,6 +1,8 @@
+import uuid
+
 from django.db import models
 from django_countries.fields import CountryField
-import uuid
+
 from .invitation import Invitation
 
 
