@@ -57,8 +57,10 @@
           {% else %}
             <a href="{% url 'postman:write' release.profile.user.email %}" class="btn btn-success">Contact label</a>
           {% endif %}
+          {% if release.profile != user.profile %}
+            <a href="{% url 'create_trade_request' release.profile.id %}" class="btn btn-primary">View tradelist</a>
+          {% endif %}
         </div>
-
     </div>
     {% if release.sample %}
     <audio controls="controls">

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Trade request details{% endblock title %}
+
+{% block content %}
+
+  {% include 'profile/profile_navbar.html' %}
+
+  <h3>Requested by</h3>
+    <h5>name: {{ trade_request.name }}</h5>
+
+    <div class="p-4 shadow-4 rounded-3 mt-3" style="background-color: hsl(0, 0%, 94%);">
+
+      {% for item in trade_request.user_trade_items.all %}
+          <div class="row">
+            <div class="col-2">
+                <strong>Release info:</strong>
+            </div>
+            <div class="col-3">
+                <p>Band name: {{ item.release.band_name }}</p>
+                <p>style: {{ item.release.base_style }}</p>
+            </div>
+            <div class="col-3">
+                <p>Release date: {{ item.release.release_date }}</p>
+                <p>Label: {{ item.release.label.name }}</p>
+            </div>
+            <div class="col-4">
+                <strong>Quantity: {{ item.quantity }}</strong>
+            </div>
+          </div>
+          <hr>
+      {% endfor %}
+
+    </div>
+
+{% endblock content %}

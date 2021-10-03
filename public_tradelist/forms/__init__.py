@@ -1,6 +1,6 @@
-from .tradelist_form import TradeListForm
-
+from .tradelist_form import TradeListForm, BaseTradeListForm
 
 __all__ = [
-	TradeListForm
+    TradeListForm,
+    BaseTradeListForm
 ]

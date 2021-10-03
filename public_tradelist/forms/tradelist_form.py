@@ -3,15 +3,9 @@ from public_tradelist.models import TradeRequest
 from django.core.validators import ValidationError
 import re
 
-
-class TradeListForm(forms.ModelForm):
-
+class BaseTradeListForm(forms.ModelForm):
     items = forms.CharField(max_length=255)
     items.widget = forms.TextInput(attrs={"type": "hidden"})
-
-    class Meta:
-        model = TradeRequest
-        exclude = ["profile", "created"]
 
     def clean_items(self):
         data = self.cleaned_data["items"]
@@ -23,3 +17,8 @@ class TradeListForm(forms.ModelForm):
             raise ValidationError("Wrong data format")
 
         return data
+
+class TradeListForm(BaseTradeListForm):
+    class Meta:
+        model = TradeRequest
+        exclude = ["profile", "created", "from_profile"]

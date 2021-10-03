@@ -1,94 +1,76 @@
+{% extends 'base.html' %}
+
 {% load crispy_forms_tags %}
 
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-      <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-    <title>Public Tradelist</title>
-</head>
-<body>
+{% block title %}{{ title }}{% endblock title %}
 
-    {% block content %}
-      <div class="row mt-2 mb-2">
-        <div class="col-4">
-            <form method="post">
-            {% csrf_token %}
-            {{ form|crispy }}
-          </form>
-        <button onclick="fill_data()" id="submit" class="btn btn-primary ml-4 w-10">Send</button>
-        </div>
+{% block content %}
+  <div class="row mt-3 mb-3">
+  {% if request.resolver_match.view_name == 'create_trade_request' %}
+    <h5 class="mb-2">
+      Send a trade request to <b>{{ label_name }}</b>:
+    </h5>
+  {% endif %}
+    <div class="col-4">
+        <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+      </form>
+    <button onclick="fill_data()" id="submit" class="btn btn-primary ml-4 w-10">Send</button>
+    </div>
 
-        <div class="p-4 shadow-4 rounded-3 mt-3" style="background-color: hsl(0, 0%, 94%);">
-          <div class="row">
-              <table class="table">
-                <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">quantity</th>
-                        <th scope="col">band name</th>
-                        <th scope="col">trade points</th>
-                        <th scope="col">wholesale price</th>
-                        <th scope="col">album</th>
-                        <th scope="col">format</th>
-                    </tr>
-                </thead>
-                <tbody>
-                  {% for release in releases %}
-                    <tr>
-                        <td><input type="number" class="quantity" release_id="{{ release.id }}"></td>
-                        <td>{{ release.band_name }} ({{ release.country }})</td>
-                        <td>{{ release.wholesaleandtrades.trade_points }}</td>
-                        <td>
-                            {% for wholesale_price in release.wholesale_prices.all %}
-                                {{ wholesale_price.price }} - {{ wholesale_price.currency }},
-                            {% endfor %}
-                        </td>
-                        <td>{{ release.album_title }}</td>
-                        <td>{{ release.format }}</td>
-                    </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
-          </div>
-        </div>
-
+    <div class="p-4 shadow-4 rounded-3 mt-3" style="background-color: hsl(0, 0%, 94%);">
+      <div class="row">
+          <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">quantity</th>
+                    <th scope="col">band name</th>
+                    <th scope="col">trade points</th>
+                    <th scope="col">wholesale price</th>
+                    <th scope="col">album</th>
+                    <th scope="col">format</th>
+                </tr>
+            </thead>
+            <tbody>
+              {% for release in releases %}
+                <tr>
+                    <td><input type="number" class="quantity" release_id="{{ release.id }}"></td>
+                    <td>{{ release.band_name }} ({{ release.country }})</td>
+                    <td>{{ release.wholesaleandtrades.trade_points }}</td>
+                    <td>
+                        {% for wholesale_price in release.wholesale_prices.all %}
+                            {{ wholesale_price.price }} - {{ wholesale_price.currency }},
+                        {% endfor %}
+                    </td>
+                    <td>{{ release.album_title }}</td>
+                    <td>{{ release.format }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
       </div>
+    </div>
+
+  </div>
 
 
-    {% endblock content %}
-    {% block js %}
-        <script>
-            let data = $("#id_items");
+{% endblock content %}
+{% block js %}
+    <script>
+        let data = $("#id_items");
 
-            function fill_data() {
-                data.val(null);
-                let quantities = $("body .quantity");
-                for (let i = 0; i < quantities.length; i++) {
-                    if (quantities[i].value > 0) {
-                        data.val(data.val() + quantities[i].getAttribute("release_id") + ":" + quantities[i].value + ",");
-                    }
+        function fill_data() {
+            data.val(null);
+            let quantities = $("body .quantity");
+            for (let i = 0; i < quantities.length; i++) {
+                if (quantities[i].value > 0) {
+                    data.val(data.val() + quantities[i].getAttribute("release_id") + ":" + quantities[i].value + ",");
                 }
-                // delete last comma
-                data.val(data.val().slice(0, -1));
-                $("form").submit();
             }
-        </script>
-    {% endblock %}
-
-
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-            crossorigin="anonymous"></script>
-    <!-- Bootstrap.js and Popper.js bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
-            crossorigin="anonymous"></script>
-</body>
-</html>
-
+            // delete last comma
+            data.val(data.val().slice(0, -1));
+            $("form").submit();
+        }
+    </script>
+{% endblock %}

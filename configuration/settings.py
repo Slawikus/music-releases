@@ -26,7 +26,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.postgres',
 
     'crispy_forms',
     'crispy_bootstrap5',
@@ -40,12 +39,10 @@ INSTALLED_APPS = [
     'releases.apps.ReleasesConfig',
     'public_tradelist.apps.PublicTradelistConfig',
     'band_submissions.apps.BandSubmissionConfig',
+    'trades.apps.TradesConfig',
     'notifications.apps.NotificationsConfig',
     'artists.apps.ArtistsConfig'
 ]
-
-if DEBUG:
-    INSTALLED_APPS += ['django_extensions']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -117,8 +114,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-POSTMAN_AUTO_MODERATE_AS = True
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
@@ -143,14 +138,13 @@ LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 
-
 CURRENCY_CHOICES = [
     (currency.alpha_3, f'{currency.alpha_3} - {currency.name}')
     for currency in pycountry.currencies
     if
-    currency.alpha_3 not in ['XXX', 'XTS', 'XAG', 'XAU', 'XBA', 'XBB', 'XBC', 'XBD', 'XDR', 'XPD', 'XPT', 'XSU', 'XUA', 'USD', 'EUR']
+    currency.alpha_3 not in ['XXX', 'XTS', 'XAG', 'XAU', 'XBA', 'XBB', 'XBC', 'XBD', 'XDR', 'XPD', 'XPT', 'XSU', 'XUA',
+                             'USD', 'EUR']
 ]
 
 CURRENCY_CHOICES.insert(0, ('EUR', 'EUR - Euro'))
 CURRENCY_CHOICES.insert(0, ('USD', 'USD - US Dollar'))
-

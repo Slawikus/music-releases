@@ -26,6 +26,7 @@ urlpatterns = [
     path('releases/', include('releases.urls')),
     path('band-submissions/', include('band_submissions.urls')),
     path('public_tradelist/', include('public_tradelist.urls')),
+    path('trades/', include('trades.urls')),
     path('notifications/', include('notifications.urls')),
     path('messages/', include('postman.urls')),
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
