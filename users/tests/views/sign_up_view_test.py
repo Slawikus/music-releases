@@ -25,10 +25,12 @@ class SignUpViewTest(TestCase):
         response = client.post(reverse("signup", args=[invitation.public_id]), {
             "email": email,
             "password1": "test123456",
-            "password2": "test123456"
+            "password2": "test123456",
+            "label_name": "test_label",
+            "country": "AF"
         })
 
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, expected_url='/')
         self.assertTrue(User.objects.filter(email=email).exists())
         self.assertEqual(Invitation.objects.filter(profile__user__email=email).count(), 3)
 

@@ -8,7 +8,7 @@ from releases.models import Release
 class UpdateReleaseForm(ModelForm):
     class Meta:
         model = Release
-        fields = ['band_name', 'album_title', 'cover_image', 'sample', 'limited_edition']
+        exclude = ['profile', 'is_submitted', 'submitted_at']
         widgets = {
             'sample': forms.FileInput(attrs={'accept': 'application/mp3'})
         }

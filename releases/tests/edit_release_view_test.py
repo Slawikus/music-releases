@@ -3,6 +3,8 @@ from django.urls import reverse_lazy, reverse
 from configuration.settings import BASE_DIR
 from releases.factories import ReleaseFactory
 from .base_client_test import BaseClientTest
+from users.factories import UserWithProfileFactory
+
 
 class EditReleaseViewTest(BaseClientTest):
     def test_it_shows_release_edit_page(self):
@@ -31,23 +33,27 @@ class EditReleaseViewTest(BaseClientTest):
         self.assertEqual(response.status_code, 403)
 
     def test_it_updates_the_release(self):
-        release = ReleaseFactory.create(profile=self.user.profile)
+        user = UserWithProfileFactory.create()
+        client = Client()
+        client.force_login(user)
+        release = ReleaseFactory.create(profile=user.profile)
 
         new_album_title = 'Some album title'
 
         with open(f"{BASE_DIR}/releases/test_files/dummy.jpg", 'rb') as dummy_jpg:
             with open(f"{BASE_DIR}/releases/test_files/dummy.mp3", 'rb') as dummy_mp3:
-                response = self.client.post(reverse_lazy('edit_release', args=[release.id]), {
+                response = client.post(reverse_lazy('edit_release', args=[release.id]), {
                     "band_name": release.band_name,
                     "country": release.country,
                     "album_title": new_album_title,
-                    "release_date": release.release_date,
-                    "submitted_at": release.submitted_at,
+                    "release_date": "2021-01-01",
                     "label": release.label.id,
                     "base_style": release.base_style,
                     "cover_image": dummy_jpg,
                     "format": release.format,
                     "sample": dummy_mp3,
+                    "media_format_details": "digipack, b2b",
+                    "limited_edition": 1112
                 })
 
         release.refresh_from_db()

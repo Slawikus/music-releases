@@ -1,0 +1,18 @@
+{
+  "all": {
+    "classical": "Classical",
+    "country": "Country",
+    "edm": "EDM",
+    "hip_hop": "Hip-Hop",
+    "indie_rock": "Indie Rock",
+    "jazz": "Jazz",
+    "k_pop": "K-pop",
+    "metal": "Metal",
+    "oldies": "Oldies",
+    "pop": "Pop",
+    "rap": "Rap",
+    "rb": "Rhythm & blues (R&B)",
+    "rock": "Rock",
+    "techno": "Techno"
+  }
+}
