@@ -15,7 +15,7 @@ class Command(BaseCommand):
 			is_superuser=True
 		)
 
-		label = LabelFactory.create(name='Metal Blade Records', profile=user.profile)
+		label = LabelFactory.create(name='Metal Blade Records', profile=user.profile, is_main=True)
 
 		ReleaseFactory.create_batch(3, is_submitted=True, profile=user.profile, label=label)
 		ReleaseFactory.create_batch(2, profile=user.profile, label=label)
