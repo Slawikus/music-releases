@@ -13,8 +13,8 @@ class CreateWholesalePriceViewTest(TestCase):
 
 	def test_it_creates_price(self):
 		release = ReleaseFactory.create(profile=self.user.profile)
-		profile_currency = ProfileCurrency.objects.create(profile=self.user.profile, currency='USD')
-		response = self.client.post(reverse('release_wholesale_price_add', args=[release.id]),{
+		profile_currency = ProfileCurrency.objects.create(profile=self.user.profile)
+		self.client.post(reverse('release_wholesale_price_add', args=[release.id]),{
 			'currency': profile_currency.id,
 			'price': 200
 		})

@@ -22,5 +22,4 @@ class TradeListForm(forms.ModelForm):
         if not re.match(r"\d+:\d+", data):
             raise ValidationError("Wrong data format")
 
-        shit = 0
         return data

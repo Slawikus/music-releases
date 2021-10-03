@@ -1,7 +1,8 @@
 import factory
 from django.db.models.signals import post_save
 from users.models import User, Profile, Label, ProfileCurrency
-import random
+from factory.fuzzy import FuzzyChoice
+import pycountry
 
 
 @factory.django.mute_signals(post_save)
@@ -34,7 +35,7 @@ class LabelFactory(factory.django.DjangoModelFactory):
 
 class ProfileCurrencyFactory(factory.django.DjangoModelFactory):
     profile = factory.SubFactory(ProfileFactory)
-    currency = 'USD'
+    currency = FuzzyChoice([currency.alpha_3 for currency in pycountry.currencies])
 
     class Meta:
         model = ProfileCurrency
