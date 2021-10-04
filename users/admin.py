@@ -32,7 +32,6 @@ class CustomUserAdmin(UserAdmin):
     )
     list_display = ('email', 'is_staff')
     search_fields = ('email',)
-    ordering = ('email',)
 
     inlines = (ProfileInline,)
 

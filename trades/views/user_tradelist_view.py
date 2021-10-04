@@ -24,7 +24,7 @@ class CreateTradeRequestView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.profile = self.other_profile
         form.instance.from_profile = self.request.user.profile
-        form.instance.name = self.request.user.profile.label_name
+        form.instance.name = self.request.user.profile.main_label_name
         trade_owner_profile = get_object_or_404(Profile, pk=self.kwargs['pk'])
 
         try:
@@ -42,6 +42,6 @@ class CreateTradeRequestView(LoginRequiredMixin, CreateView):
         context = super().get_context_data()
         context["title"] = "Tradelist"
         context["releases"] = Release.objects.tradelist_items_for_profile(profile)
-        context["label_name"] = profile.label_name
+        context["label_name"] = profile.main_label_name
 
         return context
