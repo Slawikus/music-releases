@@ -41,7 +41,7 @@ class SignUpViewTest(TestCase):
         })
 
         user = User.objects.get(email=email)
-        self.assertTrue(user.is_authenticated())
+        self.assertTrue(user.is_authenticated)
 
 
     def test_it_would_not_open_inactive_invitation(self):
