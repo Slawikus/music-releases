@@ -14,7 +14,7 @@ class Profile(models.Model):
     trade_id = models.UUIDField(
         default=uuid.uuid4,
         unique=True,
-        editable=True
+        editable=False
     )
 
     def __str__(self):
