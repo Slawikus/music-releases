@@ -1,6 +1,6 @@
 [run]
 source = .
-omit = *tests*,*apps.py,*manage.py,*__init__.py,*migrations*,*asgi*,*wsgi*,*admin.py,*refactor_files.py,*filldb.py
+omit = *tests*,*apps.py,*manage.py,*__init__.py,*migrations*,*asgi*,*wsgi*,*admin.py,*refactor_files.py,*seed_db.py,*import_artists_from_discogs_dump.py,*user_manager.py
 
 [report]
-omit = *tests*,*apps.py,*manage.py,*__init__.py,*migrations*,*asgi*,*wsgi*,*admin.py,*refactor_files.py,*filldb.py
+omit = *tests*,*apps.py,*manage.py,*__init__.py,*migrations*,*asgi*,*wsgi*,*admin.py,*refactor_files.py,*seed_db.py*import_artists_from_discogs_dump.py,*user_manager.py
