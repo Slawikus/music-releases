@@ -1,15 +1,36 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block title %}Home Page{% endblock title %}
 
+{% block extra_head %}
+  <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/core/menu/menu-types/vertical-menu.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/pages/page-knowledge-base.css' %}">
+{% endblock %}
+
 {% block content %}
-  <div class="p-4 shadow-4 rounded-3 mt-3" style="background-color: hsl(0, 0%, 94%);">
-    <h1 class="display-4">Music releases</h1>
-    <p class="lead">
-      This is an app for music releases.
-    </p>
-  </div>
-  {% if user.is_authenticated %}
-    <a class="btn btn-primary mt-2" href="{% url 'release_add' %}">New release</a>
-  {% endif %}
+
+  <section id="knowledge-base-search">
+    <div class="row">
+      <div class="col-12">
+        {#        Потом картиночку заменим#}
+        <div class="card knowledge-base-bg text-center"
+             style="background-image: url('{% static 'app-assets/images/banner/banner.png' %}')">
+          <div class="card-body">
+            <h2 class="text-primary">Music releases</h2>
+            <p class="card-text mb-2">
+              <span>This is an app for music releases.</span>
+            </p>
+            {% if user.is_authenticated %}
+              <a href="{% url 'release_add' %}" class="btn btn-outline-primary waves-effect">New Release</a>
+            {% else %}
+              <a href="{% url 'login' %}" class="btn btn-outline-primary waves-effect">Log In</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
 {% endblock content %}
