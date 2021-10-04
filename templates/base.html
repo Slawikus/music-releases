@@ -38,8 +38,10 @@
 
     {% include 'footer.html' %}
     {% include 'scripts.html' %}
+    {% block extra_javascript %}{% endblock extra_javascript %}
 
     {% block inline_javascript %}
+      {# No "script src=" here, instead put to extra_javascript #}
       <script>
         $(window).on('load', function () {
             if (feather) {
