@@ -7,15 +7,8 @@ from .edit_release_view_test import EditReleaseViewTest
 from .my_releases_view_test import MyReleasesViewTest
 from .recently_submitted_view_test import RecentlySubmittedViewTest
 from .upcoming_view_test import UpcomingViewTest
+from .import_release_view_test import ImportReleasesViewTest
+from .update_trades_info_view_test import UpdateTradesInfoViewTest
+from .update_wholesale_view_test import UpdateWholesaleInfoViewTest
+from .create_wholesale_price_view_test import CreateWholesalePriceViewTest
 
-__all__ = [
-	BaseClientTest,
-	get_view_context,
-	UpdateMarketingInfosTest,
-	AllReleasesViewTest,
-	CreateReleaseTest,
-	EditReleaseViewTest,
-	MyReleasesViewTest,
-	RecentlySubmittedViewTest,
-	UpcomingViewTest
-]
