@@ -43,6 +43,18 @@
             {% for price in release.release_price.all %}
               <p>{{ price.price }} {{ price.currency }}</p>
             {% endfor %}
+          <p>
+              {% if release.marketinginfos.youtube_url %}
+                  <a href="release.marketinginfos.youtube_url">
+                    <i data-feather="youtube"></i>
+                  </a>
+              {% endif %}
+              {% if release.marketinginfos.soundcloud_url %}
+                  <a href="release.marketinginfos.soundcloud_url">
+                    <i data-feather="cloud"></i>
+                  </a>
+              {% endif %}
+          </p>
 
         </div>
 
@@ -54,15 +66,31 @@
             </form>
           {% endif %}
           {% if request.path == my_releases %}
-            <a href="{% url 'edit_release' release.pk %}" class="btn btn-outline-primary mt-3">Edit</a>
+            <a href="{% url 'edit_release' release.pk %}" class="btn btn-outline-primary">Edit</a>
           {% else %}
             <a href="{% url 'postman:write' release.profile.user.email %}" class="btn btn-success">Contact label</a>
           {% endif %}
           {% if release.profile != user.profile %}
             <a href="{% url 'create_trade_request' release.profile.id %}" class="btn btn-primary">View tradelist</a>
           {% endif %}
-
+          <a class="btn btn-gradient-info" data-bs-toggle="collapse" href="#collapse-info-{{ release.id }}" role="button" aria-expanded="false" aria-controls="collapseExample">
+            info
+          </a>
         </div>
+          <div class="collapse" id="collapse-info-{{ release.id }}">
+              <div class="card card-body">
+                <div class="row">
+                    <div class="col-5">
+                        <strong>Overview: </strong>
+                        <p>{{ release.marketinginfos.release_overview|default_if_none:"-" }}</p>
+                    </div>
+                    <div class="col-5">
+                        <strong>press feedback: </strong>
+                        <p>{{ release.marketinginfos.press_feedback|default_if_none:"-" }}</p>
+                    </div>
+                </div>
+             </div>
+          </div>
           {% if release.sample %}
             <audio controls="controls">
               <source src="{{ release.sample.url }}" type="audio/mpeg" />
@@ -71,6 +99,7 @@
 
     </div>
     </div>
+
   {% endfor %}
   </div>
 {% endblock content %}
