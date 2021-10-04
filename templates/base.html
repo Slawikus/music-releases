@@ -1,39 +1,55 @@
-<!doctype html>
 {% load static %}
+
+<!doctype html>
 <html class="loading dark-layout" lang="en" data-layout="dark-layout" data-textdirection="ltr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  {% include 'styles.html' %}
-  {% block extra_head %}{% endblock %}
-  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-  <title>{% block title %}Music Releases App{% endblock title %}</title>
-</head>
-<body class="vertical-layout vertical-menu-modern  navbar-floating footer-static " data-open="click"
-      data-menu="vertical-menu-modern" data-col="">
-{% if user.is_authenticated %}
-  {% include 'header.html' %}
-  {% include 'header.html' %}
-  {% include 'main_menu.html' %}
-{% endif %}
-<div class="app-content content ">
-  <div class="content-overlay"></div>
-  <div class="header-navbar-shadow"></div>
-  <div class="content-wrapper container-xxl p-0">
-    <div class="content-header row"></div>
-    <div class="content-body">
-      {% if messages %}
-        <div class="mt-2">
-          {% include 'partials/_notification_message.html' %}
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% include 'styles.html' %}
+    {% block extra_head %}{% endblock %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <title>{% block title %}Music Releases App{% endblock title %}</title>
+  </head>
+
+  <body class="vertical-layout vertical-menu-modern  navbar-floating footer-static " data-open="click"
+        data-menu="vertical-menu-modern" data-col="">
+    {% if user.is_authenticated %}
+      {% include 'header.html' %}
+      {% include 'main_menu.html' %}
+    {% endif %}
+
+    <div class="app-content content">
+      <div class="content-overlay"></div>
+      <div class="header-navbar-shadow"></div>
+      <div class="content-wrapper container-xxl p-0">
+        <div class="content-header row"></div>
+        <div class="content-body">
+          {% if messages %}
+            <div class="mt-2">
+              {% include 'partials/_notification_message.html' %}
+            </div>
+          {% endif %}
+          {% block content %}{% endblock content %}
         </div>
-      {% endif %}
-      {% block content %}{% endblock content %}
+      </div>
     </div>
-  </div>
-</div>
-{% include 'footer.html' %}
-{% include 'scripts.html' %}
-</body>
+
+    {% include 'footer.html' %}
+    {% include 'scripts.html' %}
+
+    {% block inline_javascript %}
+      <script>
+        $(window).on('load', function () {
+            if (feather) {
+                feather.replace({
+                    width: 14,
+                    height: 14
+                });
+            }
+        })
+      </script>
+    {% endblock inline_javascript %}
+  </body>
 </html>
