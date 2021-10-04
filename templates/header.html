@@ -4,7 +4,17 @@
 <nav
     class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-dark navbar-shadow container-xxl">
   <div class="navbar-container d-flex content">
+      <form action="{% url 'search' %}" method="POST">
+        {% csrf_token %}
+        <div class="input-group w-100">
+        <input type="search" name="q" id="form1" class="form-control" />
+          <button type="submit" class="btn btn-primary">
+            search
+          </button>
+        </div>
+      </form>
     <div class="bookmark-wrapper d-flex align-items-center">
+
       <ul class="nav navbar-nav d-xl-none">
         <li class="nav-item"><a class="nav-link menu-toggle" href="#"><i class="ficon" data-feather="menu"></i></a></li>
       </ul>
