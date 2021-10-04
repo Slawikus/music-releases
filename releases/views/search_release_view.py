@@ -13,7 +13,8 @@ class SearchReleaseView(LoginRequiredMixin, View):
 		rel2 = Release.objects.filter(album_title__icontains=q)
 		rel3 = Release.objects.filter(base_style__icontains=q)
 		rel4 = Release.objects.filter(country__icontains=q)
-		result = list(chain(rel, rel2, rel3, rel4))
+		rel5 = Release.objects.filter(label__name__icontains=q)
+		result = list(chain(rel, rel2, rel3, rel4, rel5))
 
 		context = {"releases": result}
 
