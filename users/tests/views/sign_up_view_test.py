@@ -35,13 +35,13 @@ class SignUpViewTest(TestCase):
         self.assertEqual(Invitation.objects.filter(profile__user__email=email).count(), 3)
 
         client.post(reverse("logout"))
-        response = client.post(reverse("login"), {
+        client.post(reverse("login"), {
             "email": email,
             "password": "test123456"
         })
 
         user = User.objects.get(email=email)
-        self.assertTrue(user.is_authenticated())
+        self.assertTrue(user.is_authenticated)
 
 
     def test_it_would_not_open_inactive_invitation(self):
