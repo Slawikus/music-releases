@@ -3,19 +3,18 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from releases.models import Release
 from itertools import chain
 from django.shortcuts import render
+from django.db.models.query_utils import Q
 
 
 class SearchReleaseView(LoginRequiredMixin, View):
 
 	def post(self, request):
 		q = request.POST.get('q')
-		rel = Release.objects.filter(band_name__icontains=q)
-		rel2 = Release.objects.filter(album_title__icontains=q)
-		rel3 = Release.objects.filter(base_style__icontains=q)
-		rel4 = Release.objects.filter(country__icontains=q)
-		rel5 = Release.objects.filter(label__name__icontains=q)
-		result = list(chain(rel, rel2, rel3, rel4, rel5))
+		releases = Release.submitted.filter(Q(band_name__icontains=q) |
+										  Q(album_title__icontains=q) |
+										  Q(country__icontains=q) |
+										  Q(base_style__icontains=q))
 
-		context = {"releases": result}
+		context = {"releases": releases}
 
 		return render(request, "release/release_list.html", context)
