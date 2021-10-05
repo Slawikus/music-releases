@@ -6,7 +6,7 @@ from users.models import Invitation
 from django.core.exceptions import ObjectDoesNotExist
 from users.models import User, Label
 from django.contrib.auth import login
-
+from django.contrib.auth.hashers import make_password
 
 class SignUpView(FormView):
     form_class = SignUpForm
@@ -28,7 +28,7 @@ class SignUpView(FormView):
         user = User.objects.create(
             name=form.cleaned_data['name'],
             email=form.cleaned_data['email'],
-            password=form.cleaned_data['password1']
+            password=make_password(form.cleaned_data['password1'])
         )
 
         profile = user.profile
