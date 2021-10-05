@@ -13,7 +13,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 DEBUG = os.getenv('DEBUG_MODE') == 'True'
 
-# TODO: change later for a read domain
+# TODO: change later for a real domain
 ALLOWED_HOSTS = ['*']
 
 # Application definition
@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'django_filters',
     'phonenumber_field',
     'postman',
+    'widget_tweaks',
 
     'users.apps.UsersConfig',
     'releases.apps.ReleasesConfig',
@@ -119,6 +120,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'

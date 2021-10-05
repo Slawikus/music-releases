@@ -7,6 +7,7 @@ import pycountry
 
 @factory.django.mute_signals(post_save)
 class UserFactory(factory.django.DjangoModelFactory):
+    name = factory.Faker("name")
     email = factory.Faker("email")
     password = factory.Faker("password")
 
