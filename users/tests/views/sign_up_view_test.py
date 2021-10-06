@@ -37,14 +37,20 @@ class SignUpViewTest(TestCase):
         self.assertTrue(User.objects.filter(email=email).exists())
         self.assertEqual(Invitation.objects.filter(profile__user__email=email).count(), 3)
 
-        client.post(reverse("logout"))
-        response = client.post(reverse("login"), {
-            "email": email,
+    def test_it_logs_in_user(self):
+        user = User.objects.create_user(
+            name="test",
+            email="test@gmail.com",
+            password="test123456"
+        )
+        client = Client()
+        client.post(reverse("login"), {
+            "email": "test@gmail.com",
             "password": "test123456"
         })
-
-        user = User.objects.get(email=email)
+        user.refresh_from_db()
         self.assertTrue(user.is_authenticated)
+
 
     def test_it_would_not_open_inactive_invitation(self):
         invitation = Invitation.objects.last()
