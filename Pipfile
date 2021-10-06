@@ -21,11 +21,11 @@ pillow = "*"
 phonenumbers = "*"
 django-phonenumber-field = "*"
 django-postman = "*"
-ipython = "*"
 
 [dev-packages]
 ptpython = "*"
 coverage = "*"
+ipython = "*"
 
 [requires]
 python_version = "3.9"

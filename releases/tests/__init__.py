@@ -9,18 +9,3 @@ from .recently_submitted_view_test import RecentlySubmittedViewTest
 from .upcoming_view_test import UpcomingViewTest
 from .add_to_wishlist_view_test import AddToWishlistViewTest
 from .wishlist_view_test import WishlistViewTest
-
-
-__all__ = [
-	BaseClientTest,
-	get_view_context,
-	UpdateMarketingInfosTest,
-	AllReleasesViewTest,
-	CreateReleaseTest,
-	EditReleaseViewTest,
-	MyReleasesViewTest,
-	RecentlySubmittedViewTest,
-	UpcomingViewTest,
-	AddToWishlistViewTest,
-	WishlistViewTest
-]
