@@ -36,4 +36,4 @@ class SetAsMainLabelView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessage
 
         messages.success(request, "You've successfully changed your main label.")
 
-        return HttpResponseRedirect(reverse_lazy('labels_list'))
+        return HttpResponseRedirect(reverse_lazy('users_label_list'))

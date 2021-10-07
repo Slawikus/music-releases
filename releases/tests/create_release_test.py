@@ -2,7 +2,7 @@ from django.urls import reverse_lazy, reverse
 from configuration.settings import BASE_DIR
 from .base_client_test import BaseClientTest
 from releases.models import Release
-from users.factories import LabelFactory
+from labels.factories import LabelFactory
 
 
 

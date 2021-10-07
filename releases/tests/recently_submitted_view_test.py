@@ -2,7 +2,7 @@ from datetime import timedelta
 from django.urls import reverse_lazy
 from django.utils import timezone
 from releases.factories import ReleaseFactory
-from users.factories import  LabelFactory
+from labels.factories import LabelFactory
 from releases import views
 from . import BaseClientTest
 from .get_view_context import get_view_context

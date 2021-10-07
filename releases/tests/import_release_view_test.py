@@ -3,7 +3,7 @@ from users.factories import UserWithProfileFactory
 from django.urls import reverse
 from configuration.settings import BASE_DIR
 from releases.models import Release
-from users.factories import LabelFactory
+from labels.factories import LabelFactory
 
 
 class ImportReleasesViewTest(TestCase):

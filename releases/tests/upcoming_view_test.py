@@ -1,7 +1,7 @@
 from django.urls import reverse_lazy, reverse
 from django.utils import timezone
 from releases.factories import ReleaseFactory
-from users.factories import LabelFactory
+from labels.factories import LabelFactory
 from . import BaseClientTest
 
 

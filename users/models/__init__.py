@@ -1,5 +1,5 @@
 from .invitation import Invitation
-from .label import Label
+from labels.models import Label
 from .profile import Profile
 from .profile_currency import ProfileCurrency
 from .user import User

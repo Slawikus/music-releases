@@ -1,7 +1,8 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.hashers import make_password
 from releases.factories import ReleaseFactory
-from users.factories import UserWithProfileFactory, LabelFactory
+from users.factories import UserWithProfileFactory
+from labels.factories import LabelFactory
 
 DEFAULT_EMAIL = 'admin@gmail.com'
 DEFAULT_PASSWORD = 'admin'

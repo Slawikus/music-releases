@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
     path('users/', include('django.contrib.auth.urls')),
+    path('labels/', include('labels.urls')),
     path('releases/', include('releases.urls')),
     path('band-submissions/', include('band_submissions.urls')),
     path('public_tradelist/', include('public_tradelist.urls')),
