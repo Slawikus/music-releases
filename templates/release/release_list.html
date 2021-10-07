@@ -54,13 +54,16 @@
             </form>
           {% endif %}
           {% if request.path == my_releases %}
-            <a href="{% url 'edit_release' release.pk %}" class="btn btn-outline-primary mt-3">Edit</a>
+            <a href="{% url 'edit_release' release.pk %}" class="btn btn-outline-primary">Edit</a>
           {% else %}
             <a href="{% url 'postman:write' release.profile.user.email %}" class="btn btn-success">Contact label</a>
           {% endif %}
           {% if release.profile != user.profile %}
             <a href="{% url 'create_trade_request' release.profile.id %}" class="btn btn-primary">View tradelist</a>
           {% endif %}
+
+          <a href="{% url 'release_detail' release.id %}" class="btn btn-outline-success">Details</a>
+
 
         </div>
           {% if release.sample %}

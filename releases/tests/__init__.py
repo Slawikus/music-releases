@@ -11,4 +11,5 @@ from .import_release_view_test import ImportReleasesViewTest
 from .update_trades_info_view_test import UpdateTradesInfoViewTest
 from .update_wholesale_view_test import UpdateWholesaleInfoViewTest
 from .create_wholesale_price_view_test import CreateWholesalePriceViewTest
+from .release_detail_view_test import ReleaseDetailViewTest
 
