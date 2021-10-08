@@ -11,7 +11,7 @@ class ReleaseDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
 	def test_func(self):
 		release = self.get_object()
 		if not release.is_submitted:
-			if self.request.user.profile != self.get_object().profile:
+			if self.request.user.profile != release.profile:
 				return False
 
 		return True
