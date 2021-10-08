@@ -21,6 +21,8 @@ class SignUpView(FormView):
         if not invitation.is_active:
             return HttpResponse(self.request,
                                 "Sorry, your invitation link is already been used and not valid anymore")
+        if request.user.is_authenticated:
+            return HttpResponse(self.request, "You already have an account")
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
