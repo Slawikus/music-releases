@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Release detail{% endblock %}
+
+{% block content %}
+    <h1>Release detail</h1>
+    <div class="row">
+        <div class="col-4 p-2">
+            {% if release.cover_image.url %}
+                <img src="{{ release.cover_image.url }}" alt="" srcset="" class="img-thumbnail mb-5">
+            {% else %}
+                <h3><strong>No image yet</strong></h3>
+            {% endif %}
+
+            {% if release.sample.url %}
+                <audio controls="controls">
+                  <source src="{{ release.sample.url }}" type="audio/mpeg" />
+                </audio>
+            {% else %}
+                <h3><strong>no sample yet</strong></h3>
+            {% endif %}
+
+        </div>
+        <div class="col-4">
+            <h2><b>band name: {{ release.band_name }}</b></h2>
+            <h2><b>album title: {{ release.album_title }}</b></h2>
+            <h4><b>label: <a href="{% url 'label_detail' release.label.id %}">release.label</a></b></h4>
+
+            <p>base style: {{ release.base_style }}</p>
+            <p>format: {{ release.format }}</p>
+
+            <p>release date: {{ release.release_date }}</p>
+            <p>limited edition: {{ release.limited_edition|default_if_none:"-" }}</p>
+            <p>media format details: {{ release.media_format_details|default_if_none:"-" }}</p>
+
+        </div>
+        <div class="col-4">
+            <p>style: {{ release.marketinginfos.style }}</p>
+            <p>overview: {{ release.marketinginfos.release_overview }}</p>
+            <p>press feedback: {{ release.marketinginfos.press_feedback }}</p>
+            Links:
+            {% if release.marketinginfos.youtube_url %}
+                <a href="{{ release.marketinginfos.youtube_url }}">YouTube</a>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

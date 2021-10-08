@@ -14,6 +14,7 @@ from .update_trades_info_view import UpdateReleaseTradesInfoView
 from .update_wholesale_info_view import UpdateReleaseWholesaleInfoView
 from .add_to_wishlist_view import AddToWishlistView
 from .wishlist_view import WishlistView
+from .release_detail_view import ReleaseDetailView
 
 __all__ = [
     BaseRelease,

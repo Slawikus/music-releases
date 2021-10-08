@@ -13,3 +13,5 @@ from .update_wholesale_view_test import UpdateWholesaleInfoViewTest
 from .create_wholesale_price_view_test import CreateWholesalePriceViewTest
 from .add_to_wishlist_view_test import AddToWishlistViewTest
 from .wishlist_view_test import WishlistViewTest
+from .release_detail_view_test import ReleaseDetailViewTest
+
