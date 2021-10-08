@@ -9,5 +9,5 @@ __all__ = [
     ReleaseTradesInfo,
     ReleaseWholesaleInfo,
     ReleaseWholesalePrice,
-    MarketingInfos
+    MarketingInfos,
 ]

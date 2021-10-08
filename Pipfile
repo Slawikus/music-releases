@@ -26,6 +26,7 @@ django-widget-tweaks = "*"
 [dev-packages]
 ptpython = "*"
 coverage = "*"
+ipython = "*"
 
 [requires]
 python_version = "3.9"

@@ -47,12 +47,20 @@
         </div>
 
         <div class="col-2">
+
           {% if not release.is_submitted %}
             <form action="{% url 'release_submit' release.pk %}" method="post">
               {% csrf_token %}
               <button type="submit" class="btn btn-primary">Submit</button>
             </form>
           {% endif %}
+        {% if release.id not in wished_ids %}
+            <form action="{% url 'add_to_wishlist' release.pk %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-primary">add to wishlist</button>
+            </form>
+        {% endif %}
+
           {% if request.path == my_releases %}
             <a href="{% url 'edit_release' release.pk %}" class="btn btn-outline-primary mt-3">Edit</a>
           {% else %}
