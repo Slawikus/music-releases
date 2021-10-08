@@ -11,7 +11,7 @@ class DeleteLabelView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Label
     context_object_name = 'label'
     template_name = 'label/label_delete.html'
-    success_url = reverse_lazy('labels_list')
+    success_url = reverse_lazy('users_label_list')
 
     def test_func(self):
         label = self.get_object()
@@ -22,6 +22,6 @@ class DeleteLabelView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
         if label.is_main:
             messages.error(request, "Main label cannot be deleted.")
-            return HttpResponseRedirect(reverse_lazy('labels_list'))
+            return HttpResponseRedirect(reverse_lazy('users_label_list'))
 
         return super().post(request, *args, **kwargs)

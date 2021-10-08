@@ -1,7 +1,8 @@
 from django.test import TestCase, Client
-from users.factories import LabelFactory, UserWithProfileFactory
+from users.factories import UserWithProfileFactory
+from labels.factories import LabelFactory
 from django.urls import reverse
-from users.models import ProfileCurrency
+
 
 class UpdateLabelViewTest(TestCase):
 	def setUp(self):

@@ -2,7 +2,7 @@ from django.views.generic import UpdateView
 from django.urls import reverse_lazy
 from django.db import IntegrityError
 
-from users.forms import LabelForm
+from labels.forms import LabelForm
 from users.models import Label
 
 
@@ -11,7 +11,7 @@ class UpdateLabelView(UpdateView):
     context_object_name = 'label'
     template_name = 'label/label_update.html'
     form_class = LabelForm
-    success_url = reverse_lazy('labels_list')
+    success_url = reverse_lazy('users_label_list')
     def form_valid(self, form):
         try:
             return super().form_valid(form)

@@ -8,7 +8,7 @@
 
   {% if label.is_main %}
     <p>The main label cannot be deleted!</p>
-    <a class="btn btn-primary" href="{% url 'labels_list' %}">Back to labels</a>
+    <a class="btn btn-primary" href="{% url 'users_label_list' %}">Back to labels</a>
   {% else %}
     <form action="" method="post">
       {% csrf_token %}
@@ -22,7 +22,7 @@
         </ul>
       {% endif %}
 
-      <a class="btn btn-primary" href="{% url 'labels_list' %}">Cancel</a>
+      <a class="btn btn-primary" href="{% url 'users_label_list' %}">Cancel</a>
       <button class="btn btn-outline-danger" type="submit">Delete label</button>
     </form>
   {% endif %}

@@ -1,7 +1,8 @@
 from django.db.utils import IntegrityError
 from django.test import TestCase
 
-from users.factories import LabelFactory, ProfileFactory, UserWithProfileFactory
+from users.factories import ProfileFactory, UserWithProfileFactory
+from labels.factories import LabelFactory
 
 
 class LabelTest(TestCase):

@@ -3,7 +3,8 @@ from datetime import datetime
 import factory
 import pytz
 from factory.fuzzy import FuzzyDateTime
-from users.factories import LabelFactory, ProfileFactory
+from users.factories import ProfileFactory
+from labels.factories import LabelFactory
 from .models import Release, MarketingInfos
 from configuration.settings import BASE_DIR
 from releases.models.release import BASE_STYLE_CHOICES

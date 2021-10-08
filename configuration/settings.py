@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'band_submissions.apps.BandSubmissionConfig',
     'trades.apps.TradesConfig',
     'notifications.apps.NotificationsConfig',
-    'artists.apps.ArtistsConfig'
+    'artists.apps.ArtistsConfig',
+    'labels.apps.LabelsConfig'
 ]
 
 MIDDLEWARE = [

@@ -26,14 +26,6 @@ class UserWithProfileFactory(UserFactory):
     profile = factory.RelatedFactory(ProfileFactory, factory_related_name='user')
 
 
-class LabelFactory(factory.django.DjangoModelFactory):
-    profile = factory.SubFactory(ProfileFactory)
-    name = factory.Faker("name")
-
-    class Meta:
-        model = Label
-
-
 class ProfileCurrencyFactory(factory.django.DjangoModelFactory):
     profile = factory.SubFactory(ProfileFactory)
     currency = FuzzyChoice([currency.alpha_3 for currency in pycountry.currencies])

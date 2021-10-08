@@ -9,10 +9,10 @@
   </li>
   <li class="nav-item">
     <a class="nav-link
-      {% if request.resolver_match.view_name in "'labels_list','label_add','label_update','label_delete'" %}
+      {% if request.resolver_match.view_name in "'users_label_list','label_add','label_update','label_delete'" %}
         active
       {% endif %}"
-       href="{% url 'labels_list' %}">Labels</a>
+       href="{% url 'users_label_list' %}">Labels</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" href="{% url 'submissions' %}">Submissions</a>

@@ -1,7 +1,8 @@
 from django.test import Client
 from django.urls import reverse_lazy, reverse
 from releases.factories import ReleaseFactory
-from users.factories import ProfileFactory, LabelFactory
+from users.factories import ProfileFactory
+from labels.factories import LabelFactory
 from . import BaseClientTest
 
 

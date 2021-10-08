@@ -1,5 +1,6 @@
 from django.test import TestCase, Client
-from users.factories import UserWithProfileFactory, LabelFactory
+from users.factories import UserWithProfileFactory
+from labels.factories import LabelFactory
 from django.urls import reverse
 
 class SetAsMainLabelViewTest(TestCase):
