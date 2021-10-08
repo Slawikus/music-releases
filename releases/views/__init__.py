@@ -15,6 +15,7 @@ from .update_wholesale_info_view import UpdateReleaseWholesaleInfoView
 from .add_to_wishlist_view import AddToWishlistView
 from .wishlist_view import WishlistView
 from .release_detail_view import ReleaseDetailView
+from .search_release_view import SearchReleaseView
 
 __all__ = [
     BaseRelease,
@@ -31,5 +32,7 @@ __all__ = [
     UpcomingReleasesView,
     UpdateMarketingInfosView,
     AddToWishlistView,
-    WishlistView
+    WishlistView,
+    SearchReleaseView
+
 ]

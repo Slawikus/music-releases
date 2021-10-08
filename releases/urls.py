@@ -11,6 +11,7 @@ urlpatterns = [
     path("recently-submitted/", views.RecentlySubmittedView.as_view(), name='recently_submitted'),
     path("my-releases/", views.MyReleasesView.as_view(), name='my_releases'),
     path("wishlist/", views.WishlistView.as_view(), name='wishlist'),
+    path("search/", views.SearchReleaseView.as_view(), name='search'),
     path("<int:pk>/edit/", views.EditReleaseView.as_view(), name='edit_release'),
     path('<int:pk>/trades_info', views.UpdateReleaseTradesInfoView.as_view(), name='release_trades_info_edit'),
     path('<int:pk>/wholesale_info', views.UpdateReleaseWholesaleInfoView.as_view(), name='release_wholesale_info_edit'),

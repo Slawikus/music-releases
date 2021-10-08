@@ -8,6 +8,7 @@ from labels.factories import LabelFactory
 from .models import Release, MarketingInfos
 from configuration.settings import BASE_DIR
 from releases.models.release import BASE_STYLE_CHOICES
+from factory.fuzzy import FuzzyChoice
 
 
 class ReleaseFactory(factory.django.DjangoModelFactory):
@@ -23,7 +24,7 @@ class ReleaseFactory(factory.django.DjangoModelFactory):
     label = factory.SubFactory(
         LabelFactory, profile=factory.SelfAttribute('..profile')
     )
-    base_style = random.choices([i[0] for i in BASE_STYLE_CHOICES])
+    base_style = FuzzyChoice([i[0] for i in BASE_STYLE_CHOICES])
     cover_image = factory.django.ImageField(color=factory.Faker("color"))
     format = "CD"
     sample = f"{BASE_DIR}/releases/test_files/dummy.mp3"

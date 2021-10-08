@@ -1,6 +1,6 @@
 from django.db import models
 from django_countries.fields import CountryField
-from releases.managers import ReleaseManager
+from releases.managers import ReleaseManager, SubmittedReleaseManager
 from users.models import Profile, Label
 from django.core.validators import ValidationError, FileExtensionValidator
 from users.models import ProfileCurrency
@@ -112,6 +112,7 @@ class Release(models.Model):
     is_submitted = models.BooleanField(default=False)
 
     objects = ReleaseManager()
+    submitted = SubmittedReleaseManager()
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):

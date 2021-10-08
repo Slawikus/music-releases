@@ -14,4 +14,4 @@ from .create_wholesale_price_view_test import CreateWholesalePriceViewTest
 from .add_to_wishlist_view_test import AddToWishlistViewTest
 from .wishlist_view_test import WishlistViewTest
 from .release_detail_view_test import ReleaseDetailViewTest
-
+from .search_release_view_test import SearchReleaseViewTest
