@@ -3,6 +3,15 @@ from pathlib import Path
 import dj_database_url
 import pycountry
 
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
+sentry_sdk.init(
+    dsn="https://d466f1bd13eb424db11a39dc3509d953@o1033418.ingest.sentry.io/6000198",
+    integrations=[DjangoIntegration()],
+    traces_sample_rate=1.0
+)
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
