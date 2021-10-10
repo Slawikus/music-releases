@@ -32,3 +32,7 @@ urlpatterns = [
     path('messages/', include('postman.urls')),
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = 'error_handlers.views.handle404'
+handler403 = 'error_handlers.views.handle403'
+handler500 = 'error_handlers.views.handle500'
