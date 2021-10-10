@@ -55,7 +55,7 @@
             </form>
           {% endif %}
         {% if release.id not in wished_ids %}
-              <button type="button" release_id="{{ release.id }}" class="btn btn-primary wishlist">add to wishlist</button>
+              <button type="button" wishlist_add_url="{{ release.get_wishlist_addition_url }}" class="btn btn-primary wishlist">add to wishlist</button>
         {% endif %}
 
           {% if request.path == my_releases %}
@@ -88,14 +88,15 @@
 
         $(".wishlist").each(function(index) {
             $(this).on("click", function(){
-                let id = $(this).attr('release_id');
+                let url = $(this).attr('wishlist_add_url');
                 let button = $(this);
                 $.ajax({
-                    url: "/releases/" + id + "/add-to-wishlist",
+                    url: url,
                     method: "post",
                     data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
                     success: function (index) {
                         button.prop("disabled", true);
+                        button.text("added");
                     },
                     error: function () {
                         alert("Can't add to wishlist");

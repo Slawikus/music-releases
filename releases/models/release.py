@@ -1,14 +1,18 @@
+import json
+
 from django.db import models
 from django_countries.fields import CountryField
+from django.core.validators import ValidationError, FileExtensionValidator
+from django.urls import reverse
+
 from releases.managers import ReleaseManager, SubmittedReleaseManager
 from users.models import Profile, Label
-from django.core.validators import ValidationError, FileExtensionValidator
 from users.models import ProfileCurrency
 from .release_trades_info import ReleaseTradesInfo
 from .release_wholesale_info import ReleaseWholesaleInfo
 from .release_wholesale_price import ReleaseWholesalePrice
 from .marketing_infos import MarketingInfos
-import json
+
 from configuration.settings import BASE_DIR
 
 with open(f"{BASE_DIR}/music_genres.json", "r") as file:
@@ -135,6 +139,9 @@ class Release(models.Model):
         currency_choices = profile_currencies.exclude(id__in=release_currencies)
 
         return currency_choices
+
+    def get_wishlist_addition_url(self):
+        return reverse("add_to_wishlist", args=[self.id])
 
     def wholesale_prices_string(self):
         return ", ".join([f"{wholesale.price} ({wholesale.currency.currency})"
