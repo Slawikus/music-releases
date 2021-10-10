@@ -17,23 +17,23 @@
           <p>{{ form.non_field_errors }}</p>
         {% endif %}
 
-        <div class="mb-3">
+        <div class="mb-1">
           {% include 'common/_form_field.html' with field=form.main_label_name|attr:"autofocus" only %}
         </div>
 
-        <div class="mb-3">
+        <div class="mb-1">
           {% include 'common/_form_field.html' with field=form.country|attr:"class:form-select" only %}
         </div>
 
-        <div class="mb-3">
+        <div class="mb-1">
           {% include 'common/_form_field.html' with field=form.name only %}
         </div>
 
-        <div class="mb-3">
+        <div class="mb-1">
           {% include 'common/_form_field.html' with field=form.email|remove_attr:"autofocus" only %}
         </div>
 
-        <div class="mb-3">
+        <div class="mb-1">
           <label for="{{ form.password1.auto_id }}" class="form-label">
             {{ form.password1.label }}
           </label>
@@ -50,7 +50,7 @@
           {% endif %}
         </div>
 
-        <div class="mb-3">
+        <div class="mb-1">
           <label for="{{ form.password2.auto_id }}" class="form-label">
             {{ form.password2.label }}
           </label>
