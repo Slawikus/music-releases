@@ -5,32 +5,34 @@
 {% block content %}
 
 
-  {% url 'my_releases' as my_releases %}
-  {% if request.path == my_releases %}
-      <a class="btn btn-outline-success" href="{% url 'import_releases' %}">Import</a>
-  {% endif %}
   <form action="{% url 'playlist_create' %}" method="POST" id="playlist-create-form">
       {% csrf_token %}
-      <input type="hidden" id="playlist-data" name="data">
+      <input type="hidden" id="release_ids" name="release_ids">
       <input type="text" class="form-control" name="playlist_name" placeholder="playlist name">
     <button class="mt-1 ml-3 mb-1 btn btn-outline-danger" type="button" id="create-playlist">CREATE</button>
   </form>
 
+
   <div class="row">
     <div class="col-6"><h3>My releases</h3></div>
-    <div class="col-6"><h3>Playlist</h3></div>
+    <div class="col-6">
+        <h3>Playlist</h3><br>
+        <i>You can drug release up and down</i>
+    </div>
   </div>
+
 
   <div class="row">
 
-    <div class="col-6" id="first-main-block">
-
-
+    <div class="col-6" id="my-releases-block">
       {% for release in releases %}
-
-        <li class="p-2 shadow-4 rounded-3 mt-1 release-block-{{ release.id }}" relid="{{ release.id }}" in_playlist="false" style="background-color: #283046">
+        <li class="p-2 shadow-4 rounded-3 mt-1 release-block-{{ release.id }}"
+            release_id="{{ release.id }}"
+            in_playlist="false"
+            style="background-color: #283046">
           <div class="row">
 
+{# release info #}
             <div class="col-5">
               <p>{{ release.band_name }} ({{ release.country }})</p>
               <p>{{ release.album_title }} - {{ release.format }} | {{ release.divide_media_format }}</p>
@@ -59,7 +61,7 @@
 
             </div>
             <div class="col-2">
-                <button class="btn btn-primary add_to_playlist" release_id="{{ release.id }}">
+                <button class="btn btn-primary add-to-playlist" release_id="{{ release.id }}">
                     add
                 </button>
             </div>
@@ -75,8 +77,7 @@
     </div>
 
     <div class="col-6">
-        <ul id="second-main-block" class="sortable"></ul>
-
+        <ul id="playlist-block"></ul>
     </div>
 
   </div>
@@ -85,46 +86,47 @@
 {% endblock content %}
 
 {% block extra_javascript %}
+{#  to make releases in playlist side druggable I use jquery-ui js and css  #}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <script>
-        $( function() {
-            $(".sortable").sortable();
-          } );
+        $(function() {
+            $("#playlist-block").sortable();
+        });
     </script>
 
     <script>
+
+        let my_releases_block = $("#my-releases-block");
+        let playlist_block = $("#playlist-block");
         
-        let buttons = $(".add_to_playlist");
+        let buttons = $(".add-to-playlist");
         buttons.each(function (index) {
 
             let button = this;
 
-            $(this).on("click", function () {
+            $(button).on("click", function () {
 
                 let release_id = button.getAttribute("release_id");
-
-                let first_main_block = $("#first-main-block");
-                let second_main_block = $("#second-main-block");
-
-                let block = $(".release-block-" + release_id);
-                var in_playlist = block.attr("in_playlist");
+                let release_block = $(".release-block-" + release_id);
+                let in_playlist = release_block.attr("in_playlist");
 
                 if (in_playlist === "false") {
-                    second_main_block.append(block);
-                    first_main_block.remove(block);
+                    playlist_block.append(release_block);
+                    my_releases_block.remove(release_block);
 
                     button.innerText = "cancel";
 
-                    block.attr("in_playlist", "true");
+                    release_block.attr("in_playlist", "true");
                 }
 
                 else {
-                    second_main_block.remove(block);
-                    first_main_block.prepend(block);
+                    playlist_block.remove(release_block);
+                    my_releases_block.prepend(release_block);
 
                     button.innerText = "add";
 
-                    block.attr("in_playlist", "false");
+                    release_block.attr("in_playlist", "false");
                 }
 
 
@@ -133,20 +135,19 @@
 
         let create_button = $("#create-playlist");
         let form = $("#playlist-create-form");
-        let data_unput = $("#playlist-data");
+        let data_unput = $("#release_ids");
 
         create_button.on("click", function () {
-            let data = {};
-            let queue = 1;
-            let second_main_block = $("#second-main-block");
-            second_main_block.children().each(function () {
-                data[queue] = this.getAttribute("relid");
-                queue++;
+            let release_ids = [];
+
+            playlist_block.children().each(function () {
+                let release_id = this.getAttribute("release_id");
+                release_ids.push(parseInt(release_id));
             })
 
+            let data = {"all": release_ids};
             data_unput.val(JSON.stringify(data));
             form.submit();
-
         })
         
     </script>

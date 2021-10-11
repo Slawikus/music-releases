@@ -1,6 +1,7 @@
 from django.views.generic import ListView
 from playlists.models import Playlist
 from releases.models import Release
+from django.shortcuts import get_object_or_404
 
 
 class ShowPlaylistView(ListView):
@@ -10,8 +11,8 @@ class ShowPlaylistView(ListView):
 
 	def get_queryset(self):
 		playlist = Playlist.objects.get(pk=self.kwargs['pk'])
-		items = playlist.items.all().order_by("order")
-		release_ids = items.values_list("release", flat=True)
-		releases = Release.objects.filter(id__in=release_ids)
+		releases = []
+		for release_id in playlist.release_ids:
+			releases.append(get_object_or_404(Release, pk=release_id))
 
 		return releases

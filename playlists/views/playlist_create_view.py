@@ -8,7 +8,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 from releases.models import Release
-from playlists.models import Playlist, PlaylistItem
+from playlists.models import Playlist
 
 
 
@@ -19,20 +19,13 @@ class PlaylistCreateView(LoginRequiredMixin, View):
 
 	def post(self, request):
 		post_data = request.POST
-		playlist = Playlist.objects.create(
+		release_ids = json.loads(post_data['release_ids'])["all"]
+
+		Playlist.objects.create(
 			profile=request.user.profile,
-			name=post_data['playlist_name']
+			name=post_data['playlist_name'],
+			release_ids=release_ids
 		)
 
-		data = json.loads(post_data['data'])
-		for queue, release_id in data.items():
-
-			release = get_object_or_404(Release, id=release_id)
-
-			PlaylistItem.objects.create(
-				playlist=playlist,
-				order=queue,
-				release=release
-			)
 
 		return HttpResponseRedirect(reverse("playlist_list"))
