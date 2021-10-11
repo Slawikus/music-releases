@@ -20,3 +20,4 @@ media/
 /drop_db.sh
 /refactor_files.py
 /staticfiles
+/htmlcov/
