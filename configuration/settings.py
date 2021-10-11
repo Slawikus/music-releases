@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'trades.apps.TradesConfig',
     'notifications.apps.NotificationsConfig',
     'artists.apps.ArtistsConfig',
-    'labels.apps.LabelsConfig'
+    'labels.apps.LabelsConfig',
+    'playlists.apps.PlaylistsConfig'
 ]
 
 MIDDLEWARE = [

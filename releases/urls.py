@@ -19,5 +19,5 @@ urlpatterns = [
     path("import-releases/", views.ImportReleasesView.as_view(), name="import_releases"),
     path('<int:pk>/wholesale_price_delete', views.DeleteWholesalePriceView.as_view(), name='wholesale_price_delete'),
     path('<int:pk>/marketing_infos', views.UpdateMarketingInfosView.as_view(), name='marketing_infos_edit'),
-    path('<int:pk>/detail', views.ReleaseDetailView.as_view(), name='release_detail')
+    path('<int:pk>/detail', views.ReleaseDetailView.as_view(), name='release_detail'),
 ]

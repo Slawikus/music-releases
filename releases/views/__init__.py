@@ -17,6 +17,7 @@ from .wishlist_view import WishlistView
 from .release_detail_view import ReleaseDetailView
 from .search_release_view import SearchReleaseView
 
+
 __all__ = [
     BaseRelease,
     SubmitReleaseView,
@@ -34,5 +35,4 @@ __all__ = [
     AddToWishlistView,
     WishlistView,
     SearchReleaseView
-
 ]
