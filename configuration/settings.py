@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
-DEBUG = os.getenv('DEBUG_MODE') != 'True'
+DEBUG = os.getenv('DEBUG_MODE') == 'True'
 
 # TODO: change later for a real domain
 ALLOWED_HOSTS = ['*']
@@ -43,8 +43,7 @@ INSTALLED_APPS = [
     'trades.apps.TradesConfig',
     'notifications.apps.NotificationsConfig',
     'artists.apps.ArtistsConfig',
-    'labels.apps.LabelsConfig',
-    'error_handlers.apps.ErrorHandlersConfig'
+    'labels.apps.LabelsConfig'
 ]
 
 MIDDLEWARE = [
