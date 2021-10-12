@@ -4,7 +4,6 @@
 
 {% block content %}
 
-
   {% url 'my_releases' as my_releases %}
   {% if request.path == my_releases %}
       <a class="btn btn-outline-success" href="{% url 'import_releases' %}">Import</a>
@@ -56,10 +55,7 @@
             </form>
           {% endif %}
         {% if release.id not in wished_ids %}
-            <form action="{% url 'add_to_wishlist' release.pk %}" method="post">
-              {% csrf_token %}
-              <button type="submit" class="btn btn-primary">add to wishlist</button>
-            </form>
+              <button type="button" wishlist_add_url="{{ release.get_wishlist_addition_url }}" class="btn btn-primary wishlist">add to wishlist</button>
         {% endif %}
 
           {% if request.path == my_releases %}
@@ -84,5 +80,30 @@
     </div>
     </div>
   {% endfor %}
-  </div>
+
 {% endblock content %}
+
+{% block extra_javascript %}
+    <script>
+
+        $(".wishlist").each(function(index) {
+            $(this).on("click", function(){
+                let url = $(this).attr('wishlist_add_url');
+                let button = $(this);
+                $.ajax({
+                    url: url,
+                    method: "post",
+                    data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+                    success: function (index) {
+                        button.prop("disabled", true);
+                        button.text("added");
+                    },
+                    error: function () {
+                        alert("Can't add to wishlist");
+                    }
+
+                })
+            });
+        });
+    </script>
+{% endblock %}
