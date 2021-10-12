@@ -20,7 +20,10 @@
           <i>{{ label.releases.count }} releases</i>
         </div>
         <div class="col-6">
-            {{ label.description|truncatechars:100 }}
+            {% if label.description %}
+               {{ label.description|truncatechars:100 }}
+            {% endif %}
+
         </div>
       </div>
     </div>
