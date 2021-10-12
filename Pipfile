@@ -22,6 +22,7 @@ phonenumbers = "*"
 django-phonenumber-field = "*"
 django-postman = "*"
 django-widget-tweaks = "*"
+sentry-sdk = "*"
 
 [dev-packages]
 ptpython = "*"
