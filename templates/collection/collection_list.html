@@ -4,7 +4,7 @@
 
 {% block content %}
 
-  {% for collection in release_collections %}
+  {% for collection in collections %}
       <a href="{% url 'collection_show' collection.id %}">
       <div class="p-2 shadow-4 rounded-3 mt-1" style="background-color: #283046">
         <div class="row">

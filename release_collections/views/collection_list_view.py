@@ -5,6 +5,6 @@ from release_collections.models import ReleaseCollection
 
 
 class CollectionListView(LoginRequiredMixin, ListView):
-	context_object_name = "release_collections"
+	context_object_name = "collections"
 	model = ReleaseCollection
 	template_name = "collection/collection_list.html"
