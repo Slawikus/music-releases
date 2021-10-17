@@ -26,5 +26,4 @@ class PlaylistCreateView(LoginRequiredMixin, View):
 			release_ids=release_ids
 		)
 
-
 		return HttpResponseRedirect(reverse("playlist_list"))

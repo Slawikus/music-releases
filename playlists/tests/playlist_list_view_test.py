@@ -23,4 +23,4 @@ class PlaylistListViewTest(TestCase):
 		client = Client()
 		response = client.get(reverse("playlist_list"))
 
-		self.assertEqual(response.status_code, 302)
+		self.assertRedirects(response, expected_url=f"{reverse('login')}?next={reverse('playlist_list')}")
