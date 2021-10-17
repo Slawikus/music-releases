@@ -1,3 +1,0 @@
-from .show_playlist_view_test import ShowPlaylistViewTest
-from .playlist_list_view_test import PlaylistListViewTest
-from .playlist_create_view_test import PlaylistCreateViewTest

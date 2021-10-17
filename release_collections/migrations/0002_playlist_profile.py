@@ -10,13 +10,13 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('users', '0001_initial'),
-        ('playlists', '0001_initial'),
+        ('release_collections', '0001_initial'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='playlist',
+            model_name='collection',
             name='profile',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='playlists', to='users.profile'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='release_collections', to='users.profile'),
         ),
     ]

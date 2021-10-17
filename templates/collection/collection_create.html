@@ -5,18 +5,18 @@
 {% block content %}
 
 
-  <form action="{% url 'playlist_create' %}" method="POST" id="playlist-create-form">
+  <form action="{% url 'collection_create' %}" method="POST" id="collection-create-form">
       {% csrf_token %}
       <input type="hidden" id="release_ids" name="release_ids">
-      <input type="text" class="form-control" name="playlist_name" placeholder="playlist name">
-    <button class="mt-1 ml-3 mb-1 btn btn-outline-danger" type="button" id="create-playlist">CREATE</button>
+      <input type="text" class="form-control" name="collection_name" placeholder="collection name">
+    <button class="mt-1 ml-3 mb-1 btn btn-outline-danger" type="button" id="create-collection">CREATE</button>
   </form>
 
 
   <div class="row">
     <div class="col-6"><h3>My releases</h3></div>
     <div class="col-6">
-        <h3>Playlist</h3><br>
+        <h3>collection</h3><br>
         <i>You can drug release up and down</i>
     </div>
   </div>
@@ -28,7 +28,7 @@
       {% for release in releases %}
         <li class="p-2 shadow-4 rounded-3 mt-1 release-block-{{ release.id }}"
             release_id="{{ release.id }}"
-            in_playlist="false"
+            in_collection="false"
             style="background-color: #283046">
           <div class="row">
 
@@ -61,7 +61,7 @@
 
             </div>
             <div class="col-2">
-                <button class="btn btn-primary add-to-playlist" release_id="{{ release.id }}">
+                <button class="btn btn-primary add-to-collection" release_id="{{ release.id }}">
                     add
                 </button>
             </div>
@@ -77,7 +77,7 @@
     </div>
 
     <div class="col-6">
-        <ul id="playlist-block"></ul>
+        <ul id="collection-block"></ul>
     </div>
 
   </div>
@@ -86,21 +86,21 @@
 {% endblock content %}
 
 {% block extra_javascript %}
-{#  to make releases in playlist side druggable I use jquery-ui js and css  #}
+{#  to make releases in collection side druggable I use jquery-ui js and css  #}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script>
         $(function() {
-            $("#playlist-block").sortable();
+            $("#collection-block").sortable();
         });
     </script>
 
     <script>
 
         let my_releases_block = $("#my-releases-block");
-        let playlist_block = $("#playlist-block");
+        let collection_block = $("#collection-block");
         
-        let buttons = $(".add-to-playlist");
+        let buttons = $(".add-to-collection");
         buttons.each(function (index) {
 
             let button = this;
@@ -109,38 +109,38 @@
 
                 let release_id = button.getAttribute("release_id");
                 let release_block = $(".release-block-" + release_id);
-                let in_playlist = release_block.attr("in_playlist");
+                let in_collection = release_block.attr("in_collection");
 
-                if (in_playlist === "false") {
-                    playlist_block.append(release_block);
+                if (in_collection === "false") {
+                    collection_block.append(release_block);
                     my_releases_block.remove(release_block);
 
                     button.innerText = "cancel";
 
-                    release_block.attr("in_playlist", "true");
+                    release_block.attr("in_collection", "true");
                 }
 
                 else {
-                    playlist_block.remove(release_block);
+                    collection_block.remove(release_block);
                     my_releases_block.prepend(release_block);
 
                     button.innerText = "add";
 
-                    release_block.attr("in_playlist", "false");
+                    release_block.attr("in_collection", "false");
                 }
 
 
             })
         });
 
-        let create_button = $("#create-playlist");
-        let form = $("#playlist-create-form");
+        let create_button = $("#create-collection");
+        let form = $("#collection-create-form");
         let data_unput = $("#release_ids");
 
         create_button.on("click", function () {
             let release_ids = [];
 
-            playlist_block.children().each(function () {
+            collection_block.children().each(function () {
                 let release_id = this.getAttribute("release_id");
                 release_ids.push(parseInt(release_id));
             })

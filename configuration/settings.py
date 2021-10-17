@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'notifications.apps.NotificationsConfig',
     'artists.apps.ArtistsConfig',
     'labels.apps.LabelsConfig',
-    'playlists.apps.PlaylistsConfig'
+    'release_collections.apps.ReleaseCollectionsConfig'
 ]
 
 MIDDLEWARE = [

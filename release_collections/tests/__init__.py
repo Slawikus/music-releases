@@ -1,0 +1,3 @@
+from .show_collection_view_test import ShowCollectionViewTest
+from .collection_list_view_test import CollectionListViewTest
+from .collection_create_view_test import CollectionCreateViewTest
