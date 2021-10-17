@@ -13,7 +13,7 @@ from release_collections.models import ReleaseCollection
 
 class CollectionCreateView(LoginRequiredMixin, View):
 	def get(self, request):
-		releases = Release.submitted.filter(profile=request.user.profile)
+		releases = Release.submitted.all()
 		return render(request, "collection/collection_create.html", {"releases": releases})
 
 	def post(self, request):
