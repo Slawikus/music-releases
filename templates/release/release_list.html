@@ -54,7 +54,7 @@
               <button type="submit" class="btn btn-primary">Submit</button>
             </form>
           {% endif %}
-        {% if release.id not in wished_ids %}
+        {% if release.id not in wished_ids and release not in user.profile.releases %}
               <button type="button" wishlist_add_url="{{ release.get_wishlist_addition_url }}" class="btn btn-primary wishlist">add to wishlist</button>
         {% endif %}
 
