@@ -26,6 +26,7 @@
         <a class="nav-link nav-link-style"><i class="ficon" data-feather="sun"></i></a>
       </li>
       {#  Вынести уведомления в отдельный шаблон#}
+      {% if user.is_authenticated %}
       <li class="nav-item dropdown dropdown-notification me-25">
         <a class="nav-link" href="#" data-bs-toggle="dropdown">
           <i class="ficon" data-feather="bell"></i>
@@ -38,6 +39,9 @@
               <div class="badge rounded-pill badge-light-primary">{{ user|notifs_amount }} New</div>
             </div>
           </li>
+
+
+
           <li class="scrollable-container media-list">
             {% for notification in user|notifs_list %}
             <a class="d-flex" href="{% url 'notif_redirect' notification.pk %}">
@@ -61,6 +65,7 @@
 
         </ul>
       </li>
+      {% endif %}
       <li class="nav-item dropdown dropdown-user">
         <a class="nav-link dropdown-toggle dropdown-user-link" id="dropdown-user" href="#" data-bs-toggle="dropdown"
            aria-haspopup="true" aria-expanded="false">
