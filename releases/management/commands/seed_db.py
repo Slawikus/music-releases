@@ -3,6 +3,9 @@ from django.contrib.auth.hashers import make_password
 from releases.factories import ReleaseFactory
 from users.factories import UserWithProfileFactory
 from labels.factories import LabelFactory
+from band_submissions.factories import BandSubmissionFactory
+from public_tradelist.factories import TradeRequestFactory
+
 
 DEFAULT_EMAIL = 'admin@gmail.com'
 DEFAULT_PASSWORD = 'admin'
@@ -20,3 +23,7 @@ class Command(BaseCommand):
 
 		ReleaseFactory.create_batch(3, is_submitted=True, profile=user.profile, label=label)
 		ReleaseFactory.create_batch(2, profile=user.profile, label=label)
+
+		BandSubmissionFactory.create_batch(3)
+		TradeRequestFactory.create_batch(3)
+		LabelFactory.create_batch(3)
