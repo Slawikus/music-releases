@@ -4,6 +4,7 @@ from django.db import models
 from django_countries.fields import CountryField
 from django.core.validators import ValidationError, FileExtensionValidator
 from django.urls import reverse
+from django.utils import timezone
 
 from releases.managers import ReleaseManager, SubmittedReleaseManager
 from users.models import Profile, Label
@@ -146,3 +147,11 @@ class Release(models.Model):
     def wholesale_prices_string(self):
         return ", ".join([f"{wholesale.price} ({wholesale.currency.currency})"
                    for wholesale in self.wholesale_prices.all()])
+
+    def get_date(self):
+        since_timedelta = self.submitted_at
+        months_since = (timezone.now() - since_timedelta).days // 30
+        if months_since > 6:
+            return self.submitted_at.year
+        else:
+            return self.submitted_at
