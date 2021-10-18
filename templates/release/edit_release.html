@@ -9,6 +9,7 @@
   <h6 class="mb-4 mt-3">Edit release</h6>
   <div class="row mt-2 mb-2">
     <div class="col-4">
+      <h3>{{ percent }}%</h3>
       <form method="post" autocomplete="off" enctype='multipart/form-data'>
         {% csrf_token %}
         {{ form|crispy }}
