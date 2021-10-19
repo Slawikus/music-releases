@@ -19,7 +19,10 @@
           {% endif %}
         </div>
         <div class="col-1">
-            <button class="btn btn-outline-warning audio-btn" audio="{{ release.sample.url }}" id="play-{{ release_id }}">Play</button>
+            {% if release.sample %}
+                <button class="btn btn-outline-warning audio-btn" audio="{{ release.sample.url }}" id="play-{{ release_id }}">Play</button>
+            {% endif %}
+
         </div>
         <div class="col-4">
           <p>{{ release.band_name }} ({{ release.country }})</p>
