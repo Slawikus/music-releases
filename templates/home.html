@@ -15,19 +15,112 @@
     <div class="row">
       <div class="col-12">
         {#        Потом картиночку заменим#}
-        <div class="card knowledge-base-bg text-center"
+        <div class="card knowledge-base-bg"
              style="background-image: url('{% static 'app-assets/images/banner/banner.png' %}')">
-          <div class="card-body">
-            <h2 class="text-primary">Music releases</h2>
-            <p class="card-text mb-2">
-              <span>This is an app for music releases.</span>
-            </p>
-            {% if user.is_authenticated %}
-              <a href="{% url 'release_add' %}" class="btn btn-outline-primary waves-effect">New Release</a>
-            {% else %}
-              <a href="{% url 'login' %}" class="btn btn-outline-primary waves-effect">Log In</a>
-            {% endif %}
+          <div class="row">
+              <div class="card-body col-4">
+                <h1 style="font-size: 3em">Music releases</h1>
+                <p class="card-text mb-2">
+                  <span>This is an app for music releases.</span>
+                </p>
+                {% if user.is_authenticated %}
+                  <a href="{% url 'release_add' %}" class="btn btn-outline-primary waves-effect">New Release</a>
+                {% else %}
+                  <a href="{% url 'login' %}" class="btn btn-outline-primary waves-effect">Log In</a>
+                {% endif %}
+              </div>
+              <div class="card-body col-8"
+                   style="background-image: url('{% static 'app-assets/images/banner/upgrade.png' %}'); background-repeat: no-repeat">
+
+              </div>
           </div>
+
+        </div>
+
+        <div class="card knowledge-base-bg">
+          <div class="row text-center">
+            <div class="col-2"></div>
+            <div class="col-2 p-2">
+                <h3>{{ releases }} Releases</h3>
+            </div>
+            <div class="col-4 p-2">
+                <h3>{{ labels }} labels</h3>
+            </div>
+            <div class="col-2 p-2">
+                <h3>{{ trades }} trades</h3>
+            </div>
+          </div>
+          <div class="col-2"></div>
+
+        </div>
+
+        <div class="card knowledge-base-bg">
+          <div class="row">
+              <div class="col-6">
+                <div class="card">
+                    {% for release in recent_releases %}
+                        <div class="p-2 shadow-4 rounded-3" style="background-color: #242a4b">
+                          <div class="row">
+                            <div class="col-2">
+                              {% if release.cover_image %}
+                                <img src="{{ release.cover_image.url }}" alt="" srcset="" class="img-thumbnail">
+                              {% endif %}
+                            </div>
+                            <div class="col-5">
+                              <p>{{ release.band_name }} ({{ release.country }})</p>
+                              <p>{{ release.album_title }} - {{ release.format }} | {{ release.divide_media_format }}</p>
+                                <a href="{% url 'release_detail' release.id %}" class="btn btn-primary">details</a>
+                            </div>
+                            <div class="col-5">
+                              <p>{{ release.base_style }}</p>
+                              <p>{{ release.submitted_at|date:"d.m.Y" }}
+                                  {% if release.label %}
+                                    <a href="{% url 'label_detail' release.label.pk %}">
+                                        {{ release.label.name }}({{ release.label.profile.country }})
+                                    </a>
+                                  {% endif %}
+
+                            </div>
+
+                        </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
+              </div>
+              <div class="col-6 p-3">
+                  <h1>Most recent releases</h1>
+                  Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney Colle
+              </div>
+          </div>
+
+        </div>
+        <div class="card knowledge-base-bg">
+            <div class="row">
+                <div class="col-6 p-3">
+                    <h1>Labels with the most amount of releases</h1>
+                     sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", com
+                </div>
+                <div class="col-6">
+                  {% for label in biggest_labels %}
+                    <a href="{% url 'label_detail' label.id %}">
+                    <div class="p-2 shadow-4 rounded-3 mt-1" style="background-color: #242a4b">
+                      <div class="row">
+                        <div class="col-3">
+                          {% if label.logo %}
+                            <img src="{{ label.logo.url }}" alt="" srcset="" class="img-thumbnail">
+                          {% endif %}
+                        </div>
+                        <div class="col-9">
+                          <h3>{{ label.name }}</h3>
+                          <i>{{ label.releases.count }} releases</i>
+                        </div>
+                      </div>
+                    </div>
+                    </a>
+                  {% endfor %}
+                </div>
+            </div>
         </div>
       </div>
     </div>
