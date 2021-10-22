@@ -7,7 +7,6 @@ YES_NO_CHOICES = (
         (False, 'No')
     )
 
-
 class ReleaseTradesInfo(models.Model):
     release = models.OneToOneField("Release", on_delete=models.CASCADE)
     available_for_trade = models.BooleanField(default=False, choices=YES_NO_CHOICES)

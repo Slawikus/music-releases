@@ -19,14 +19,15 @@ def create_trade_request(form, trade_item_model, profile):
             raise ValidationError("Do not try to use wrong release")
 
         release = Release.objects.get(id=release_id)
+        prices_with_currencies = " ".join([f"{currency.currency} {currency.price}" for currency in release.wholesale_prices.all()])
+
         trade_item_model.objects.create(trade_request=trade_request,
                                         release=release,
                                         quantity=quantity,
                                         band_name=release.band_name,
                                         release_date=release.release_date,
-                                        trade_points=release.releasetradeinfo.trade_points,
-                                        currency=release.releasewholesaleinfo.currency.currency,
-                                        price=release
+                                        trade_points=release.releasetradesinfo.trade_points,
+                                        prices_with_currencies=prices_with_currencies,
                                         )
 
 
@@ -45,7 +46,6 @@ class TradeRequestItem(models.Model):
         max_digits=3,
     )
 
-    currency = models.CharField(max_length=255)
-    price = models.DecimalField(decimal_places=2, max_digits=10)
+    prices_with_currencies = models.CharField(max_length=255)
 
     quantity = models.PositiveIntegerField()
