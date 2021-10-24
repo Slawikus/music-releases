@@ -5,6 +5,7 @@ from users.factories import UserWithProfileFactory
 from labels.factories import LabelFactory
 from band_submissions.factories import BandSubmissionFactory
 from public_tradelist.factories import TradeRequestFactory
+from random import randint
 
 
 DEFAULT_EMAIL = 'admin@gmail.com'
@@ -19,7 +20,13 @@ class Command(BaseCommand):
 			is_superuser=True
 		)
 
-		label = LabelFactory.create(name='Metal Blade Records', profile=user.profile, is_main=True)
+		users_label = LabelFactory.create_batch(profile=user.profile)
 
-		ReleaseFactory.create_batch(3, is_submitted=True, profile=user.profile, label=label)
-		ReleaseFactory.create_batch(2, profile=user.profile, label=label)
+		labels = LabelFactory.create_batch(200)
+		for label in labels:
+			ReleaseFactory.create_batch(randint(2, 50), label=label)
+			TradeRequestFactory.create_batch(randint(3, 10), profile=label.profile)
+
+		BandSubmissionFactory.create_batch(50)
+		BandSubmissionFactory.create_batch(50, profile=user.profile)
+		TradeRequestFactory.create_batch(10, profile=user.profile)
