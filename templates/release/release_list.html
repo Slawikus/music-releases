@@ -20,7 +20,7 @@
         </div>
         <div class="col-1">
             {% if release.sample %}
-                <button class="btn btn-outline-warning audio-btn" audio="{{ release.sample.url }}" id="play-{{ release_id }}">Play</button>
+                <button class="btn btn-outline-warning audio-btn" data-sample-url="{{ release.sample.url }}">Play</button>
             {% endif %}
 
         </div>
@@ -115,11 +115,18 @@
 
         $(".audio-btn").each(function (index) {
                 let button = $(this);
-                let audioUrl = button.attr("audio");
+                let audioUrl = button.data("sample-url");
                 button.on("click", function () {
-                    player.pause();
-                    player.innerHTML = "<source src=" + audioUrl + " type='audio/mpeg'/>"
-                    player.play();
+                    if (button.text() === "Play") {
+                        player.pause();
+                        player.innerHTML = "<source src=" + audioUrl + " type='audio/mpeg'/>"
+                        player.play();
+                        button.text("Stop");
+                    }
+                    else {
+                        player.pause();
+                        button.text("Play");
+                    }
                 })
             }
         )
