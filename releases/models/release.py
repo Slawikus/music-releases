@@ -149,10 +149,10 @@ class Release(models.Model):
                    for wholesale in self.wholesale_prices.all()])
 
     def get_date(self):
-
-        since_timedelta = self.release_date
-        months_since = (timezone.now() - since_timedelta).days // 30
+        if self.release_date is None:
+            return ""
+        months_since = (timezone.now().date() - self.release_date).days // 30
         if months_since > 6:
-            return self.submitted_at.year
+            return self.release_date.year
         else:
-            return self.submitted_at
+            return self.release_date
