@@ -1,21 +1,21 @@
 from django.test import Client
 from django.urls import reverse_lazy, reverse
 from configuration.settings import BASE_DIR
-from releases.factories import ReleaseFactory
+from releases.factories import ReleaseFactory, SubmittedReleaseFactory
 from .base_client_test import BaseClientTest
 from users.factories import UserWithProfileFactory
 
 
 class EditReleaseViewTest(BaseClientTest):
     def test_it_shows_release_edit_page(self):
-        release = ReleaseFactory.create(is_submitted=True, profile=self.user.profile)
+        release = SubmittedReleaseFactory.create(profile=self.user.profile)
 
         response = self.client.get(reverse("edit_release", args=[release.id]))
 
         self.assertEqual(response.status_code, 200)
 
     def test_it_redirects_unlogged_user(self):
-        release = ReleaseFactory.create(is_submitted=True)
+        release = SubmittedReleaseFactory()
 
         anonymous = Client()
         response = anonymous.get(reverse("edit_release", args=[release.id]))
@@ -26,7 +26,7 @@ class EditReleaseViewTest(BaseClientTest):
         )
 
     def test_it_forbids_editing_not_own_releases(self):
-        release = ReleaseFactory.create(is_submitted=True)
+        release = SubmittedReleaseFactory()
 
         response = self.client.get(reverse("edit_release", args=[release.id]))
 

@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth.hashers import make_password
-from releases.factories import ReleaseFactory
+from releases.factories import ReleaseFactory, SubmittedReleaseFactory
 from users.factories import UserWithProfileFactory
 from labels.factories import LabelFactory
 
@@ -18,5 +18,5 @@ class Command(BaseCommand):
 
 		label = LabelFactory.create(name='Metal Blade Records', profile=user.profile, is_main=True)
 
-		ReleaseFactory.create_batch(3, is_submitted=True, profile=user.profile, label=label)
+		SubmittedReleaseFactory.create_batch(3, profile=user.profile, label=label)
 		ReleaseFactory.create_batch(2, profile=user.profile, label=label)

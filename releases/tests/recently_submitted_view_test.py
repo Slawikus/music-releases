@@ -1,7 +1,7 @@
 from datetime import timedelta
 from django.urls import reverse_lazy
 from django.utils import timezone
-from releases.factories import ReleaseFactory
+from releases.factories import ReleaseFactory, SubmittedReleaseFactory
 from labels.factories import LabelFactory
 from releases import views
 from . import BaseClientTest
@@ -26,9 +26,8 @@ class RecentlySubmittedViewTest(BaseClientTest):
         ReleaseFactory.create_batch(3, profile=self.user.profile, label=label)
         # create releases with random datetime and submitted
         for i in [3, 2, 5, 1, 4]:
-            ReleaseFactory.create(profile=self.user.profile,
+            SubmittedReleaseFactory.create(profile=self.user.profile,
                                   label=label,
-                                  is_submitted=True,
                                   submitted_at=timezone.now() - timedelta(days=i)
                                   )
 

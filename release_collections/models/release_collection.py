@@ -4,7 +4,7 @@ from django.contrib.postgres.fields import ArrayField
 
 
 class ReleaseCollection(models.Model):
-	name = models.CharField(max_length=255, unique=True)
+	name = models.CharField(max_length=255)
 	profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="release_collections")
 	release_ids = ArrayField(models.PositiveIntegerField())
 

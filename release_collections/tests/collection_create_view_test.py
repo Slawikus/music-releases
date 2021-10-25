@@ -3,7 +3,7 @@ import json
 from django.test import TestCase, Client
 from django.urls import reverse
 
-from releases.factories import ReleaseFactory
+from releases.factories import SubmittedReleaseFactory
 from users.factories import UserWithProfileFactory
 from release_collections.models import ReleaseCollection
 
@@ -15,8 +15,8 @@ class CollectionCreateViewTest(TestCase):
 		self.client.force_login(self.user)
 
 	def test_it_creates_collection(self):
-		release1 = ReleaseFactory.create(profile=self.user.profile, is_submitted=True)
-		release2 = ReleaseFactory.create(profile=self.user.profile, is_submitted=True)
+		release1 = SubmittedReleaseFactory.create(profile=self.user.profile)
+		release2 = SubmittedReleaseFactory.create(profile=self.user.profile)
 
 		release_ids = [release1.id, release2.id]
 		name = "top 2021 best music"

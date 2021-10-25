@@ -1,7 +1,7 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 
-from releases.factories import ReleaseFactory
+from releases.factories import SubmittedReleaseFactory
 from users.factories import UserWithProfileFactory
 from release_collections.models import ReleaseCollection
 
@@ -14,8 +14,8 @@ class ShowCollectionViewTest(TestCase):
 		self.client.force_login(self.user)
 
 	def test_it_shows_collection(self):
-		release1 = ReleaseFactory.create(is_submitted=True)
-		release2 = ReleaseFactory.create(is_submitted=True)
+		release1 = SubmittedReleaseFactory()
+		release2 = SubmittedReleaseFactory()
 
 		collection = ReleaseCollection.objects.create(
 			profile=self.user.profile,
