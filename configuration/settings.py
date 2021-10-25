@@ -55,7 +55,8 @@ INSTALLED_APPS = [
     'trades.apps.TradesConfig',
     'notifications.apps.NotificationsConfig',
     'artists.apps.ArtistsConfig',
-    'labels.apps.LabelsConfig'
+    'labels.apps.LabelsConfig',
+    'release_collections.apps.ReleaseCollectionsConfig'
 ]
 
 MIDDLEWARE = [

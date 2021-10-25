@@ -1,6 +1,6 @@
 from django.test import TestCase, Client
 from users.factories import UserWithProfileFactory
-from releases.factories import ReleaseFactory
+from releases.factories import ReleaseFactory, SubmittedReleaseFactory
 from django.urls import reverse
 
 
@@ -11,8 +11,8 @@ class SearchReleaseViewTest(TestCase):
 		self.client.force_login(self.user)
 
 	def test_it_finds_release(self):
-		ReleaseFactory.create_batch(3, is_submitted=True)
-		ReleaseFactory.create(band_name="Quintino", is_submitted=True)
+		SubmittedReleaseFactory.create_batch(3)
+		SubmittedReleaseFactory.create(band_name="Quintino")
 
 		response = self.client.post(reverse("search"), {
 			"q": "Quint"
@@ -22,7 +22,7 @@ class SearchReleaseViewTest(TestCase):
 		self.assertEqual(response.context['releases'][0].band_name, "Quintino")
 
 	def test_it_shows_all_releases_if_q_is_empty(self):
-		ReleaseFactory.create_batch(3, is_submitted=True)
+		SubmittedReleaseFactory.create_batch(3)
 
 		response = self.client.post(reverse("search"), {
 			"q": ""

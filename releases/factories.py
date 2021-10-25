@@ -32,6 +32,9 @@ class ReleaseFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Release
 
+class SubmittedReleaseFactory(ReleaseFactory):
+    is_submitted = True
+
 
 class MarketingInfosFactory(factory.django.DjangoModelFactory):
     release = factory.SubFactory(ReleaseFactory)

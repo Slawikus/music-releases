@@ -1,6 +1,6 @@
 from django.test import TestCase, Client
 from django.urls import reverse
-from releases.factories import ReleaseFactory
+from releases.factories import ReleaseFactory, SubmittedReleaseFactory
 from users.factories import UserWithProfileFactory
 
 
@@ -23,7 +23,7 @@ class ReleaseDetailViewTest(TestCase):
 		self.assertEqual(response.status_code, 403)
 
 	def test_it_redirects_unlogged_user(self):
-		release = ReleaseFactory.create(is_submitted=True)
+		release = SubmittedReleaseFactory()
 		client = Client()
 		response = client.get(reverse("release_detail", args=[release.id]))
 

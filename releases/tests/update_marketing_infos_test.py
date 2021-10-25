@@ -1,7 +1,7 @@
 from django.test import Client
 from django.urls import reverse_lazy, reverse
 
-from releases.factories import ReleaseFactory
+from releases.factories import ReleaseFactory, SubmittedReleaseFactory
 from . import BaseClientTest
 
 
@@ -14,7 +14,7 @@ class UpdateMarketingInfosTest(BaseClientTest):
         self.assertEqual(response.status_code, 200)
 
     def test_it_redirects_unlogged_user(self):
-        release = ReleaseFactory.create(is_submitted=True)
+        release = SubmittedReleaseFactory()
 
         anonymous = Client()
         response = anonymous.get(reverse("marketing_infos_edit", args=[release.id]))
@@ -25,7 +25,7 @@ class UpdateMarketingInfosTest(BaseClientTest):
         )
 
     def test_it_forbids_editing_not_own_releases(self):
-        release = ReleaseFactory.create(is_submitted=True)
+        release = SubmittedReleaseFactory()
 
         response = self.client.get(reverse("marketing_infos_edit", args=[release.id]))
 

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+{% block content %}
+
+  {% for collection in collections %}
+      <a href="{% url 'collection_show' collection.id %}">
+      <div class="p-2 shadow-4 rounded-3 mt-1" style="background-color: #283046">
+        <div class="row">
+            <h2>{{ collection.name }}</h2>
+            <h4><i>by: {{ collection.profile.user.name }}</i></h4>
+            <strong><h4>{{ collection.items.count }} releases</h4></strong>
+        </div>
+      </div>
+      </a>
+  {% endfor %}
+
+{% endblock content %}

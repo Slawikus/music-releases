@@ -10,13 +10,13 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('users', '0001_initial'),
-        ('public_tradelist', '0002_initial'),
+        ('release_collections', '0001_initial'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='traderequest',
+            model_name='collection',
             name='profile',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='trade_requests', to='users.profile'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='release_collections', to='users.profile'),
         ),
     ]

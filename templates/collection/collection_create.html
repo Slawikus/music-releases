@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+{% block content %}
+
+
+  <form action="{% url 'collection_create' %}" method="POST" id="collection-create-form">
+      {% csrf_token %}
+      <input type="hidden" id="release_ids" name="release_ids">
+      <input type="text" class="form-control" name="collection_name" placeholder="collection name">
+    <button class="mt-1 ml-3 mb-1 btn btn-outline-danger" type="button" id="create-collection">CREATE</button>
+  </form>
+
+
+  <div class="row">
+    <div class="col-6"><h3>My releases</h3></div>
+    <div class="col-6">
+        <h3>collection</h3><br>
+        <i>You can drug release up and down</i>
+    </div>
+  </div>
+
+
+  <div class="row">
+
+    <div class="col-6" id="my-releases-block">
+      {% for release in releases %}
+        <li class="p-2 shadow-4 rounded-3 mt-1 release-block-{{ release.id }}"
+            release_id="{{ release.id }}"
+            in_collection="false"
+            style="background-color: #283046">
+          <div class="row">
+
+{# release info #}
+            <div class="col-5">
+              <p>{{ release.band_name }} ({{ release.country }})</p>
+              <p>{{ release.album_title }} - {{ release.format }} | {{ release.divide_media_format }}</p>
+              <p>{{ release.base_style }}</p>
+              <p>{{ release.submitted_at|date:"d.m.Y" }}
+                  {% if release.label %}
+                    <a href="{% url 'label_detail' release.label.pk %}">
+                        {{ release.label.name }}({{ release.label.profile.country }})
+                    </a>
+                  {% endif %}
+            </div>
+            <div class="col-5">
+
+              <p>
+                Trade points:
+                {% if release.releasetradesinfo.trade_points is None %}
+                  -
+                {% else %}
+                  {{ release.releasetradesinfo.trade_points }}
+                {% endif %}
+              </p>
+              <p>Wholesale prices: </p>
+                {% for price in release.release_price.all %}
+                  <p>{{ price.price }} {{ price.currency }}</p>
+                {% endfor %}
+
+            </div>
+            <div class="col-2">
+                <button class="btn btn-primary add-to-collection" release_id="{{ release.id }}">
+                    add
+                </button>
+            </div>
+              {% if release.sample %}
+                <audio controls="controls">
+                  <source src="{{ release.sample.url }}" type="audio/mpeg" />
+                </audio>
+                {% endif %}
+
+        </div>
+        </li>
+      {% endfor %}
+    </div>
+
+    <div class="col-6">
+        <ul id="collection-block"></ul>
+    </div>
+
+  </div>
+
+
+{% endblock content %}
+
+{% block extra_javascript %}
+{#  to make releases in collection side druggable I use jquery-ui js and css  #}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" integrity="sha512-uto9mlQzrs59VwILcLiRYeLKPPbS/bT71da/OEBYEwcdNUk8jYIy+D176RYoop1Da+f9mvkYrmj5MCLZWEtQuA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        $(function() {
+            $("#collection-block").sortable();
+        });
+    </script>
+
+    <script>
+
+        let my_releases_block = $("#my-releases-block");
+        let collection_block = $("#collection-block");
+        
+        let buttons = $(".add-to-collection");
+        buttons.each(function (index) {
+
+            let button = this;
+
+            $(button).on("click", function () {
+
+                let release_id = button.getAttribute("release_id");
+                let release_block = $(".release-block-" + release_id);
+                let in_collection = release_block.attr("in_collection");
+
+                if (in_collection === "false") {
+                    collection_block.append(release_block);
+                    my_releases_block.remove(release_block);
+
+                    button.innerText = "cancel";
+
+                    release_block.attr("in_collection", "true");
+                }
+
+                else {
+                    collection_block.remove(release_block);
+                    my_releases_block.prepend(release_block);
+
+                    button.innerText = "add";
+
+                    release_block.attr("in_collection", "false");
+                }
+
+
+            })
+        });
+
+        let create_button = $("#create-collection");
+        let form = $("#collection-create-form");
+        let data_unput = $("#release_ids");
+
+        create_button.on("click", function () {
+            let release_ids = [];
+
+            collection_block.children().each(function () {
+                let release_id = this.getAttribute("release_id");
+                release_ids.push(parseInt(release_id));
+            })
+
+            let data = {"all": release_ids};
+            data_unput.val(JSON.stringify(data));
+            form.submit();
+        })
+        
+    </script>
+
+{% endblock %}
