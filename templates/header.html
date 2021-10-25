@@ -30,20 +30,20 @@
       <li class="nav-item dropdown dropdown-notification me-25">
         <a class="nav-link" href="#" data-bs-toggle="dropdown">
           <i class="ficon" data-feather="bell"></i>
-          <span class="badge rounded-pill bg-danger badge-up">{{ user|notifs_amount }}</span>
+          <span class="badge rounded-pill bg-danger badge-up">{{ number_of_unread_notifications }}</span>
         </a>
         <ul class="dropdown-menu dropdown-menu-media dropdown-menu-end">
           <li class="dropdown-menu-header">
             <div class="dropdown-header d-flex">
               <h4 class="notification-title mb-0 me-auto">Notifications</h4>
-              <div class="badge rounded-pill badge-light-primary">{{ user|notifs_amount }} New</div>
+              <div class="badge rounded-pill badge-light-primary">{{ number_of_unread_notifications }} New</div>
             </div>
           </li>
 
 
 
           <li class="scrollable-container media-list">
-            {% for notification in user|notifs_list %}
+            {% for notification in last_file_notifications %}
             <a class="d-flex" href="{% url 'notif_redirect' notification.pk %}">
               <div class="list-item d-flex align-items-start">
 
@@ -57,7 +57,7 @@
             {% endfor %}
 
           </li>
-          {% if user|notifs_amount > 5 %}
+          {% if number_of_unread_notifications > 5 %}
           <li class="dropdown-menu-footer">
             <a class="btn btn-primary w-100" href="#">Read all notifications</a>
           </li>
