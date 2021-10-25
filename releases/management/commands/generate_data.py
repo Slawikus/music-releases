@@ -20,7 +20,8 @@ class Command(BaseCommand):
 			is_superuser=True
 		)
 
-		users_label = LabelFactory.create_batch(profile=user.profile)
+		users_label = LabelFactory.create(profile=user.profile)
+		ReleaseFactory.create_batch(50, label=users_label)
 
 		labels = LabelFactory.create_batch(200)
 		for label in labels:
