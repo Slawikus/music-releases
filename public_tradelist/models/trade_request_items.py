@@ -44,6 +44,7 @@ class TradeRequestItem(models.Model):
     trade_points = models.DecimalField(
         decimal_places=1,
         max_digits=3,
+        null=True
     )
 
     prices_with_currencies = models.CharField(max_length=255)
