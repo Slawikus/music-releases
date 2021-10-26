@@ -60,3 +60,14 @@ class EditReleaseViewTest(BaseClientTest):
 
         self.assertEqual(release.album_title, new_album_title)
         self.assertRedirects(response, reverse('my_releases'))
+
+    def test_it_shows_completeness_percent(self):
+        release = ReleaseFactory()
+        self.assertTrue(release.find_completeness_percent() < 100)
+
+        release = ReleaseFactory(
+            limited_edition=111,
+            media_format_details="digipack64"
+        )
+
+        self.assertTrue(release.find_completeness_percent() == 100)

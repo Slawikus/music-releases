@@ -146,3 +146,10 @@ class Release(models.Model):
     def wholesale_prices_string(self):
         return ", ".join([f"{wholesale.price} ({wholesale.currency.currency})"
                    for wholesale in self.wholesale_prices.all()])
+
+    def find_completeness_percent(self):
+
+        empty_fields_amount = len([i for i in self.__dict__.values() if i is None])
+        all_fields_amount = len(self.__dict__)
+        percent = (all_fields_amount - empty_fields_amount) / all_fields_amount * 100
+        return percent
