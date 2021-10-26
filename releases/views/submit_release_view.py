@@ -37,7 +37,7 @@ class SubmitReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         if not empty_fields_exists:
 
             release.is_submitted = True
-            release.submitted_at = timezone.datetime.now()
+            release.submitted_at = timezone.now()
             release.save()
 
             messages.success(request, "successfully submitted!")
