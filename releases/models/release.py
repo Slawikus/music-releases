@@ -146,3 +146,6 @@ class Release(models.Model):
     def wholesale_prices_string(self):
         return ", ".join([f"{wholesale.price} ({wholesale.currency.currency})"
                    for wholesale in self.wholesale_prices.all()])
+
+    class Meta:
+        ordering = ["-id"]
