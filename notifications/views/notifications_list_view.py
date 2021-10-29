@@ -9,4 +9,7 @@ class NotificationListView(LoginRequiredMixin, ListView):
 	template_name = "notifications_list.html"
 
 	def get_queryset(self):
-		return Notification.objects.filter(profile=self.request.user.profile).order_by("-created")
+		return Notification.objects.\
+			filter(profile=self.request.user.profile).\
+			filter(is_viewed=False).\
+			order_by("-created")

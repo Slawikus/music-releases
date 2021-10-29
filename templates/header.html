@@ -1,4 +1,4 @@
-{% load static %}
+{% load static notifs %}
 
 <!-- BEGIN: Header-->
 <nav
@@ -24,82 +24,46 @@
         <a class="nav-link nav-link-style"><i class="ficon" data-feather="sun"></i></a>
       </li>
       {#  Вынести уведомления в отдельный шаблон#}
+      {% if user.is_authenticated %}
       <li class="nav-item dropdown dropdown-notification me-25">
         <a class="nav-link" href="#" data-bs-toggle="dropdown">
           <i class="ficon" data-feather="bell"></i>
-          <span class="badge rounded-pill bg-danger badge-up">5</span>
+          <span class="badge rounded-pill bg-danger badge-up">{{ user|number_of_unread_notifications }}</span>
         </a>
         <ul class="dropdown-menu dropdown-menu-media dropdown-menu-end">
           <li class="dropdown-menu-header">
             <div class="dropdown-header d-flex">
               <h4 class="notification-title mb-0 me-auto">Notifications</h4>
-              <div class="badge rounded-pill badge-light-primary">6 New</div>
+              <div class="badge rounded-pill badge-light-primary">{{ user|number_of_unread_notifications }} New</div>
             </div>
           </li>
+
+
+
           <li class="scrollable-container media-list">
-            <a class="d-flex" href="#">
-              <div class="list-item d-flex align-items-start">
-                <div class="me-1">
-                  <div class="avatar bg-light-danger">
-                    <div class="avatar-content">MD</div>
+                {% for notification in user|last_five_notifications %}
+                <a class="d-flex" href="{% url 'notif_redirect' notification.pk %}">
+                  <div class="list-item d-flex align-items-start">
+
+                    <div class="list-item-body flex-grow-1">
+                      <p class="media-heading">{{ notification.message }}
+                          <br><small
+                        class="notification-text">{{ notification.created }}</small>
+                    </div>
                   </div>
-                </div>
-                <div class="list-item-body flex-grow-1">
-                  <p class="media-heading"><span class="fw-bolder">Revised Order 👋</span>&nbsp;checkout</p><small
-                    class="notification-text"> MD Inc. order updated</small>
-                </div>
-              </div>
-            </a>
-            <div class="list-item d-flex align-items-center">
-              <h6 class="fw-bolder me-auto mb-0">System Notifications</h6>
-              <div class="form-check form-check-primary form-switch">
-                <input class="form-check-input" id="systemNotification" type="checkbox" checked="">
-                <label class="form-check-label" for="systemNotification"></label>
-              </div>
-            </div>
-            <a class="d-flex" href="#">
-              <div class="list-item d-flex align-items-start">
-                <div class="me-1">
-                  <div class="avatar bg-light-danger">
-                    <div class="avatar-content"><i class="avatar-icon" data-feather="x"></i></div>
-                  </div>
-                </div>
-                <div class="list-item-body flex-grow-1">
-                  <p class="media-heading"><span class="fw-bolder">Server down</span>&nbsp;registered</p><small
-                    class="notification-text"> USA Server is down due to high CPU usage</small>
-                </div>
-              </div>
-            </a><a class="d-flex" href="#">
-            <div class="list-item d-flex align-items-start">
-              <div class="me-1">
-                <div class="avatar bg-light-success">
-                  <div class="avatar-content"><i class="avatar-icon" data-feather="check"></i></div>
-                </div>
-              </div>
-              <div class="list-item-body flex-grow-1">
-                <p class="media-heading"><span class="fw-bolder">Sales report</span>&nbsp;generated</p><small
-                  class="notification-text"> Last month sales report generated</small>
-              </div>
-            </div>
-          </a><a class="d-flex" href="#">
-            <div class="list-item d-flex align-items-start">
-              <div class="me-1">
-                <div class="avatar bg-light-warning">
-                  <div class="avatar-content"><i class="avatar-icon" data-feather="alert-triangle"></i></div>
-                </div>
-              </div>
-              <div class="list-item-body flex-grow-1">
-                <p class="media-heading"><span class="fw-bolder">High memory</span>&nbsp;usage</p><small
-                  class="notification-text"> BLR Server using high memory</small>
-              </div>
-            </div>
-          </a>
+                </a>
+                {% endfor %}
+
           </li>
+          {% if user|number_of_unread_notifications > 5 %}
           <li class="dropdown-menu-footer">
             <a class="btn btn-primary w-100" href="#">Read all notifications</a>
           </li>
+          {% endif %}
+
         </ul>
       </li>
+      {% endif %}
       <li class="nav-item dropdown dropdown-user">
         <a class="nav-link dropdown-toggle dropdown-user-link" id="dropdown-user" href="#" data-bs-toggle="dropdown"
            aria-haspopup="true" aria-expanded="false">
