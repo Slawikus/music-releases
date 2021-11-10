@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+
+{% block title %}Sign Up{% endblock title %}
+
+{% block content %}
+  <div class="row mt-4 mb-2">
+    <div class="col text-center">
+      <h2>Sign Up</h2>
+    </div>
+  </div>
+  <div class="row justify-content-center mt-2 mb-2">
+    <div class="col-4">
+      <form method="post" autocomplete="off">
+        {% if form.non_field_errors %}
+          <p>{{ form.non_field_errors }}</p>
+        {% endif %}
+
+        <div class="mb-1">
+          {% include 'common/_form_field.html' with field=form.main_label_name|attr:"autofocus" only %}
+        </div>
+
+        <div class="mb-1">
+          {% include 'common/_form_field.html' with field=form.country|attr:"class:form-select" only %}
+        </div>
+
+        <div class="mb-1">
+          {% include 'common/_form_field.html' with field=form.name only %}
+        </div>
+
+        <div class="mb-1">
+          {% include 'common/_form_field.html' with field=form.email|remove_attr:"autofocus" only %}
+        </div>
+
+        <div class="mb-1">
+          <label for="{{ form.password1.auto_id }}" class="form-label">
+            {{ form.password1.label }}
+          </label>
+          {% if form.password2.errors %}
+            {{ form.password1|add_class:"is-invalid"|add_class:"form-control" }}
+            <div class="invalid-feedback">
+              {% for error in form.password2.errors %}
+                {{ error|escape }}
+              {% endfor %}
+            </div>
+          {% else %}
+            {{ form.password1|add_class:"form-control" }}
+            <div class="form-text">{{ form.password1.help_text }}</div>
+          {% endif %}
+        </div>
+
+        <div class="mb-1">
+          <label for="{{ form.password2.auto_id }}" class="form-label">
+            {{ form.password2.label }}
+          </label>
+          {{ form.password2|add_error_class:"is-invalid"|add_class:"form-control" }}
+          {% if form.password2.errors %}
+            <div class="invalid-feedback">
+              {% for error in form.password2.errors %}
+                {{ error|escape }}
+              {% endfor %}
+            </div>
+          {% else %}
+            <div class="form-text">{{ form.password2.help_text }}</div>
+          {% endif %}
+        </div>
+
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">Sign Up</button>
+      </form>
+    </div>
+  </div>
+{% endblock content %}
+
+<div class="mb-1">
+  <label class="form-label" for="register-username">Username</label>
+  <input class="form-control" id="register-username" type="text" name="register-username" placeholder="johndoe"
+         aria-describedby="register-username" autofocus="" tabindex="1"/>
+</div>
+<div class="mb-1">
+  <label class="form-label" for="register-email">Email</label>
+  <input class="form-control" id="register-email" type="text" name="register-email" placeholder="john@example.com"
+         aria-describedby="register-email" tabindex="2"/>
+</div>
+<div class="mb-1">
+  <label class="form-label" for="register-password">Password</label>
+  <div class="input-group input-group-merge form-password-toggle">
+    <input class="form-control form-control-merge" id="register-password" type="password" name="register-password"
+           placeholder="············" aria-describedby="register-password" tabindex="3"/><span
+      class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
+  </div>
+</div>
+<div class="mb-1">
+  <div class="form-check">
+    <input class="form-check-input" id="register-privacy-policy" type="checkbox" tabindex="4"/>
+    <label class="form-check-label" for="register-privacy-policy">I agree to<a href="#">&nbsp;privacy policy & terms</a></label>
+  </div>
+</div>
+<button class="btn btn-primary w-100" tabindex="5">Sign up</button>
+
+
+<div class="mb-1">
+  <label for="{{ form.password1.auto_id }}" class="form-label">
+    {{ form.password1.label }}
+  </label>
+
+  {% if form.password2.errors %}
+    <div class="input-group input-group-merge form-password-toggle">
+      {{ form.password1|add_class:"is-invalid"|add_class:"form-control"|add_class:"form-control-merge"|attr:"placeholder=············"|attr:"tabindex=5" }}
+      <span class="input-group-text cursor-pointer is-invalid"><i data-feather="eye"></i></span>
+    </div>
+    <div class="invalid-feedback">
+      {% for error in form.password2.errors %}
+        {{ error|escape }}
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="input-group input-group-merge form-password-toggle">
+      {{ form.password1|add_class:"form-control"|add_class:"form-control-merge"|attr:"placeholder=············"|attr:"tabindex=5" }}
+      <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
+    </div>
+    <div class="form-text">{{ form.password1.help_text }}</div>
+  {% endif %}
+</div>
+
+<div class="mb-1">
+  <label for="{{ form.password2.auto_id }}" class="form-label">
+    {{ form.password2.label }}
+  </label>
+  <div class="input-group input-group-merge form-password-toggle">
+    {{ form.password2|add_error_class:"is-invalid"|add_class:"form-control"|add_class:"form-control-merge"|attr:"placeholder=············"|attr:"tabindex=6" }}
+    {% if form.password2.errors %}
+      <span class="input-group-text cursor-pointer is-invalid"><i data-feather="eye"></i></span>
+    {% else %}
+      <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
+    {% endif %}
+  </div>
+  {% if form.password2.errors %}
+    <div class="invalid-feedback">
+      {% for error in form.password2.errors %}
+        {{ error|escape }}
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="form-text">{{ form.password2.help_text }}</div>
+  {% endif %}
+</div>

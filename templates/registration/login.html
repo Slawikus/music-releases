@@ -36,7 +36,7 @@
       <div class="auth-wrapper auth-cover">
         <div class="auth-inner row m-0">
           <!-- Brand logo-->
-          <a class="brand-logo align-items-center" href="index.html">
+          <a class="brand-logo align-items-end" href="{% url 'home' %}">
             <img src="{% static 'images/casette.svg' %}" alt="" style="max-width: 47px">
             <h2 class="brand-text text-primary ms-1">Music Releases</h2>
           </a>
@@ -59,7 +59,7 @@
                   <p>{{ form.non_field_errors }}</p>
                 {% endif %}
                 <div class="mb-1">
-                  {% include 'common/_form_field.html' with field=form.username|attr:"autofocus"|attr:"placeholder=example@example.com"|attr:"tabindex=2" only %}
+                  {% include 'common/_form_field.html' with field=form.username|attr:"autofocus"|attr:"placeholder=example@example.com"|attr:"tabindex=1" only %}
                 </div>
                 <div class="mb-1">
                   <div class="d-flex justify-content-between">
@@ -69,7 +69,7 @@
                     <a href="#"><small>Forgot Password?</small></a>
                   </div>
                   <div class="input-group input-group-merge form-password-toggle">
-                    {{ form.password|add_class:"form-control"|add_class:"form-control-merge"|add_class:"form-control"|attr:"placeholder=············"|attr:"tabindex=2" }}
+                    {{ form.password|add_class:"form-control"|add_class:"form-control-merge"|attr:"placeholder=············"|attr:"tabindex=2" }}
                     <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
                   </div>
                 </div>

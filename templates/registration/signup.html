@@ -1,74 +1,183 @@
-{% extends 'base.html' %}
+{% load static %}
 
 {% load widget_tweaks %}
 
-{% block title %}Sign Up{% endblock title %}
+<!DOCTYPE html>
+<html class="loading dark-layout" lang="en" data-layout="dark-layout" data-textdirection="ltr">
+<!-- BEGIN: Head-->
 
-{% block content %}
-  <div class="row mt-4 mb-2">
-    <div class="col text-center">
-      <h2>Sign Up</h2>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimal-ui">
+  <title>{% block title %}Sign Up{% endblock title %}</title>
+  {#    <link rel="apple-touch-icon" href="../../../app-assets/images/ico/apple-icon-120.png">#}
+  {#    <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.ico">#}
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600"
+        rel="stylesheet">
+
+  {% include 'styles.html' %}
+
+  <!-- BEGIN: Page CSS-->
+  <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/form-validation.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/pages/authentication.css' %}">
+  <!-- END: Page CSS-->
+
+
+</head>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+
+<body class="horizontal-layout horizontal-menu blank-page navbar-floating footer-static  " data-open="hover"
+      data-menu="horizontal-menu" data-col="blank-page">
+<!-- BEGIN: Content-->
+<div class="app-content content ">
+  <div class="content-overlay"></div>
+  <div class="header-navbar-shadow"></div>
+  <div class="content-wrapper">
+    <div class="content-header row">
+    </div>
+    <div class="content-body">
+      <div class="auth-wrapper auth-cover">
+        <div class="auth-inner row m-0">
+          <!-- Brand logo-->
+          <a class="brand-logo align-items-end" href="{% url 'home' %}">
+            <img src="{% static 'images/casette.svg' %}" alt="" style="max-width: 47px">
+            <h2 class="brand-text text-primary ms-1">Music Releases</h2>
+          </a>
+          <!-- /Brand logo-->
+          <!-- Left Text-->
+          <div class="d-none d-lg-flex col-lg-8 align-items-center p-5">
+            <div class="w-100 d-lg-flex align-items-center justify-content-center px-5">
+              <img class="img-fluid" src="{% static 'app-assets/images/pages/register-v2-dark.svg' %}"
+                   alt="Register V2"/>
+            </div>
+          </div>
+          <!-- /Left Text-->
+          <!-- Register-->
+          <div class="d-flex col-lg-4 align-items-center auth-bg px-2 p-lg-5">
+            <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
+              <h2 class="card-title fw-bold mb-1">Adventure starts here 🚀</h2>
+              <p class="card-text mb-2">Make your app management easy and fun!</p>
+
+
+              <form class="auth-register-form mt-2" method="POST" autocomplete="off">
+                {% if form.non_field_errors %}
+                  <p>{{ form.non_field_errors }}</p>
+                {% endif %}
+
+                <div class="mb-1">
+                  {% include 'common/_form_field.html' with field=form.main_label_name|attr:"autofocus"|attr:"placeholder=Label"|attr:"tabindex=1" only %}
+                </div>
+
+                <div class="mb-1">
+                  {% include 'common/_form_field.html' with field=form.country|attr:"class:form-select"|attr:"tabindex=2" only %}
+                </div>
+
+                <div class="mb-1">
+                  {% include 'common/_form_field.html' with field=form.name|attr:"placeholder=Name"|attr:"tabindex=3" only %}
+                </div>
+
+                <div class="mb-1">
+                  {% include 'common/_form_field.html' with field=form.email|remove_attr:"autofocus"|attr:"placeholder=example@example.com"|attr:"tabindex=4" only %}
+                </div>
+
+                <div class="mb-1">
+                  <label for="{{ form.password1.auto_id }}" class="form-label">
+                    {{ form.password1.label }}
+                  </label>
+                  {% if form.password2.errors %}
+                    <div class="input-group input-group-merge form-password-toggle">
+                      {{ form.password1|add_class:"is-invalid"|add_class:"form-control"|add_class:"form-control-merge"|attr:"placeholder=············"|attr:"tabindex=5" }}
+                      <span class="input-group-text cursor-pointer is-invalid"><i data-feather="eye"></i></span>
+                    </div>
+                    <div class="invalid-feedback d-block">
+                      {% for error in form.password2.errors %}
+                        {{ error|escape }}
+                      {% endfor %}
+                    </div>
+                  {% else %}
+                    <div class="input-group input-group-merge form-password-toggle">
+                      {{ form.password1|add_class:"form-control"|add_class:"form-control-merge"|attr:"placeholder=············"|attr:"tabindex=5" }}
+                      <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
+                    </div>
+                    <div class="form-text">{{ form.password1.help_text }}</div>
+                  {% endif %}
+                </div>
+
+                <div class="mb-1">
+                  <label for="{{ form.password2.auto_id }}" class="form-label">
+                    {{ form.password2.label }}
+                  </label>
+                  <div class="input-group input-group-merge form-password-toggle">
+                    {{ form.password2|add_error_class:"is-invalid"|add_class:"form-control"|add_class:"form-control-merge"|attr:"placeholder=············"|attr:"tabindex=6" }}
+                    {% if form.password2.errors %}
+                      <span class="input-group-text cursor-pointer is-invalid"><i data-feather="eye"></i></span>
+                    {% else %}
+                      <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
+                    {% endif %}
+                  </div>
+                  {% if form.password2.errors %}
+                    <div class="invalid-feedback d-block">
+                      {% for error in form.password2.errors %}
+                        {{ error|escape }}
+                      {% endfor %}
+                    </div>
+                  {% else %}
+                    <div class="form-text">{{ form.password2.help_text }}</div>
+                  {% endif %}
+                </div>
+
+
+                <div class="mb-1">
+                  <div class="form-check">
+                    <input class="form-check-input" id="register-privacy-policy" type="checkbox" tabindex="7"/>
+                    <label class="form-check-label" for="register-privacy-policy">I agree to<a href="#">&nbsp;privacy
+                      policy & terms</a></label>
+                  </div>
+                </div>
+
+                {% csrf_token %}
+                <button class="btn btn-primary w-100" tabindex="8">Sign up</button>
+              </form>
+
+
+              <p class="text-center mt-2"><span>Already have an account?</span><a href="{% url 'login' %}"><span>&nbsp;Sign in instead</span></a>
+              </p>
+
+            </div>
+          </div>
+          <!-- /Register-->
+        </div>
+      </div>
     </div>
   </div>
-  <div class="row justify-content-center mt-2 mb-2">
-    <div class="col-4">
-      <form method="post" autocomplete="off">
-        {% if form.non_field_errors %}
-          <p>{{ form.non_field_errors }}</p>
-        {% endif %}
+</div>
+<!-- END: Content-->
 
-        <div class="mb-1">
-          {% include 'common/_form_field.html' with field=form.main_label_name|attr:"autofocus" only %}
-        </div>
+{% include 'scripts.html' %}
 
-        <div class="mb-1">
-          {% include 'common/_form_field.html' with field=form.country|attr:"class:form-select" only %}
-        </div>
+<!-- BEGIN: Page Vendor JS-->
+<script src="{% static 'app-assets/vendors/js/forms/validation/jquery.validate.min.js' %}"></script>
+<!-- END: Page Vendor JS-->
 
-        <div class="mb-1">
-          {% include 'common/_form_field.html' with field=form.name only %}
-        </div>
 
-        <div class="mb-1">
-          {% include 'common/_form_field.html' with field=form.email|remove_attr:"autofocus" only %}
-        </div>
+<!-- BEGIN: Page JS-->
+<script src="{% static 'app-assets/js/scripts/pages/auth-register.js' %}"></script>
+<!-- END: Page JS-->
 
-        <div class="mb-1">
-          <label for="{{ form.password1.auto_id }}" class="form-label">
-            {{ form.password1.label }}
-          </label>
-          {% if form.password2.errors %}
-            {{ form.password1|add_class:"is-invalid"|add_class:"form-control" }}
-            <div class="invalid-feedback">
-              {% for error in form.password2.errors %}
-                {{ error|escape }}
-              {% endfor %}
-            </div>
-          {% else %}
-            {{ form.password1|add_class:"form-control" }}
-            <div class="form-text">{{ form.password1.help_text }}</div>
-          {% endif %}
-        </div>
+<script>
+    $(window).on('load', function () {
+        if (feather) {
+            feather.replace({
+                width: 14,
+                height: 14
+            });
+        }
+    })
+</script>
+</body>
+<!-- END: Body-->
 
-        <div class="mb-1">
-          <label for="{{ form.password2.auto_id }}" class="form-label">
-            {{ form.password2.label }}
-          </label>
-          {{ form.password2|add_error_class:"is-invalid"|add_class:"form-control" }}
-          {% if form.password2.errors %}
-            <div class="invalid-feedback">
-              {% for error in form.password2.errors %}
-                {{ error|escape }}
-              {% endfor %}
-            </div>
-          {% else %}
-            <div class="form-text">{{ form.password2.help_text }}</div>
-          {% endif %}
-        </div>
-
-        {% csrf_token %}
-        <button type="submit" class="btn btn-primary">Sign Up</button>
-      </form>
-    </div>
-  </div>
-{% endblock content %}
+</html>
