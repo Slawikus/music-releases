@@ -1,7 +1,5 @@
 {% load static %}
-
 {% load widget_tweaks %}
-
 <!DOCTYPE html>
 <html class="loading dark-layout" lang="en" data-layout="dark-layout" data-textdirection="ltr">
 <!-- BEGIN: Head-->
@@ -14,14 +12,18 @@
   {#    <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.ico">#}
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600"
         rel="stylesheet">
-  {% include 'styles.html' %}
-  <!-- BEGIN: Page CSS-->
-  <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/form-validation.css' %}">
-  <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/pages/authentication.css' %}">
-  <!-- END: Page CSS-->
+  <!-- BEGIN: CSS-->
+  {% include 'styles/vendor-css.html' %}
+  {% include 'styles/theme-css.html' %}
+  {% include 'styles/page-css.html' %}
+  {% block page_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/form-validation.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/pages/authentication.css' %}">
+  {% endblock %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+  <!-- END: CSS-->
 </head>
 <!-- END: Head-->
-
 <!-- BEGIN: Body-->
 <body class="horizontal-layout horizontal-menu blank-page navbar-floating footer-static  " data-open="hover"
       data-menu="horizontal-menu" data-col="blank-page">
@@ -53,14 +55,18 @@
             <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
               <h2 class="card-title fw-bold mb-1">Welcome to Music Releases! 👋</h2>
               <p class="card-text mb-2">Please sign-in to your account and start the adventure</p>
+              <!-- Login Form-->
               <form class="auth-login-form mt-2" method="POST">
                 {% csrf_token %}
                 {% if form.non_field_errors %}
                   <p>{{ form.non_field_errors }}</p>
                 {% endif %}
+              <!-- Login Field-->
                 <div class="mb-1">
                   {% include 'common/_form_field.html' with field=form.username|attr:"autofocus"|attr:"placeholder=example@example.com"|attr:"tabindex=1" only %}
                 </div>
+              <!-- /Login Field-->
+              <!-- Password Field-->
                 <div class="mb-1">
                   <div class="d-flex justify-content-between">
                     <label for="{{ form.password.auto_id }}" class="form-label">
@@ -73,8 +79,10 @@
                     <span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
                   </div>
                 </div>
+              <!-- /Password Field-->
                 <button class="btn btn-primary w-100" tabindex="3">Sign in</button>
               </form>
+            <!-- /Login Form-->
             </div>
             <!-- /Login-->
           </div>
@@ -84,25 +92,28 @@
   </div>
   <!-- END: Content-->
 </div>
-{% include 'scripts.html' %}
-<!-- BEGIN: Page JS-->
-<script src="{% static 'app-assets/vendors/js/forms/validation/jquery.validate.min.js' %}"></script>
-<script src="{% static 'app-assets/js/scripts/pages/auth-login.js' %}"></script>
-<!-- END: Page JS-->
-
-<script>
-    $(window).on('load', function () {
-        if (feather) {
-            feather.replace({
-                width: 14,
-                height: 14
-            });
-        }
-
-        $("form").removeAttr("novalidate")
-
-    })
-</script>
+<!-- BEGIN: JS-->
+{% include 'scripts/vendor-js.html' %}
+{% block page_vendor_js %}
+  <script src="{% static 'app-assets/vendors/js/forms/validation/jquery.validate.min.js' %}"></script>
+{% endblock %}
+{% include 'scripts/theme-js.html' %}
+{% block page_js %}
+  <script src="{% static 'app-assets/js/scripts/pages/auth-login.js' %}"></script>
+{% endblock %}
+{% block inline_javascript %}
+  <script>
+      $(window).on('load', function () {
+          if (feather) {
+              feather.replace({
+                  width: 14,
+                  height: 14
+              });
+          }
+      })
+  </script>
+{% endblock inline_javascript %}
+<!-- END: JS-->
 </body>
 <!-- END: Body-->
 </html>

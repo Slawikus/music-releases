@@ -6,7 +6,6 @@ from django.http import HttpResponseNotFound
 from band_submissions.forms import BandSubmissionForm
 from band_submissions.models import BandSubmission
 from users.models import Profile
-# Create your views here.
 
 
 class BandSubmissionCreateView(UserPassesTestMixin, CreateView):

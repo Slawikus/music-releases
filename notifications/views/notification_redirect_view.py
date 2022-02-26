@@ -7,13 +7,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class NotificationRedirectView(LoginRequiredMixin, View):
-	def get(self, request, pk):
-		notification = get_object_or_404(Notification, id=pk)
+    def get(self, request, pk):
+        notification = get_object_or_404(Notification, id=pk)
 
-		if request.user != notification.profile.user:
-			return HttpResponseForbidden("redirect forbidden")
+        if request.user != notification.profile.user:
+            return HttpResponseForbidden("redirect forbidden")
 
-		notification.is_viewed = True
-		notification.save()
+        notification.is_viewed = True
+        notification.save()
 
-		return HttpResponseRedirect(notification.target_url)
+        return HttpResponseRedirect(notification.target_url)

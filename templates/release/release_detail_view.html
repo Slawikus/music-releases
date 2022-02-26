@@ -6,13 +6,13 @@
     <h1>Release detail</h1>
     <div class="row">
         <div class="col-4 p-2">
-            {% if release.cover_image.url %}
+            {% if release.cover_image %}
                 <img src="{{ release.cover_image.url }}" alt="" srcset="" class="img-thumbnail mb-5">
             {% else %}
                 <h3><strong>No image yet</strong></h3>
             {% endif %}
 
-            {% if release.sample.url %}
+            {% if release.sample %}
                 <audio controls="controls">
                   <source src="{{ release.sample.url }}" type="audio/mpeg" />
                 </audio>
@@ -24,7 +24,7 @@
         <div class="col-4">
             <h2><b>band name: {{ release.band_name }}</b></h2>
             <h2><b>album title: {{ release.album_title }}</b></h2>
-            <h4><b>label: <a href="{% url 'label_detail' release.label.id %}">release.label</a></b></h4>
+            <h4><b>label: <a href="{% url 'label_detail' release.label.id %}">{{ release.label }}</a></b></h4>
 
             <p>base style: {{ release.base_style }}</p>
             <p>format: {{ release.format }}</p>

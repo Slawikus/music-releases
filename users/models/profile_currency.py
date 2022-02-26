@@ -2,7 +2,6 @@ from django.db import models
 from configuration.settings import CURRENCY_CHOICES
 
 
-# Create your models here.
 class ProfileCurrency(models.Model):
     currency = models.CharField(
         max_length=3,

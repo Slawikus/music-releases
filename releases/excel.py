@@ -6,7 +6,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from releases.models.release import BASE_STYLE_CHOICES
 
-
 FORMATS = Release.Formats.values
 STYLES = BASE_STYLE_CHOICES
 

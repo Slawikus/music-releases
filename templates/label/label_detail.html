@@ -5,22 +5,27 @@
 {% block content %}
   <div class="row">
     <div class="col-5">
-        {% if label.logo %}
-            <img src="{{ label.logo.url }}" class="img-fluid" alt="">
-        {% endif %}
+      {% if label.logo %}
+        <img src="{{ label.logo.url }}" class="img-fluid" alt="">
+      {% endif %}
     </div>
     <div class="col-7">
-        <h1 class='text-uppercase'>{{ label.name }}</h1>
-        <h6><i>{{ label.releases.count }} releases</i></h6>
-        {{ label.description }}
+      <h1 class='text-uppercase'>{{ label.name }}</h1>
+      <h6><i>{{ label.releases.count }} releases</i></h6>
+      {{ label.description }}
     </div>
   </div>
 
   {% for release in label.releases.all %}
-    <div class="p-4 shadow-4 rounded-3 mt-3"  style="background-color: #283046">
+    <div class="p-4 shadow-4 rounded-3 mt-3" style="background-color: #283046">
       <div class="row">
         <div class="col-2">
-          <img src="{{ release.cover_image.url }}" alt="" srcset="" class="img-thumbnail">
+          {% if release.cover_image %}
+            <img src="{{ release.cover_image.url }}" alt="" srcset="" class="img-thumbnail">
+
+          {% else %}
+            <h3><strong>No image yet</strong></h3>
+          {% endif %}
         </div>
         <div class="col-4">
           <p>{{ release.band_name }} ({{ release.country }})</p>
@@ -35,19 +40,24 @@
             {{ release.releasetradeinfo.trade_points|default_if_none:"-" }}
           </p>
           <p>Wholesale prices: </p>
-            {% for price in release.release_price.all %}
-              <p>{{ price.price }} {{ price.currency }}</p>
-            {% endfor %}
+          {% for price in release.wholesale_prices.all %}
+            <p>{{ price.price }} {{ price.currency }}</p>
+          {% empty %}
+            -
+          {% endfor %}
 
         </div>
 
+      </div>
+      {% if release.sample %}
+        <audio controls="controls">
+          <source src="{{ release.sample.url }}" type="audio/mpeg"/>
+        </audio>
+      {% else %}
+        <h3><strong>no sample yet</strong></h3>
+      {% endif %}
+
     </div>
-    <audio controls="controls">
-      <source src="{{ release.sample.url }}" type="audio/mpeg" />
-    </audio>
-
-
-  </div>
   {% endfor %}
 
 {% endblock content %}

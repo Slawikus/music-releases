@@ -4,8 +4,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 from configuration.file_storage import DuplicationFixFileSystemStorage
 from users.models import Profile
 from notifications.models import Notification
-from django.urls import reverse, reverse_lazy
-# Create your models here.
+from django.urls import reverse
 
 
 class BandSubmission(models.Model):
@@ -22,7 +21,6 @@ class BandSubmission(models.Model):
         verbose_name='best track',
         storage=DuplicationFixFileSystemStorage()
     )
-
     front_cover = models.ImageField(
         upload_to='band_submissions/image/',
         verbose_name='front cover',
@@ -32,7 +30,6 @@ class BandSubmission(models.Model):
     )
     email = models.EmailField()
     phone_number = PhoneNumberField()
-
     biography = models.TextField(
         help_text="Write about releases, press mention or tour dates"
     )

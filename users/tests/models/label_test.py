@@ -9,19 +9,19 @@ class LabelTest(TestCase):
     def setUp(self):
         self.profile = ProfileFactory()
         self.name = 'Roadrunner Records'
-        self.description = 'Roadrunner Records drives the collision of culture and heavy music. '\
-                           ' Founded in 1980, the company launched in Europe as an independent '\
-                           'importer of American metal albums. Planting roots in New York City '\
-                           'during 1986, it emerged as the preeminent label for homegrown heavy '\
-                           'metal. Throughout the eighties and nineties, the independent label '\
-                           'ignited the careers of influential alumni, including King Diamond, Machine '\
-                           'Head, Sepultura, and Type O Negative. Achieving number one albums, '\
-                           'GRAMMY® Awards, and multiplatinum success, Roadrunner Records carries '\
-                           'on a tradition of mainstream infiltration with a current class comprised '\
-                           'of Code Orange, Coheed and Cambria, Corey Taylor, Dana Dentata, FEVER 333, '\
-                           'Gojira, Slipknot, THEORY, Trivium, and Turnstile. As a subsidiary of '\
-                           'Elektra Music Group since 2018, Roadrunner Records continues four decades '\
-                           'of excellence in heavy metal, hard rock, and rock, remaining a lifestyle '\
+        self.description = 'Roadrunner Records drives the collision of culture and heavy music. ' \
+                           ' Founded in 1980, the company launched in Europe as an independent ' \
+                           'importer of American metal albums. Planting roots in New York City ' \
+                           'during 1986, it emerged as the preeminent label for homegrown heavy ' \
+                           'metal. Throughout the eighties and nineties, the independent label ' \
+                           'ignited the careers of influential alumni, including King Diamond, Machine ' \
+                           'Head, Sepultura, and Type O Negative. Achieving number one albums, ' \
+                           'GRAMMY® Awards, and multiplatinum success, Roadrunner Records carries ' \
+                           'on a tradition of mainstream infiltration with a current class comprised ' \
+                           'of Code Orange, Coheed and Cambria, Corey Taylor, Dana Dentata, FEVER 333, ' \
+                           'Gojira, Slipknot, THEORY, Trivium, and Turnstile. As a subsidiary of ' \
+                           'Elektra Music Group since 2018, Roadrunner Records continues four decades ' \
+                           'of excellence in heavy metal, hard rock, and rock, remaining a lifestyle ' \
                            'as much as it is a label.'
 
         self.label = LabelFactory(profile=self.profile, name=self.name, description=self.description)

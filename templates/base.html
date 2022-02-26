@@ -1,5 +1,4 @@
 {% load static %}
-
 <!doctype html>
 <html class="loading dark-layout" lang="en" data-layout="dark-layout" data-textdirection="ltr">
 <head>
@@ -7,9 +6,23 @@
   <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  {% include 'styles.html' %}
-  {% block extra_head %}{% endblock %}
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600"
+        rel="stylesheet">
+  <!-- BEGIN: CSS-->
+  {% include 'styles/vendor-css.html' %}
+  {% block vendor_css %}{% endblock %}
+  {% include 'styles/theme-css.html' %}
+  {% block theme_css %}{% endblock %}
+  {% include 'styles/page-css.html' %}
+  <!-- Plyr audio player -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/plyr/3.6.8/plyr.min.css"
+        integrity="sha512-kuSeWNZsBfW/esn9MiIQ3hkFqNdHKljzVQYBOe7gPXGUNCE8KqrbZLHDSH005HrUwCI8erQ5iDrBHlSzTfSbmw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <link rel="stylesheet" type="text/css"
+        href="{% static 'app-assets/css/plugins/extensions/ext-component-media-player.css' %}">
+  {% block page_css %}{% endblock %}
   <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+  <!-- END: CSS-->
   <title>{% block title %}Music Releases App{% endblock title %}</title>
 </head>
 <body class="vertical-layout vertical-menu-modern  navbar-floating footer-static"
@@ -32,9 +45,14 @@
   </div>
 </div>
 {% include 'footer.html' %}
-{% include 'scripts.html' %}
+<!-- BEGIN: JS-->
+{% include 'scripts/vendor-js.html' %}
+{% block vendor_js %}{% endblock %}
+{% block page_vendor_js %}{% endblock %}
+{% include 'scripts/theme-js.html' %}
+{% block theme_js %}{% endblock %}
+{% block page_js %}{% endblock %}
 {% block extra_javascript %}{% endblock extra_javascript %}
-
 {% block inline_javascript %}
   {# No "script src=" here, instead put to extra_javascript #}
   <script>
@@ -45,11 +63,9 @@
                   height: 14
               });
           }
-
-          $("form").removeAttr("novalidate")
-
       })
   </script>
 {% endblock inline_javascript %}
+<!-- END: JS-->
 </body>
 </html>

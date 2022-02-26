@@ -19,7 +19,8 @@ def create_trade_request(form, trade_item_model, profile):
             raise ValidationError("Do not try to use wrong release")
 
         release = Release.objects.get(id=release_id)
-        prices_with_currencies = " ".join([f"{currency.currency} {currency.price}" for currency in release.wholesale_prices.all()])
+        prices_with_currencies = " ".join(
+            [f"{currency.currency} {currency.price}" for currency in release.wholesale_prices.all()])
 
         trade_item_model.objects.create(trade_request=trade_request,
                                         release=release,

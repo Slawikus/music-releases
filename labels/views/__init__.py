@@ -6,13 +6,12 @@ from .set_as_main_label_view import SetAsMainLabelView
 from .label_list_view import LabelListView
 from .update_label_view import UpdateLabelView
 
-
 __all__ = [
-	CreateLabelView,
-	DeleteLabelView,
-	LabelDetailView,
-	UsersLabelListView,
-	SetAsMainLabelView,
-	LabelListView,
-	UpdateLabelView
+    CreateLabelView,
+    DeleteLabelView,
+    LabelDetailView,
+    UsersLabelListView,
+    SetAsMainLabelView,
+    LabelListView,
+    UpdateLabelView
 ]
