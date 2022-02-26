@@ -3,6 +3,7 @@ from users.factories import UserWithProfileFactory
 from labels.factories import LabelFactory
 from django.urls import reverse
 
+
 class SetAsMainLabelViewTest(TestCase):
     def setUp(self):
         self.client = Client()

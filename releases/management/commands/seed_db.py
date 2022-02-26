@@ -9,14 +9,14 @@ DEFAULT_PASSWORD = 'admin'
 
 
 class Command(BaseCommand):
-	def handle(self, *args, **options):
-		user = UserWithProfileFactory.create(
-			email=DEFAULT_EMAIL,
-			password=make_password(DEFAULT_PASSWORD),
-			is_superuser=True
-		)
+    def handle(self, *args, **options):
+        user = UserWithProfileFactory.create(
+            email=DEFAULT_EMAIL,
+            password=make_password(DEFAULT_PASSWORD),
+            is_superuser=True
+        )
 
-		label = LabelFactory.create(name='Metal Blade Records', profile=user.profile, is_main=True)
+        label = LabelFactory.create(name='Metal Blade Records', profile=user.profile, is_main=True)
 
-		ReleaseFactory.create_batch(3, is_submitted=True, profile=user.profile, label=label)
-		ReleaseFactory.create_batch(2, profile=user.profile, label=label)
+        ReleaseFactory.create_batch(3, is_submitted=True, profile=user.profile, label=label)
+        ReleaseFactory.create_batch(2, profile=user.profile, label=label)

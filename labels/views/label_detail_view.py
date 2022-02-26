@@ -4,6 +4,6 @@ from users.models import Label
 
 
 class LabelDetailView(LoginRequiredMixin, DetailView):
-	context_object_name = "label"
-	model = Label
-	template_name = "label/label_detail.html"
+    context_object_name = "label"
+    model = Label
+    template_name = "label/label_detail.html"

@@ -16,11 +16,11 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
 
 
 __all__ = [
-	Invitation,
-	Label,
-	Profile,
-	ProfileCurrency,
-	User,
-	UserManager,
-	create_or_update_user_profile
+    Invitation,
+    Label,
+    Profile,
+    ProfileCurrency,
+    User,
+    UserManager,
+    create_or_update_user_profile
 ]

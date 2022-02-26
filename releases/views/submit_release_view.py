@@ -1,5 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import  UpdateView
+from django.views.generic import UpdateView
 from django.urls import reverse_lazy
 from django.utils import timezone
 from releases.models import Release
@@ -28,7 +28,6 @@ class SubmitReleaseView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         fields_values = list(_fields_dict.values())
 
         return None in fields_values
-
 
     def post(self, request, *args, **kwargs):
         release = Release.objects.get(pk=kwargs['pk'])

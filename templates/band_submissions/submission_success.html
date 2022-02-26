@@ -1,13 +1,53 @@
-{% extends 'base.html' %}
-
-{% load crispy_forms_tags %}
-
-{% block title %}Band Submission Success{% endblock title %}
-
-{% block content %}
-  <div class="row mt-2 mb-2">
-    <div class="p-3 mb-2 bg-gradient-success text-success">
+{% load static %}
+<!DOCTYPE html>
+<html class="loading dark-layout" lang="en" data-layout="dark-layout" data-textdirection="ltr">
+<!-- BEGIN: Head-->
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimal-ui">
+  <title>{% block title %}Band Submission{% endblock title %}</title>
+  {#    <link rel="apple-touch-icon" href="../../../app-assets/images/ico/apple-icon-120.png">#}
+  {#    <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.ico">#}
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600"
+        rel="stylesheet">
+  <!-- BEGIN: CSS-->
+  {% include 'styles/vendor-css.html' %}
+  {% include 'styles/theme-css.html' %}
+  {% include 'styles/page-css.html' %}
+  <link rel="stylesheet" type="text/css"
+        href="{% static 'app-assets/css/plugins/extensions/ext-component-media-player.css' %}">
+  {% block page_css %}{% endblock %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+  <!-- END: CSS-->
+</head>
+<body>
+<div class="container-sm container-fluid">
+  <div class="row mt-2 mb-2 justify-content-center">
+    <div class="col-12">
+      <div class="p-3 mb-2 bg-gradient-success text-success">
         <h3>You have submitted successfully. Label will send message to your email</h3>
+      </div>
     </div>
   </div>
-{% endblock content %}
+</div>
+<!-- BEGIN: JS-->
+{% include 'scripts/vendor-js.html' %}
+{% include 'scripts/theme-js.html' %}
+{% block inline_javascript %}
+  {# No "script src=" here, instead put to extra_javascript #}
+  <script>
+      $(window).on('load', function () {
+          if (feather) {
+              feather.replace({
+                  width: 14,
+                  height: 14
+              });
+          }
+      })
+  </script>
+{% endblock inline_javascript %}
+<!-- END: JS-->
+</body>
+<!-- END: Body-->
+</html>

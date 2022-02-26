@@ -17,6 +17,5 @@ class UserTradeRequestItem(models.Model):
         decimal_places=1,
         max_digits=3,
     )
-
     prices_with_currencies = models.CharField(max_length=255)
     quantity = models.PositiveIntegerField()

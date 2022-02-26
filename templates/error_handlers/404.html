@@ -1,17 +1,23 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>404 page not found</title>
-    {% include 'styles.html' %}
+  <meta charset="UTF-8">
+  <title>404 page not found</title>
+  <!-- BEGIN: CSS-->
+  {% include 'styles/vendor-css.html' %}
+  {% include 'styles/theme-css.html' %}
+  {% include 'styles/page-css.html' %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+  <!-- END: CSS-->
 </head>
 <body>
-    <div style="margin-left: 30%; margin-top: 50px">
+<div style="margin-left: 30%; margin-top: 50px">
 
-        <h1 style="font-size: xxx-large"><strong>404</strong></h1><br>
-        <h2>Oops, this page has not been found</h2>
-        <a href="{% url 'home' %}" class="btn btn-gradient-primary mt-3">go back</a>
-    </div>
+  <h1 style="font-size: xxx-large"><strong>404</strong></h1><br>
+  <h2>Oops, this page has not been found</h2>
+  <a href="{% url 'home' %}" class="btn btn-gradient-primary mt-3">go back</a>
+</div>
 
 </body>
 </html>

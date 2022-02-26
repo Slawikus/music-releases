@@ -4,7 +4,7 @@
 
 {% block title %}Add Release{% endblock title %}
 
-{% block extra_head %}
+{% block page_css %}
   <link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}">
 {% endblock %}
 
@@ -32,7 +32,7 @@
   </div>
 {% endblock content %}
 
-{% block extra_javascript %}
+{% block page_js %}
   <script src="{% static 'app-assets/vendors/js/forms/select/select2.full.min.js' %}"></script>
 {% endblock %}
 

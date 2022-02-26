@@ -9,9 +9,9 @@
       <h3>You can share these invitation links</h3>
       {% for invite in invitations %}
         <p class="text-primary">{{ request.get_host }}/users/signup/{{ invite.public_id }}
-        {% if not invite.is_active %}
+          {% if not invite.is_active %}
             - inactive! Already used.
-        {% endif %}
+          {% endif %}
         </p>
       {% endfor %}
     </div>

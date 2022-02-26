@@ -37,4 +37,3 @@ class RecentlySubmittedViewTest(BaseClientTest):
 
         self.assertEqual(len(context), 5)
         self.assertTrue(datetime_sorted)
-

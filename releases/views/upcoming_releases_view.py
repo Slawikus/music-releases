@@ -20,4 +20,3 @@ class UpcomingReleasesView(LoginRequiredMixin, ListView):
         return super().get_queryset().filter(is_submitted=True,
                                              release_date__gte=timezone.now(),
                                              ).order_by("-submitted_at")
-

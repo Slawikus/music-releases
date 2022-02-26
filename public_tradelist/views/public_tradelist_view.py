@@ -1,3 +1,4 @@
+from django.urls import reverse_lazy
 from django.views.generic import FormView
 from django.shortcuts import get_object_or_404
 from releases.models import Release
@@ -7,11 +8,10 @@ from public_tradelist.forms import TradeListForm
 from django.core.validators import ValidationError
 
 
-# Create your views here.
 class PublicTradeListView(FormView):
-    template_name = "tradelist.html"
+    template_name = "public_tradelist.html"
     form_class = TradeListForm
-    success_url = "/"
+    success_url = reverse_lazy('home')
 
     def form_valid(self, form):
 
@@ -26,7 +26,6 @@ class PublicTradeListView(FormView):
             return super().form_valid(form)
         except ValidationError:
             return super().form_invalid(form)
-
 
     def get_context_data(self, **kwargs):
         profile = get_object_or_404(Profile, trade_id=self.kwargs['trade_id'])
