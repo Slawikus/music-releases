@@ -8,7 +8,6 @@ from . import BaseClientTest
 class UpcomingViewTest(BaseClientTest):
 
     def test_time(self):
-
         response = self.client.get(reverse_lazy('upcoming_releases'))
         self.assertTrue(response.status_code, 200)
 

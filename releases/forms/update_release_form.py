@@ -5,6 +5,7 @@ from django.forms import ModelForm
 
 from releases.models import Release
 
+
 class UpdateReleaseForm(ModelForm):
     class Meta:
         model = Release

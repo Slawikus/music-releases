@@ -5,15 +5,15 @@ from notifications.models import Notification
 
 class TradeRequestTest(TestCase):
 
-	def test_it_creates_notification(self):
-		trade_request = TradeRequestFactory.create()
-		notif_amount = Notification.objects.count()
+    def test_it_creates_notification(self):
+        trade_request = TradeRequestFactory.create()
+        notif_amount = Notification.objects.count()
 
-		self.assertEqual(notif_amount, 1)
+        self.assertEqual(notif_amount, 1)
 
-		trade_request.name = "test name"
-		trade_request.save()
+        trade_request.name = "test name"
+        trade_request.save()
 
-		notif_amount = Notification.objects.count()
+        notif_amount = Notification.objects.count()
 
-		self.assertEqual(notif_amount, 1)
+        self.assertEqual(notif_amount, 1)

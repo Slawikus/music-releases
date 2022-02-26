@@ -1,11 +1,11 @@
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
-
 YES_NO_CHOICES = (
-        (True, 'Yes'),
-        (False, 'No')
-    )
+    (True, 'Yes'),
+    (False, 'No')
+)
+
 
 class ReleaseTradesInfo(models.Model):
     release = models.OneToOneField("Release", on_delete=models.CASCADE)

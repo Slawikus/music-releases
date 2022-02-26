@@ -3,13 +3,11 @@ from users.factories import UserWithProfileFactory
 from django.urls import reverse
 from public_tradelist.factories import TradeRequestFactory
 from releases.factories import ReleaseFactory
-from users.factories import ProfileCurrencyFactory
 from releases.models import ReleaseWholesaleInfo, ReleaseTradesInfo
 from public_tradelist.models import TradeRequest
 from releases.models import Release
 
 
-# Create your tests here.
 class PublicTradeListViewTest(TestCase):
     def setUp(self):
         self.user = UserWithProfileFactory.create()
@@ -24,7 +22,6 @@ class PublicTradeListViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def create_release_ready_for_public_tradelist(self):
-
         release = ReleaseFactory.create(profile=self.user.profile)
         rwi = ReleaseWholesaleInfo.objects.get(release=release)
         rwi.available_for_wholesale = True
@@ -39,7 +36,6 @@ class PublicTradeListViewTest(TestCase):
         return release
 
     def test_it_shows_public_tradelist(self):
-
         self.create_release_ready_for_public_tradelist()
 
         trade_id = str(self.user.profile.trade_id)
@@ -50,7 +46,6 @@ class PublicTradeListViewTest(TestCase):
         self.assertEqual(releases_amount, 1)
 
     def test_it_accepts_trade_request(self):
-
         release = self.create_release_ready_for_public_tradelist()
 
         trade_id = str(self.user.profile.trade_id)
@@ -63,7 +58,6 @@ class PublicTradeListViewTest(TestCase):
 
         self.assertRedirects(response, expected_url="/")
         self.assertEqual(TradeRequest.objects.count(), 1)
-
 
     def test_it_shows_trade_requests(self):
         TradeRequestFactory.create_batch(3, profile=self.user.profile)

@@ -6,9 +6,9 @@ from random import randint
 
 
 class TradeRequestItemFactory(factory.django.DjangoModelFactory):
-	trade_request = factory.SubFactory(TradeRequestFactory)
-	release = factory.SubFactory(ReleaseFactory)
-	quantity = randint(1, 5)
+    trade_request = factory.SubFactory(TradeRequestFactory)
+    release = factory.SubFactory(ReleaseFactory)
+    quantity = randint(1, 5)
 
-	class Meta:
-		model = TradeRequestItem
+    class Meta:
+        model = TradeRequestItem

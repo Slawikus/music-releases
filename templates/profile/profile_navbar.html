@@ -1,27 +1,56 @@
-<ul class="nav nav-tabs mt-3 mb-4">
-  <li class="nav-item">
-    <a class="nav-link {% if request.resolver_match.view_name == 'profile_edit' %}active{% endif %}" aria-current="page"
-       href="{% url 'profile_edit' %}">Profile</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link {% if request.resolver_match.view_name == 'currencies_list' %}active{% endif %}"
-       href="{% url 'currencies_list' %}">Currencies</a>
-  </li>
+<ul class="nav nav-pills mb-2">
+  <!-- profile -->
   <li class="nav-item">
     <a class="nav-link
-      {% if request.resolver_match.view_name in "'users_label_list','label_add','label_update','label_delete'" %}
-        active
-      {% endif %}"
-       href="{% url 'users_label_list' %}">Labels</a>
+    {% if request.resolver_match.view_name == 'profile_edit' %}active{% endif %}"
+       href="{% url 'profile_edit' %}">
+      <i data-feather="user" class="font-medium-3 me-50"></i>
+      <span class="fw-bold">Profile</span>
+    </a>
   </li>
+  <!-- currencies -->
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'submissions' %}">Submissions</a>
-
+    <a class="nav-link
+      {% if request.resolver_match.view_name == 'currencies_list' %}active{% endif %}"
+       href="{% url 'currencies_list' %}">
+      <i data-feather="dollar-sign" class="font-medium-3 me-50"></i>
+      <span class="fw-bold">Currencies</span>
+    </a>
   </li>
+  <!-- labels -->
   <li class="nav-item">
-      <a class="nav-link" href="{% url 'invitations' %}">Invitations</a>
+    <a class="nav-link
+      {% if request.resolver_match.view_name in "'users_label_list','label_add','label_update','label_delete'" %}active{% endif %}"
+       href="{% url 'users_label_list' %}">
+      <i data-feather="disc" class="font-medium-3 me-50"></i>
+      <span class="fw-bold">Labels</span>
+    </a>
   </li>
-<li class="nav-item">
-    <a class="nav-link" href="{% url 'trade_requests' %}">Trade requests</a>
+  <!-- submissions -->
+  <li class="nav-item">
+    <a class="nav-link
+       {% if request.resolver_match.view_name in "'submissions','submission_details'" %}active{% endif %}"
+       href="{% url 'submissions' %}">
+      <i data-feather="users" class="font-medium-3 me-50"></i>
+      <span class="fw-bold">Submissions</span>
+    </a>
+  </li>
+  <!-- invitations -->
+  <li class="nav-item">
+    <a class="nav-link
+       {% if request.resolver_match.view_name == 'invitations' %}active{% endif %}"
+       href="{% url 'invitations' %}">
+      <i data-feather="user-plus" class="font-medium-3 me-50"></i>
+      <span class="fw-bold">Invitations</span>
+    </a>
+  </li>
+  <!-- trade requests -->
+  <li class="nav-item">
+    <a class="nav-link
+       {% if request.resolver_match.view_name in "'trade_requests','user_trade_details'" %}active{% endif %}"
+       href="{% url 'trade_requests' %}">
+      <i data-feather="corner-down-right" class="font-medium-3 me-50"></i>
+      <span class="fw-bold">Trade requests</span>
+    </a>
   </li>
 </ul>

@@ -13,4 +13,3 @@ class RecentlySubmittedView(BaseRelease):
         return super().get_queryset().filter(is_submitted=True,
                                              submitted_at__lte=timezone.now(),
                                              ).order_by("-submitted_at")
-

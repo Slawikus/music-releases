@@ -4,6 +4,6 @@ from users.models import Label
 
 
 class LabelListView(LoginRequiredMixin, ListView):
-	model = Label
-	context_object_name = "labels"
-	template_name = "label/label_list.html"
+    model = Label
+    context_object_name = "labels"
+    template_name = "label/label_list.html"
