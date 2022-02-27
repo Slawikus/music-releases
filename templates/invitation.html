@@ -1,19 +1,72 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}Invitations{% endblock title %}
-
+{% block vendor_css %}
+  <link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/extensions/toastr.min.css' %}">
+{% endblock %}
+{% block page_css %}
+  <link rel="stylesheet" type="text/css"
+        href="{% static 'app-assets/css/plugins/extensions/ext-component-toastr.css' %}">
+{% endblock %}
 {% block content %}
   {% include 'profile/profile_navbar.html' %}
-  <div class="row mt-2 mb-2">
-    <div class="col-8">
-      <h3>You can share these invitation links</h3>
-      {% for invite in invitations %}
-        <p class="text-primary">{{ request.get_host }}/users/signup/{{ invite.public_id }}
-          {% if not invite.is_active %}
-            - inactive! Already used.
-          {% endif %}
-        </p>
-      {% endfor %}
+  <div class="card">
+    <div class="card-header border-bottom">
+      <h4 class="card-title">You can share these invitation links</h4>
     </div>
+    <section id="copy-to-clipboard">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="card mb-0">
+            <div class="card-body pb-0">
+              {% for invite in invitations %}
+                <div class="row">
+                  <div class="col-xl-3 col-md-4 col-sm-6 col-12 pe-sm-0">
+                    {% if not invite.is_active %}
+                      <div class="mb-1">
+                        <input readonly type="text" class="form-control text-muted"
+                               value="{{ request.get_host }}/users/signup/{{ invite.public_id }}">
+                      </div>
+                      </div>
+                      <div class="col-lg-2 col-sm-4 col-12 mb-1">
+                        <button disabled class="btn btn-outline-primary text-muted">Already used</button>
+                      </div>
+                    {% else %}
+                      <div class="mb-1">
+                        <input type="text" class="form-control copy-to-clipboard-input"
+                               id="copy-to-clipboard-input_id{{ invite.pk }}"
+                               value="{{ request.get_host }}/users/signup/{{ invite.public_id }}">
+                      </div>
+                      </div>
+                      <div class="col-lg-2 col-sm-4 col-12 mb-1">
+                        <button class="btn btn-outline-primary waves-effect copy-to-clipboard-input btn-copy"
+                                id="btn-copy_id{{ invite.pk }}">Copy!
+                        </button>
+                      </div>
+                    {% endif %}
+                </div>
+              {% endfor %}
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 {% endblock content %}
+{% block page_vendor_js %}
+  <script src="{% static 'app-assets/vendors/js/extensions/toastr.min.js' %}"></script>
+{% endblock %}
+{% block extra_javascript %}
+  <script>
+      'use strict';
+
+      // copy text on click
+      $('.btn-copy').on('click', function () {
+          var userTextId = 'copy-to-clipboard-input_' + $(this).attr('id').substr(-3)
+          var userText = $('#' + userTextId)
+
+          userText.select();
+          document.execCommand('copy');
+          toastr['success']('', 'Copied to clipboard!', {});
+      });
+  </script>
+{% endblock %}
