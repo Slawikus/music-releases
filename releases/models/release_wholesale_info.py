@@ -1,11 +1,9 @@
-from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
-
 YES_NO_CHOICES = (
-        (True, 'Yes'),
-        (False, 'No')
-    )
+    (True, 'Yes'),
+    (False, 'No')
+)
 
 
 class ReleaseWholesaleInfo(models.Model):

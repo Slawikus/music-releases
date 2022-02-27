@@ -14,6 +14,7 @@ class ReleaseWholesalePrice(models.Model):
         on_delete=models.CASCADE,
     )
     price = models.DecimalField(decimal_places=2, max_digits=10)
+
     class Meta:
         constraints = [
             models.UniqueConstraint(

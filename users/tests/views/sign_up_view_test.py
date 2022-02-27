@@ -51,7 +51,6 @@ class SignUpViewTest(TestCase):
         user.refresh_from_db()
         self.assertTrue(user.is_authenticated)
 
-
     def test_it_would_not_open_inactive_invitation(self):
         invitation = Invitation.objects.last()
         invitation.is_active = False

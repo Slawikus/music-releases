@@ -1,21 +1,128 @@
 {% extends 'base.html' %}
-
-{% load crispy_forms_tags %}
-
+{% load static %}
+{% load widget_tweaks %}
 {% block title %}Profile{% endblock title %}
-
+{% block vendor_css %}
+  <link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/animate/animate.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/extensions/sweetalert2.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/extensions/toastr.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}">
+{% endblock %}
+{% block page_css %}
+  <link rel="stylesheet" type="text/css"
+        href="{% static 'app-assets/css/plugins/extensions/ext-component-sweet-alerts.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/form-validation.css' %}">
+  <link rel="stylesheet" type="text/css"
+        href="{% static 'app-assets/css/plugins/extensions/ext-component-toastr.css' %}">
+{% endblock %}
 {% block content %}
-  {% include 'profile/profile_navbar.html' %}
-  <div class="row mt-2 mb-2">
-    <div class="col-4">
-      <p>Public tradelist link</p>
-      {% url "public_tradelist" profile.trade_id as url %}
-      <b>{{ request.get_host }}{{ url }}</b>
-      <form method="post" autocomplete="off">
-        {% csrf_token %}
-        {{ form|crispy }}
-        <button type="submit" class="btn btn-primary">Save</button>
-      </form>
+  <!-- BEGIN: Content-->
+  <div class="header-navbar-shadow"></div>
+  <div class="content-wrapper container-xxl p-0">
+    <div class="content-body">
+      <div class="row">
+        <div class="col-12">
+          {% include 'profile/profile_navbar.html' %}
+          <!-- profile -->
+          <div class="card">
+            <div class="card-header border-bottom">
+              <h4 class="card-title">Edit Profile</h4>
+            </div>
+            <section class="card-body py-2 my-25">
+              <section id="copy-to-clipboard">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="card mb-0">
+                      <div class="card-header pt-0 pb-1">
+                        <h5>Public tradelist link</h5>
+                      </div>
+                      <div class="card-body pb-0">
+                        <div class="row">
+                          <div class="col-xl-3 col-md-4 col-sm-6 col-12 pe-sm-0">
+                            <div class="mb-1">
+                              <!-- public tradelist link -->
+                              {% url "public_tradelist" profile.trade_id as url %}
+                              <input type="text" class="form-control" id="copy-to-clipboard-input"
+                                     value="{{ request.get_host|urlize }}{{ url }}">
+                            </div>
+                          </div>
+                          <div class="col-sm-2 col-12">
+                            <button class="btn btn-outline-primary waves-effect" id="btn-copy">Copy!</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+              <hr>
+              <div class="row">
+                <div class="col-md-6 col-12">
+                  <div class="card">
+                    <!-- form-->
+                    <form class="form form-horizontal" method="post">
+                      {% csrf_token %}
+                      {% if form.non_field_errors %}
+                        <p>{{ form.non_field_errors }}</p>
+                      {% endif %}
+                      <!-- Country Field-->
+                      <div class="row">
+                        <div class="col-12">
+                          <div class="mb-1 row">
+                            <div class="col-sm-3">
+                              <label for="{{ form.password.auto_id }}" class="form-label">
+                                {{ form.country.label }}
+                              </label>
+                            </div>
+                            <div class="col-sm-9">
+                              {{ form.country|add_class:"select2"|add_class:"form-select"|attr:"tabindex=1" }}
+                            </div>
+                          </div>
+                        </div>
+                        <!-- Address Field-->
+                        <div class="col-12">
+                          <div class="mb-1 row">
+                            <div class="col-sm-3">
+                              <label for="{{ field.auto_id }}" class="col-form-label">
+                                {{ form.address.label }}
+                              </label>
+                            </div>
+                            <div class="col-sm-9">
+                              {{ form.address|add_class:"form-control"|attr:"placeholder=Address"|attr:"tabindex=2" }}
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-sm-9 offset-sm-3">
+                          <button type="submit" class="btn btn-primary me-1">Save</button>
+                        </div>
+                      </div>
+                    </form>
+                    <!--/ form -->
+                  </div>
+                </div>
+              </div>
+            </section>
+            </section>
+          </div>
+        </div>
+        <!--/ profile -->
+      </div>
     </div>
   </div>
+  <!-- END: Content-->
 {% endblock content %}
+{% block page_vendor_js %}
+  <script src="{% static 'app-assets/vendors/js/forms/select/select2.full.min.js' %}"></script>
+  <script src="{% static 'app-assets/vendors/js/extensions/sweetalert2.all.min.js' %}"></script>
+  <script src="{% static 'app-assets/vendors/js/forms/validation/jquery.validate.min.js' %}"></script>
+  <script src="{% static 'app-assets/vendors/js/forms/cleave/cleave.min.js' %}"></script>
+  <script src="{% static 'app-assets/vendors/js/forms/cleave/addons/cleave-phone.us.js' %}"></script>
+  <script src="{% static 'app-assets/vendors/js/extensions/toastr.min.js' %}"></script>
+  <script src="{% static 'app-assets/vendors/js/forms/select/select2.full.min.js' %}"></script>
+{% endblock %}
+{% block page_js %}
+  <script src="{% static 'app-assets/js/scripts/pages/page-account-settings-account.js' %}"></script>
+  <script src="{% static 'app-assets/js/scripts/extensions/ext-component-clipboard.js' %}"></script>
+  <script src="{% static 'app-assets/js/scripts/forms/form-select2.js' %}"></script>
+{% endblock %}

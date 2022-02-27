@@ -6,71 +6,70 @@
 
 {% block content %}
   <div class="row mt-3 mb-3">
-  {% if request.resolver_match.view_name == 'create_trade_request' %}
-    <h5 class="mb-2">
-      Send a trade request to <b>{{ label_name }}</b>:
-    </h5>
-  {% endif %}
+    {% if request.resolver_match.view_name == 'create_trade_request' %}
+      <h5 class="mb-2">
+        Send a trade request to <b>{{ label_name }}</b>:
+      </h5>
+    {% endif %}
     <div class="col-4">
-        <form method="post">
+      <form method="post">
         {% csrf_token %}
         {{ form|crispy }}
       </form>
-    <button onclick="fill_data()" id="submit" class="btn btn-primary ml-4 w-10">Send</button>
+      <button onclick="fill_data()" id="submit" class="btn btn-primary ml-4 w-10">Send</button>
     </div>
 
     <div class="p-4 shadow-4 rounded-3 mt-3" style="background-color: hsl(0, 0%, 94%);">
       <div class="row">
-          <table class="table">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">quantity</th>
-                    <th scope="col">band name</th>
-                    <th scope="col">trade points</th>
-                    <th scope="col">wholesale price</th>
-                    <th scope="col">album</th>
-                    <th scope="col">format</th>
-                </tr>
-            </thead>
-            <tbody>
-              {% for release in releases %}
-                <tr>
-                    <td><input type="number" class="quantity" release_id="{{ release.id }}"></td>
-                    <td>{{ release.band_name }} ({{ release.country }})</td>
-                    <td>{{ release.wholesaleandtrades.trade_points }}</td>
-                    <td>
-                        {% for wholesale_price in release.wholesale_prices.all %}
-                            {{ wholesale_price.price }} - {{ wholesale_price.currency }},
-                        {% endfor %}
-                    </td>
-                    <td>{{ release.album_title }}</td>
-                    <td>{{ release.format }}</td>
-                </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+        <table class="table">
+          <thead class="thead-dark">
+          <tr>
+            <th scope="col">quantity</th>
+            <th scope="col">band name</th>
+            <th scope="col">trade points</th>
+            <th scope="col">wholesale price</th>
+            <th scope="col">album</th>
+            <th scope="col">format</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for release in releases %}
+            <tr>
+              <td><input type="number" class="quantity" release_id="{{ release.id }}"></td>
+              <td>{{ release.band_name }} ({{ release.country }})</td>
+              <td>{{ release.wholesaleandtrades.trade_points }}</td>
+              <td>
+                {% for wholesale_price in release.wholesale_prices.all %}
+                  {{ wholesale_price.price }} - {{ wholesale_price.currency }},
+                {% endfor %}
+              </td>
+              <td>{{ release.album_title }}</td>
+              <td>{{ release.format }}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
       </div>
     </div>
 
   </div>
 
-
 {% endblock content %}
-{% block js %}
-    <script>
-        let data = $("#id_items");
+{% block extra_javascript %}
+  <script>
+      let data = $("#id_items");
 
-        function fill_data() {
-            data.val(null);
-            let quantities = $("body .quantity");
-            for (let i = 0; i < quantities.length; i++) {
-                if (quantities[i].value > 0) {
-                    data.val(data.val() + quantities[i].getAttribute("release_id") + ":" + quantities[i].value + ",");
-                }
-            }
-            // delete last comma
-            data.val(data.val().slice(0, -1));
-            $("form").submit();
-        }
-    </script>
+      function fill_data() {
+          data.val(null);
+          let quantities = $("body .quantity");
+          for (let i = 0; i < quantities.length; i++) {
+              if (quantities[i].value > 0) {
+                  data.val(data.val() + quantities[i].getAttribute("release_id") + ":" + quantities[i].value + ",");
+              }
+          }
+          // delete last comma
+          data.val(data.val().slice(0, -1));
+          $("form").submit();
+      }
+  </script>
 {% endblock %}

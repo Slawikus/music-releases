@@ -1,17 +1,23 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Server error</title>
-    {% include 'styles.html' %}
+  <meta charset="UTF-8">
+  <title>Server error</title>
+  <!-- BEGIN: CSS-->
+  {% include 'styles/vendor-css.html' %}
+  {% include 'styles/theme-css.html' %}
+  {% include 'styles/page-css.html' %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+  <!-- END: CSS-->
 </head>
 <body>
-    <div style="margin-left: 30%; margin-top: 50px">
+<div style="margin-left: 30%; margin-top: 50px">
 
-        <h1 style="font-size: xxx-large"><strong>500</strong></h1><br>
-        <h2>Sorry, we have some troubles on server</h2>
-        <h2><i>Please, try later</i></h2>
-    </div>
+  <h1 style="font-size: xxx-large"><strong>500</strong></h1><br>
+  <h2>Sorry, we have some troubles on server</h2>
+  <h2><i>Please, try later</i></h2>
+</div>
 
 </body>
 </html>

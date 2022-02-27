@@ -1,4 +1,3 @@
-import random
 from datetime import datetime
 import factory
 import pytz

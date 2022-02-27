@@ -1,18 +1,17 @@
 {% load static notifs %}
-
 <!-- BEGIN: Header-->
 <nav
     class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-dark navbar-shadow container-xxl">
   <div class="navbar-container d-flex content">
-      <form action="{% url 'search' %}" method="POST">
-        {% csrf_token %}
-        <div class="input-group w-100">
-        <input type="search" name="q" id="form1" class="form-control" />
-          <button type="submit" class="btn btn-primary">
-            search
-          </button>
-        </div>
-      </form>
+    <form action="{% url 'search' %}" method="POST">
+      {% csrf_token %}
+      <div class="input-group w-100">
+        <input type="search" name="q" id="form1" class="form-control"/>
+        <button type="submit" class="btn btn-primary">
+          search
+        </button>
+      </div>
+    </form>
     <div class="bookmark-wrapper d-flex align-items-center">
 
       <ul class="nav navbar-nav d-xl-none">
@@ -25,44 +24,42 @@
       </li>
       {#  Вынести уведомления в отдельный шаблон#}
       {% if user.is_authenticated %}
-      <li class="nav-item dropdown dropdown-notification me-25">
-        <a class="nav-link" href="#" data-bs-toggle="dropdown">
-          <i class="ficon" data-feather="bell"></i>
-          <span class="badge rounded-pill bg-danger badge-up">{{ user|number_of_unread_notifications }}</span>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-media dropdown-menu-end">
-          <li class="dropdown-menu-header">
-            <div class="dropdown-header d-flex">
-              <h4 class="notification-title mb-0 me-auto">Notifications</h4>
-              <div class="badge rounded-pill badge-light-primary">{{ user|number_of_unread_notifications }} New</div>
-            </div>
-          </li>
+        <li class="nav-item dropdown dropdown-notification me-25">
+          <a class="nav-link" href="#" data-bs-toggle="dropdown">
+            <i class="ficon" data-feather="bell"></i>
+            <span class="badge rounded-pill bg-danger badge-up">{{ user|number_of_unread_notifications }}</span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-media dropdown-menu-end">
+            <li class="dropdown-menu-header">
+              <div class="dropdown-header d-flex">
+                <h4 class="notification-title mb-0 me-auto">Notifications</h4>
+                <div class="badge rounded-pill badge-light-primary">{{ user|number_of_unread_notifications }} New</div>
+              </div>
+            </li>
 
-
-
-          <li class="scrollable-container media-list">
-                {% for notification in user|last_five_notifications %}
+            <li class="scrollable-container media-list">
+              {% for notification in user|last_five_notifications %}
                 <a class="d-flex" href="{% url 'notif_redirect' notification.pk %}">
                   <div class="list-item d-flex align-items-start">
 
                     <div class="list-item-body flex-grow-1">
                       <p class="media-heading">{{ notification.message }}
-                          <br><small
-                        class="notification-text">{{ notification.created }}</small>
+                        <br><small
+                            class="notification-text">{{ notification.created }}</small>
                     </div>
                   </div>
                 </a>
-                {% endfor %}
+              {% endfor %}
 
-          </li>
-          {% if user|number_of_unread_notifications > 5 %}
-          <li class="dropdown-menu-footer">
-            <a class="btn btn-primary w-100" href="#">Read all notifications</a>
-          </li>
-          {% endif %}
+            </li>
+            {% if user|number_of_unread_notifications > 5 %}
+              <li class="dropdown-menu-footer">
+                <a class="btn btn-primary w-100" href="#">Read all notifications</a>
+              </li>
+            {% endif %}
 
-        </ul>
-      </li>
+          </ul>
+        </li>
       {% endif %}
       <li class="nav-item dropdown dropdown-user">
         <a class="nav-link dropdown-toggle dropdown-user-link" id="dropdown-user" href="#" data-bs-toggle="dropdown"

@@ -12,6 +12,7 @@ class UpdateLabelView(UpdateView):
     template_name = 'label/label_update.html'
     form_class = LabelForm
     success_url = reverse_lazy('users_label_list')
+
     def form_valid(self, form):
         try:
             return super().form_valid(form)

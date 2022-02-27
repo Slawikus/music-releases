@@ -1,11 +1,8 @@
 {% load static %}
-
 {% load widget_tweaks %}
-
 <!DOCTYPE html>
 <html class="loading dark-layout" lang="en" data-layout="dark-layout" data-textdirection="ltr">
 <!-- BEGIN: Head-->
-
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,20 +12,19 @@
   {#    <link rel="shortcut icon" type="image/x-icon" href="../../../app-assets/images/ico/favicon.ico">#}
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600"
         rel="stylesheet">
-
-  {% include 'styles.html' %}
-
-  <!-- BEGIN: Page CSS-->
-  <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/form-validation.css' %}">
-  <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/pages/authentication.css' %}">
-  <!-- END: Page CSS-->
-
-
+  <!-- BEGIN: CSS-->
+  {% include 'styles/vendor-css.html' %}
+  {% include 'styles/theme-css.html' %}
+  {% include 'styles/page-css.html' %}
+  {% block page_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/form-validation.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/pages/authentication.css' %}">
+  {% endblock %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+  <!-- END: CSS-->
 </head>
 <!-- END: Head-->
-
 <!-- BEGIN: Body-->
-
 <body class="horizontal-layout horizontal-menu blank-page navbar-floating footer-static  " data-open="hover"
       data-menu="horizontal-menu" data-col="blank-page">
 <!-- BEGIN: Content-->
@@ -60,29 +56,32 @@
             <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
               <h2 class="card-title fw-bold mb-1">Adventure starts here 🚀</h2>
               <p class="card-text mb-2">Make your app management easy and fun!</p>
-
-
+              <!-- Register Form-->
               <form class="auth-register-form mt-2" method="POST" autocomplete="off">
                 {% if form.non_field_errors %}
                   <p>{{ form.non_field_errors }}</p>
                 {% endif %}
-
+                <!-- Main Label Field-->
                 <div class="mb-1">
                   {% include 'common/_form_field.html' with field=form.main_label_name|attr:"autofocus"|attr:"placeholder=Label"|attr:"tabindex=1" only %}
                 </div>
-
+                <!-- /Main Label Field-->
+                <!-- Country Field-->
                 <div class="mb-1">
                   {% include 'common/_form_field.html' with field=form.country|attr:"class:form-select"|attr:"tabindex=2" only %}
                 </div>
-
+                <!-- /Country Field-->
+                <!-- Name Field-->
                 <div class="mb-1">
                   {% include 'common/_form_field.html' with field=form.name|attr:"placeholder=Name"|attr:"tabindex=3" only %}
                 </div>
-
+                <!-- /Name Field-->
+                <!-- Email Field-->
                 <div class="mb-1">
                   {% include 'common/_form_field.html' with field=form.email|remove_attr:"autofocus"|attr:"placeholder=example@example.com"|attr:"tabindex=4" only %}
                 </div>
-
+                <!-- /Email Field-->
+                <!-- Password Field-->
                 <div class="mb-1">
                   <label for="{{ form.password1.auto_id }}" class="form-label">
                     {{ form.password1.label }}
@@ -105,7 +104,8 @@
                     <div class="form-text">{{ form.password1.help_text }}</div>
                   {% endif %}
                 </div>
-
+                <!-- /Password Field-->
+                <!-- Confirm Password Field-->
                 <div class="mb-1">
                   <label for="{{ form.password2.auto_id }}" class="form-label">
                     {{ form.password2.label }}
@@ -128,8 +128,7 @@
                     <div class="form-text">{{ form.password2.help_text }}</div>
                   {% endif %}
                 </div>
-
-
+                <!-- Confirm Password Field-->
                 <div class="mb-1">
                   <div class="form-check">
                     <input class="form-check-input" id="register-privacy-policy" type="checkbox" tabindex="7"/>
@@ -137,15 +136,12 @@
                       policy & terms</a></label>
                   </div>
                 </div>
-
                 {% csrf_token %}
                 <button class="btn btn-primary w-100" tabindex="8">Sign up</button>
               </form>
-
-
+              <!-- /Register Form-->
               <p class="text-center mt-2"><span>Already have an account?</span><a href="{% url 'login' %}"><span>&nbsp;Sign in instead</span></a>
               </p>
-
             </div>
           </div>
           <!-- /Register-->
@@ -155,29 +151,28 @@
   </div>
 </div>
 <!-- END: Content-->
-
-{% include 'scripts.html' %}
-
-<!-- BEGIN: Page Vendor JS-->
-<script src="{% static 'app-assets/vendors/js/forms/validation/jquery.validate.min.js' %}"></script>
-<!-- END: Page Vendor JS-->
-
-
-<!-- BEGIN: Page JS-->
-<script src="{% static 'app-assets/js/scripts/pages/auth-register.js' %}"></script>
-<!-- END: Page JS-->
-
-<script>
-    $(window).on('load', function () {
-        if (feather) {
-            feather.replace({
-                width: 14,
-                height: 14
-            });
-        }
-    })
-</script>
+<!-- BEGIN: JS-->
+{% include 'scripts/vendor-js.html' %}
+{% block page_vendor_js %}
+  <script src="{% static 'app-assets/vendors/js/forms/validation/jquery.validate.min.js' %}"></script>
+{% endblock %}
+{% include 'scripts/theme-js.html' %}
+{% block page_js %}
+  <script src="{% static 'app-assets/js/scripts/pages/auth-register.js' %}"></script>
+{% endblock %}
+{% block inline_javascript %}
+  <script>
+      $(window).on('load', function () {
+          if (feather) {
+              feather.replace({
+                  width: 14,
+                  height: 14
+              });
+          }
+      })
+  </script>
+{% endblock inline_javascript %}
+<!-- END: JS-->
 </body>
 <!-- END: Body-->
-
 </html>

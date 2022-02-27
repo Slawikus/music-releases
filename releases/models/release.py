@@ -57,13 +57,11 @@ class Release(models.Model):
         blank=True,
         null=True
     )
-
     submitted_at = models.DateTimeField(
         verbose_name="submitted date",
         null=True,
         blank=True
     )
-
     label = models.ForeignKey(
         Label,
         on_delete=models.CASCADE,
@@ -71,8 +69,6 @@ class Release(models.Model):
         blank=True,
         null=True
     )
-
-
     base_style = models.CharField(
         max_length=250,
         choices=BASE_STYLE_CHOICES
@@ -113,7 +109,6 @@ class Release(models.Model):
         blank=True,
         null=True
     )
-
     is_submitted = models.BooleanField(default=False)
 
     objects = ReleaseManager()
@@ -146,7 +141,7 @@ class Release(models.Model):
 
     def wholesale_prices_string(self):
         return ", ".join([f"{wholesale.price} ({wholesale.currency.currency})"
-                   for wholesale in self.wholesale_prices.all()])
+                          for wholesale in self.wholesale_prices.all()])
 
     def get_date(self):
         if self.release_date is None:

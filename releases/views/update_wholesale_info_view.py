@@ -40,4 +40,3 @@ class UpdateReleaseWholesaleInfoView(LoginRequiredMixin, UserPassesTestMixin, Up
 
     def get_object(self, queryset=None):
         return self.release.releasewholesaleinfo
-

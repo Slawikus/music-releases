@@ -1,20 +1,14 @@
 {% extends 'base.html' %}
-
 {% load static %}
-
 {% block title %}Home Page{% endblock title %}
-
-{% block extra_head %}
+{% block page_css %}
   <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/core/menu/menu-types/vertical-menu.css' %}">
   <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/pages/page-knowledge-base.css' %}">
 {% endblock %}
-
 {% block content %}
-
   <section id="knowledge-base-search">
     <div class="row">
       <div class="col-12">
-        {#        Потом картиночку заменим#}
         <div class="card knowledge-base-bg text-center"
              style="background-image: url('{% static 'app-assets/images/banner/banner.png' %}')">
           <div class="card-body">
@@ -32,5 +26,7 @@
       </div>
     </div>
   </section>
-
 {% endblock content %}
+{% block page_js %}
+  <script src="{% static 'app-assets/js/scripts/pages/page-knowledge-base.js' %}"></script>
+{% endblock %}

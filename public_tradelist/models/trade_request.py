@@ -4,7 +4,6 @@ from notifications.models import Notification
 from django.urls import reverse
 
 
-# Create your models here.
 class TradeRequest(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField()
@@ -13,7 +12,6 @@ class TradeRequest(models.Model):
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None):
-
         is_new = self.id is None
         super().save(force_insert, force_update)
 
